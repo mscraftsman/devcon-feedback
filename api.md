@@ -18,6 +18,7 @@ Token structure will be:
 ```
 
 **Level Codes**
+
 Code | Level   | Notes
 :---:|---------|----------
 V    | Visitor | General Visitor
@@ -60,6 +61,7 @@ Represents a conference session.
 ```
 
 **Level Codes**
+
 Code | Level
 :---:|---------------------------
 O    | Introductory and overview
@@ -69,12 +71,14 @@ E    | Expert
 V    | Vendor
 
 **Language Codes**
+
 Code | Language
 :---:|----------
 en   | English
 fr   | French
 
 **Format Codes**
+
 Code | Format
 :---:|---------
 S    | Session
@@ -101,6 +105,7 @@ Represents a single feedback
 ```
 
 **Feedback Reaction Codes**
+
 Feedback     | Code | Meaning
 -------------|:----:|----
 `feedback_1` | L    | Like
@@ -115,6 +120,7 @@ Represents a message from server
 ```
 
 **Type Codes**
+
 Code | Type
 :---:|---------
 D    | Debug
@@ -141,6 +147,7 @@ Create an authentication token
 ```
 
 **Response Codes**
+
 HTTP Code | Meaning
 :--------:|-----------
 200       | Token generated
@@ -161,6 +168,7 @@ Return a list of sessions open for voting
 ```
 
 **Response Codes**
+
 HTTP Code | Meaning
 :--------:|-----------
 200       | Status Ok
@@ -198,12 +206,14 @@ Authorization: Bearer <jwt>
 ```
 
 **Response Codes**
+
 HTTP Code | Meaning
 :--------:|-----------
 200       | Feedback saved
 400       | Request Body invalid
 401       | Token verification failed 
 403       | Feedback not allowed for this session
+404       | Session not found
 
 ## GET /feedback/me
 List feedback posted by current visitor
@@ -235,6 +245,7 @@ Authorization: Bearer <jwt>
 ```
 
 **Response Codes**
+
 HTTP Code | Meaning
 :--------:|-----------
 200       | Ok
@@ -253,6 +264,7 @@ Get a session details
 ```
 
 **Response Codes**
+
 HTTP Code | Meaning
 :--------:|-----------
 200       | Status Ok
@@ -274,16 +286,29 @@ List feedback for a specific session
 > In each feedback resource, `visitor` may be withheld - equal to `null`; if request does not have `admin` privileges 
 
 **Response Codes**
+
 HTTP Code | Meaning
 :--------:|-----------
 200       | Status Ok
 404       | Session not found
 
-# Schema
-## Session
+# Schema 
+
+## Visitor
+
 Field            | Type           | Constraints
 -----------------|----------------|----------
 id               | `INT`          | `PRIMARY KEY` `Serial`
+code             | `CHAR(6)`      | `UNIQUE` `INDEXED`
+name             | `VARCHAR(255)` | 
+level            | `CHAR(1)`      |
+
+## Session
+
+Field            | Type           | Constraints
+-----------------|----------------|----------
+id               | `INT`          | `PRIMARY KEY` `Serial`
+speaker_id       | `INT`          | `FOREIGN KEY visitor(id)`
 title            | `VARCHAR(255)` |         
 description      | `Text`         |        
 level            | `CHAR(1)`      |    
@@ -296,17 +321,10 @@ score            | `INT`          |
 feedback_summary | `JSONB`        |              
 start_at         | `TIMESTAMP`    |          
 end_at           | `TIMESTAMP`    |        
-status           | `BOOLEAN`      |      
-
-## Visitor
-Field            | Type           | Constraints
------------------|----------------|----------
-id               | `INT`          | `PRIMARY KEY` `Serial`
-code             | `CHAR(6)`      | `UNIQUE` `INDEXED`
-name             | `VARCHAR(255)` | 
-level            | `CHAR(1)`      |
+status           | `BOOLEAN`      |  
 
 ## Feedback
+
 Field            | Type        | Constraints
 -----------------|-------------|----------
 id               | `INT`       | `PRIMARY KEY` `Serial`
