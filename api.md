@@ -13,7 +13,7 @@ Token structure will be:
 {
     "id": 0,
     "name": "",
-    "level: "" //level code
+    "level": "" //level code
 }
 ```
 
