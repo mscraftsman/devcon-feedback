@@ -1,0 +1,409 @@
+{
+	"bootstrap": {
+        "generate": true,
+        "settings": [
+            {
+                "name": "",
+                "type": "",
+                "description": "",
+                "env": false
+            }
+        ]
+    },
+    "http": {
+        "generate": true,
+        "prefix": "",
+        "port": "8888"
+    },
+    "schema": {
+        "create": true,
+        "drop": true,
+        "aggregate": true
+    },
+    "crud": {
+        "create": true,
+        "read": true,
+        "read_list": true,
+        "update": true,
+        "delete": true,
+        "hooks": {
+            "pre_create": true,
+            "post_create": true,
+            "pre_read": true,
+            "post_read": true,
+            "pre_list": true,
+            "post_list": true,
+            "pre_update": true,
+            "post_update": true,
+            "pre_delete": true,
+            "post_delete": true
+        }
+    },
+    "rest": {
+        "create": true,
+        "read": true,
+        "read_list": true,
+        "update": true,
+        "delete": true,
+        "hooks": {
+            "pre_create": true,
+            "post_create": true,
+            "pre_read": true,
+            "post_read": true,
+            "pre_list": true,
+            "post_list": true,
+            "pre_update": true,
+            "post_update": true,
+            "pre_delete": true,
+            "post_delete": true
+        }
+    },
+    "vuetify": {
+        "generate": true,
+        "module": "web"
+	},
+	"entities": [
+		{
+            "name": "Feedback",
+            "description": "represents feedback from a visitor on a session",
+            "fields": [
+                {
+                    "label": "ID",
+                    "serialized": "id",
+                    "property": {
+                        "name": "ID",
+                        "type": "int64"
+                    },
+                    "schema": {
+                        "field": "id",
+                        "type": "SERIAL"
+                    }
+                },
+                {
+                    "label": "Visitor ID",
+                    "serialized": "visitor_id",
+                    "property": {
+                        "name": "VisitorId",
+                        "type": "int64"
+                    },
+                    "schema": {
+                        "field": "visitor_id",
+                        "type": "INT"
+                    }
+                },
+                {
+                    "label": "Reaction 1",
+                    "serialized": "reaction_1",
+                    "property": {
+                        "name": "Reaction1",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "reaction_1",
+                        "type": "CHAR(1)"
+                    }
+                },
+                {
+                    "label": "Reaction 2",
+                    "serialized": "reaction_2",
+                    "property": {
+                        "name": "Reaction2",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "reaction_2",
+                        "type": "CHAR(1)"
+                    }
+                },
+                {
+                    "label": "Reaction 3",
+                    "serialized": "reaction_3",
+                    "property": {
+                        "name": "Reaction3",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "reaction_3",
+                        "type": "CHAR(1)"
+                    }
+                },
+                {
+                    "label": "Reaction 4",
+                    "serialized": "reaction_4",
+                    "property": {
+                        "name": "Reaction4",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "reaction_4",
+                        "type": "TEXT"
+                    }
+                },
+                {
+                    "label": "Created At",
+                    "serialized": "created_at",
+                    "property": {
+                        "name": "CreatedAt",
+                        "type": "time.Time"
+                    },
+                    "schema": {
+                        "field": "created_at",
+                        "type": "TIMESTAMP"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Visitor",
+            "description": "represents a conference visitor",
+            "fields": [
+                {
+                    "label": "ID",
+                    "serialized": "id",
+                    "property": {
+                        "name": "ID",
+                        "type": "int64"
+                    },
+                    "schema": {
+                        "field": "id",
+                        "type": "SERIAL"
+                    }
+                },
+                {
+                    "label": "Code",
+                    "serialized": "code",
+                    "property": {
+                        "name": "Name",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "code",
+                        "type": "CHAR(6)"
+                    }
+                },
+                {
+                    "label": "Name",
+                    "serialized": "name",
+                    "property": {
+                        "name": "Name",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "name",
+                        "type": "VARCHAR(255)"
+                    }
+                },
+                {
+                    "label": "Affiliation",
+                    "serialized": "affiliation",
+                    "property": {
+                        "name": "Affiliation",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "affiliation",
+                        "type": "VARCHAR(255)"
+                    }
+                },
+                {
+                    "label": "",
+                    "serialized": "email",
+                    "property": {
+                        "name": "Email",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "email",
+                        "type": "VARCHAR(255)"
+                    }
+                },
+                {
+                    "label": "Level",
+                    "serialized": "level",
+                    "property": {
+                        "name": "Level",
+                        "type": "String"
+                    },
+                    "schema": {
+                        "field": "level",
+                        "type": "CHAR(1)"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Session",
+            "description": "represents a conference session",
+            "fields": [
+                {
+                    "label": "Id",
+                    "serialized": "id",
+                    "property": {
+                        "name": "Id",
+                        "type": "int64"
+                    },
+                    "schema": {
+                        "field": "id",
+                        "type": "SERIAL"
+                    }
+                },
+                {
+                    "label": "Title",
+                    "serialized": "title",
+                    "property": {
+                        "name": "Title",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "title",
+                        "type": "VARCHAR(255)"
+                    }
+                },
+                {
+                    "label": "Description",
+                    "serialized": "description",
+                    "property": {
+                        "name": "Description",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "description",
+                        "type": "Text"
+                    }
+                },
+                {
+                    "label": "Level",
+                    "serialized": "level",
+                    "property": {
+                        "name": "Level",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "level",
+                        "type": "CHAR(1)"
+                    }
+                },
+                {
+                    "label": "Language",
+                    "serialized": "language",
+                    "property": {
+                        "name": "Language",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "language",
+                        "type": "CHAR(2)"
+                    }
+                },
+                {
+                    "label": "Format",
+                    "serialized": "format",
+                    "property": {
+                        "name": "Format",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "format",
+                        "type": "CHAR(1)"
+                    }
+                },
+                {
+                    "label": "Room",
+                    "serialized": "room",
+                    "property": {
+                        "name": "Room",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "room",
+                        "type": "VARCHAR(255)"
+                    }
+                },
+                {
+                    "label": "Speakers",
+                    "serialized": "speakers",
+                    "property": {
+                        "name": "Speakers",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "speakers",
+                        "type": "TEXT"
+                    }
+                },
+                {
+                    "label": "Ratings",
+                    "serialized": "ratings_count",
+                    "property": {
+                        "name": "RatingsCount",
+                        "type": "int"
+                    },
+                    "schema": {
+                        "field": "ratings_count",
+                        "type": "INT"
+                    }
+                },
+                {
+                    "label": "Score",
+                    "serialized": "score",
+                    "property": {
+                        "name": "Score",
+                        "type": "int"
+                    },
+                    "schema": {
+                        "field": "score",
+                        "type": "INT"
+                    }
+                },
+                {
+                    "label": "Reaction",
+                    "serialized": "reaction_summary",
+                    "property": {
+                        "name": "ReactionSummary",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "reaction_summary",
+                        "type": "JSONB"
+                    }
+                },
+                {
+                    "label": "StartAt",
+                    "serialized": "start_at",
+                    "property": {
+                        "name": "StartAt",
+                        "type": "time.Time"
+                    },
+                    "schema": {
+                        "field": "start_at",
+                        "type": "TIMESTAMP"
+                    }
+                },
+                {
+                    "label": "EndAt",
+                    "serialized": "end_at",
+                    "property": {
+                        "name": "EndAt",
+                        "type": "time.Time"
+                    },
+                    "schema": {
+                        "field": "end_at",
+                        "type": "TIMESTAMP"
+                    }
+                },
+                {
+                    "label": "Status",
+                    "serialized": "status",
+                    "property": {
+                        "name": "Status",
+                        "type": "bool"
+                    },
+                    "schema": {
+                        "field": "status",
+                        "type": "BOOLEAN"
+                    }
+                }
+            ]
+        }
+    ]
+}
