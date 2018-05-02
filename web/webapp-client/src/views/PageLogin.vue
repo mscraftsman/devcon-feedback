@@ -1,66 +1,136 @@
 <template>
-    <div class="page">
-        <div class="logo-wrapper">
-            <img src="@/assets/mscc-logo.png" alt="">
-        </div>
-        <div class="dev-con-text">
-            Developers Conference 2018
-        </div>
-        <div class="app-name">
-            Sessions <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Feedback
-        </div>
-
-        <router-link :to="{ name: 'sessionid' }" class="login-btn">
-            login to continue
-        </router-link>
+  <div class="page page-session">
+    <div class="logo-wrapper">
+      <router-link :to="{ name: 'welcome' }">
+        <img src="@/assets/mscc-logo.png" alt="">
+      </router-link>
     </div>
+    <div class="user-info">
+      <span class="title">Logged in as</span>
+      <span>User Name</span>
+    </div>
+
+    <div class="session-id-wrapper">
+      <div class="form-label">Enter your unique id</div>
+      <input type="text" placeholder="1234" v-model="userid">
+      <a class="submit-wrapper" @click="checkUser()">
+        submit
+      </a>
+      <router-link :to="{name: 'feedback'}" class="submit-wrapper">
+        🗝
+      </router-link>
+    </div>
+
+    <div class="footer">
+      Developer Conference 2018
+    </div>
+
+  </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
-  components: {}
+  components: {},
+  computed: {
+    userid: {
+      get: function() {
+        let a = this.$store.getters.getUserId;
+        return a;
+      },
+      set: function(newValue) {
+        this.$store.commit("setUserId", newValue);
+      }
+    },
+    ...mapGetters({
+      // 'userid': 'getUserId'
+    })
+  },
+  methods: {
+    ...mapActions({
+      checkUser: "checkUser"
+    })
+  }
 };
 </script>
 
-
 <style lang="scss" scoped>
 .logo-wrapper {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto;
-  padding: 40px 0 20px;
-
   img {
+    padding: 15px;
     display: block;
-    width: 100%;
     height: 100%;
+    width: auto;
   }
 }
 
-.dev-con-text {
-  color: white;
-  font-size: 18px;
-  padding: 30px 0;
+.user-info {
+  padding: 18px;
+  span {
+    display: block;
+    text-align: right;
+
+    &.title {
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+  }
+  font-size: 14px;
 }
 
-.app-name {
-  color: white;
-  // font-size:
-  padding: 15vh 0;
+.page-session {
+  display: grid;
+  grid-template-areas:
+    "logo userinfo"
+    "session session"
+    "footer footer";
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: 10vh 80vh 10vh;
 }
 
-.login-btn {
-  height: 50px;
-  background: white;
-  max-width: 250px;
-  width: 85vw;
-  font-size: 18px;
-  line-height: 50px;
-  margin: 0 auto;
-  cursor: pointer;
-  display: block;
-  text-decoration: none;
-  color: black;
-  box-shadow: 0px 4px 21px rgba(0, 0, 0, 0.5);
+.session-id-wrapper {
+  grid-area: session;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  display: grid;
+  .form-label {
+    font-size: 16px;
+    padding-bottom: 8px;
+  }
+
+  input {
+    width: 50vw;
+    text-align: center;
+    max-width: 300px;
+    height: 70px;
+    font-size: 40px;
+
+    &::-webkit-input-placeholder {
+      color: #ddd;
+    }
+    // alighn
+  }
+
+  .submit-wrapper {
+    background: white;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    margin: 40px auto 0;
+    text-align: center;
+    text-decoration: none;
+  }
+}
+
+.footer {
+  grid-area: footer;
+  color: white;
+  text-align: center;
+  font-size: 13px;
+  align-self: center;
 }
 </style>
+
