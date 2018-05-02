@@ -1,8 +1,8 @@
 <template>
   <div class="page page-session">
     <div class="logo-wrapper">
-      <router-link :to="{ name: 'login' }" >
-        <img src="mscc-logo.png" alt="">
+      <router-link :to="{ name: 'welcome' }">
+        <img src="@/assets/mscc-logo.png" alt="">
       </router-link>
     </div>
     <div class="user-info">
@@ -11,10 +11,13 @@
     </div>
 
     <div class="session-id-wrapper">
-      <div class="form-label">Enter the Session ID</div>
-      <input type="number" placeholder="1234">
+      <div class="form-label">Enter your unique id</div>
+      <input type="text" placeholder="1234" v-model="userid">
+      <a class="submit-wrapper" @click="checkUser()">
+        submit
+      </a>
       <router-link :to="{name: 'feedback'}" class="submit-wrapper">
-        &raquo;
+        🗝
       </router-link>
     </div>
 
@@ -22,20 +25,37 @@
       Developer Conference 2018
     </div>
 
-
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  components: {
+  components: {},
+  computed: {
+    userid: {
+      get: function() {
+        let a = this.$store.getters.getUserId;
+        return a;
+      },
+      set: function(newValue) {
+        this.$store.commit("setUserId", newValue);
+      }
+    },
+    ...mapGetters({
+      // 'userid': 'getUserId'
+    })
+  },
+  methods: {
+    ...mapActions({
+      checkUser: "checkUser"
+    })
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
 .logo-wrapper {
   img {
     padding: 15px;
@@ -48,7 +68,7 @@ export default {
 .user-info {
   padding: 18px;
   span {
-    display:block;
+    display: block;
     text-align: right;
 
     &.title {
@@ -61,7 +81,7 @@ export default {
 
 .page-session {
   display: grid;
-  grid-template-areas: 
+  grid-template-areas:
     "logo userinfo"
     "session session"
     "footer footer";
@@ -74,7 +94,7 @@ export default {
   align-items: center;
   justify-content: center;
   align-content: center;
-  display:grid;
+  display: grid;
   .form-label {
     font-size: 16px;
     padding-bottom: 8px;
@@ -97,16 +117,17 @@ export default {
     background: white;
     border-radius: 50%;
     width: 100px;
-    height:100px;
+    height: 100px;
     line-height: 100px;
     margin: 40px auto 0;
     text-align: center;
+    text-decoration: none;
   }
 }
 
 .footer {
   grid-area: footer;
-  color:white;
+  color: white;
   text-align: center;
   font-size: 13px;
   align-self: center;
