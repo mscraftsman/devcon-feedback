@@ -1,22 +1,70 @@
 <template>
   <div id="app">
-    <transition name="fade">
+    <transition name="page" mode="out-in">
       <router-view></router-view>
     </transition>
+    <div class="error-log">
+      <ul>
+        <li v-for="error in errors" :class="error.type" :key="error.timestamp">
+          {{ error.text }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
-<style>
+<script>
+import  { mapGetters } from 'vuex';
+
+export default {
+  computed: {
+    ...mapGetters({
+      'errors' : 'getErrors'
+    })
+  }
+}
+</script>
+
+
+<style lang="scss">
 
 html, body, #app, .page {
   min-height: 100vh;
+  /* contain: strict; */
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .2s;
+.page-enter-active, .page-leave-active {
+  transition: opacity .3s ease-in-out, transform 0.3s ease-in-out;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.page-enter{
   opacity: 0;
+  transform: translateX(30%);
+} 
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-30%);
+}
+
+.btn {
+    --size: 50px;
+    height: var(--size);
+    background: white;
+    max-width: 250px;
+    width: 85vw;
+    font-size: 18px;
+    line-height: var(--size);
+    margin: 0 auto;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    color:black;
+    box-shadow: 0px 4px 21px rgba(0, 0, 0, 0.5);
+
+    &.small {
+      font-size: 14px;
+       --size: 30px;
+    }
 }
 
 body {
@@ -45,5 +93,26 @@ body {
 
 #app {
   background: linear-gradient(166deg, #31E8B7 0%, #2847D9 100%);
+}
+
+.error-log {
+  position:fixed;
+  bottom:0;
+  width: 100%;
+
+  ul, li {
+    padding:0;
+    margin:0;
+  }
+
+  li {
+    font-size: 14px;
+    padding: 0 10px;
+
+    &.success {background: lightgreen ; color: green ;}
+    &.error {background: lightcoral ; color: red;}
+    &.warning {background: lightyellow; color: orange ;}
+    &.info {background: lightblue ; color: blue ;}
+  }
 }
 </style>

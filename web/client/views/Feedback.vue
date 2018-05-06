@@ -1,7 +1,7 @@
 <template>
   <div class="page page-feedback">
     <div class="logo-wrapper">
-      <router-link :to="{ name: 'login' }" >
+      <router-link :to="{ name: 'welcome' }" >
         <img src="mscc-logo.png" alt="">
       </router-link>
     </div>
