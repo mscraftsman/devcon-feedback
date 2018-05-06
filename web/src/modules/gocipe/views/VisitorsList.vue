@@ -3,7 +3,7 @@
         <v-toolbar color="transparent" flat>
             <v-toolbar-title class="grey--text text--darken-4 ml-0"><h2>Visitor</h2></v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn mr-0 color="primary" :to="{name: 'visitorsEdit', params:{id: 0}}">
+            <v-btn mr-0 color="primary" :to="{name: 'api/visitorsEdit', params:{id: 0}}">
                 <v-icon dark>add</v-icon> Add
             </v-btn>
         </v-toolbar>
@@ -14,14 +14,12 @@
 
         <v-alert type="info" value="true"  color="primary" outline icon="info" v-if="entities.length === 0">
             No Visitor exist. Would you like to create one now?
-            <v-btn :to="{name: 'visitorsEdit', params:{id: 0}}" color="primary">create new</v-btn>
+            <v-btn :to="{name: 'api/visitorsEdit', params:{id: 0}}" color="primary">create new</v-btn>
         </v-alert>
         <template v-else>
             <v-text-field mb-4 append-icon="search" label="Search" single-line hide-details v-model="search"></v-text-field>            
             <v-data-table :headers="headers" :items="entities" class="elevation-1" :search="search">
                 <template slot="items" slot-scope="props">
-					
-					<td>{{ props.item.id}}</td>
 					
 					<td>{{ props.item.code}}</td>
 					
@@ -34,7 +32,7 @@
 					<td>{{ props.item.level}}</td>
 					
                     <td class="justify-center layout px-0">
-                        <v-btn icon class="mx-0" :to="{name: 'visitorsEdit', params: {'id': props.item.id}  }">
+                        <v-btn icon class="mx-0" :to="{name: 'api/visitorsEdit', params: {'id': props.item.id}  }">
                             <v-icon color="teal">edit</v-icon>
                         </v-btn>
                     </td>
@@ -64,8 +62,6 @@ export default {
       search: "",
       headers: [
 		
-		{text: "ID", value: "id"},
-		
 		{text: "Code", value: "code"},
 		
 		{text: "Name", value: "name"},
@@ -83,7 +79,7 @@ export default {
   },
   created() {
     axios
-      .get("/api/visitors")
+      .get("/api/api/visitors")
       .then(response => {
         this.entities = response.data.entities;
       })

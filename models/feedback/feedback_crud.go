@@ -1,6 +1,14 @@
 package feedback
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/mscraftsman/devcon-feedback/models"
+)
 
 var db *sql.DB
 
@@ -12,32 +20,29 @@ func Inject(database *sql.DB) {
 // Get returns a single Feedback from database by primary key
 func Get(id int64) (*Feedback, error) {
 	var entity = New()
-	
-    if err := crudPreGet(id); err != nil {
+
+	if err := crudPreGet(id); err != nil {
 		return nil, fmt.Errorf("error executing crudPreGet() in Get(%d) for entity 'Feedback': %s", id, err)
 	}
-    
-	rows, err := db.Query("SELECT t.id, t.visitor_id, t.reaction_1, t.reaction_2, t.reaction_3, t.reaction_4, t.created_at FROM  t WHERE id = $1 ORDER BY t.id ASC", id)
+
+	rows, err := db.Query("SELECT t.visitor_id, t.reaction_1, t.reaction_2, t.reaction_3, t.reaction_4, t.created_at FROM  t WHERE id = $1 ORDER BY t.id ASC", id)
 	if err != nil {
 		return nil, err
 	}
 
 	defer rows.Close()
 	for rows.Next() {
-		
 
-		err := rows.Scan(entity.ID, entity.VisitorId, entity.Reaction1, entity.Reaction2, entity.Reaction3, entity.Reaction4, entity.CreatedAt)
+		err := rows.Scan(entity.VisitorId, entity.Reaction1, entity.Reaction2, entity.Reaction3, entity.Reaction4, entity.CreatedAt)
 		if err != nil {
 			return nil, err
-		} 
-		
-		
+		}
+
 	}
-	
+
 	if err = crudPostGet(entity); err != nil {
 		return nil, fmt.Errorf("error executing crudPostGet() in Get(%d) for entity 'Feedback': %s", id, err)
 	}
-	
 
 	return entity, nil
 }
@@ -51,12 +56,12 @@ func List(filters []models.ListFilter) ([]*Feedback, error) {
 		err      error
 	)
 
-	query := "SELECT t.id, t.visitor_id, t.reaction_1, t.reaction_2, t.reaction_3, t.reaction_4, t.created_at FROM "
-	
-    if filters, err = crudPreList(filters); err != nil {
+	query := "SELECT t.visitor_id, t.reaction_1, t.reaction_2, t.reaction_3, t.reaction_4, t.created_at FROM "
+
+	if filters, err = crudPreList(filters); err != nil {
 		return nil, fmt.Errorf("error executing crudPreList() in List(filters) for entity 'Feedback': %s", err)
 	}
-    
+
 	for i, filter := range filters {
 		segments = append(segments, filter.Field+" "+filter.Operation+" $"+strconv.Itoa(i+1))
 		values = append(values, filter.Value)
@@ -67,7 +72,7 @@ func List(filters []models.ListFilter) ([]*Feedback, error) {
 	}
 
 	rows, err := db.Query(query+" ORDER BY id ASC", values...)
-	
+
 	if err != nil {
 		return nil, err
 	}
@@ -75,31 +80,26 @@ func List(filters []models.ListFilter) ([]*Feedback, error) {
 	defer rows.Close()
 	for rows.Next() {
 		entity := New()
-		err := rows.Scan(entity.ID, entity.VisitorId, entity.Reaction1, entity.Reaction2, entity.Reaction3, entity.Reaction4, entity.CreatedAt)
+		err := rows.Scan(entity.VisitorId, entity.Reaction1, entity.Reaction2, entity.Reaction3, entity.Reaction4, entity.CreatedAt)
 		if err != nil {
 			return nil, err
 		}
 
 		list = append(list, entity)
-		
-	}
-	
 
-	
+	}
+
 	if list, err = crudPostList(list); err != nil {
 		return nil, fmt.Errorf("error executing crudPostList() in List(filters) for entity 'Feedback': %s", err)
 	}
-	
+
 	return list, nil
 }
-
-
 
 // Delete deletes a Feedback record from database by id primary key
 func Delete(id int64, tx *sql.Tx, autocommit bool) error {
 	var (
 		err error
-		
 	)
 
 	if tx == nil {
@@ -113,24 +113,23 @@ func Delete(id int64, tx *sql.Tx, autocommit bool) error {
 	if err != nil {
 		return err
 	}
-	
+
 	if err := crudPreDelete(id, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPreDelete() in Delete(%d) for entity 'Feedback': %s", id, err)
 	}
-	
-	
+
 	_, err = stmt.Exec(id)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing transaction statement in Delete(%d) for entity 'Feedback': %s", id, err)
 	}
-	
+
 	if err := crudPostDelete(id, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("Error executing crudPostDelete() in Delete(%d) for entity 'Feedback': %s", id, err)
 	}
-	
+
 	if autocommit {
 		err = tx.Commit()
 		if err != nil {
@@ -145,7 +144,6 @@ func Delete(id int64, tx *sql.Tx, autocommit bool) error {
 func (entity *Feedback) Delete(tx *sql.Tx, autocommit bool) error {
 	var (
 		err error
-		
 	)
 
 	id := *entity.ID
@@ -161,13 +159,12 @@ func (entity *Feedback) Delete(tx *sql.Tx, autocommit bool) error {
 	if err != nil {
 		return err
 	}
-	
+
 	if err := crudPreDelete(id, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPreDelete() in Feedback.Delete() for ID = %d : %s", id, err)
 	}
-	
-	
+
 	_, err = stmt.Exec(id)
 	if err == nil {
 		entity.ID = nil
@@ -175,12 +172,12 @@ func (entity *Feedback) Delete(tx *sql.Tx, autocommit bool) error {
 		tx.Rollback()
 		return fmt.Errorf("error executing transaction statement in Feedback.Delete() for ID = %d : %s", id, err)
 	}
-	
+
 	if err = crudPostDelete(id, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPostDelete() in Feedback.Delete() for ID = %d : %s", id, err)
 	}
-	
+
 	if autocommit {
 		err = tx.Commit()
 		if err != nil {
@@ -205,7 +202,6 @@ func (entity *Feedback) Insert(tx *sql.Tx, autocommit bool) error {
 	var (
 		id  int64
 		err error
-		
 	)
 
 	if tx == nil {
@@ -215,17 +211,17 @@ func (entity *Feedback) Insert(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 	*entity.CreatedAt = time.Now()
-	
-	stmt, err := tx.Prepare("INSERT INTO  ($2, $3, $4, $5, $6, $7) VALUES ($2, $3, $4, $5, $6, $7) RETURNING id")
+
+	stmt, err := tx.Prepare("INSERT INTO  ($1, $2, $3, $4, $5, $6) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id")
 	if err != nil {
 		return err
 	}
-	
-    if err := crudPreCreate(entity, tx); err != nil {
+
+	if err := crudPreCreate(entity, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPreCreate() in Feedback.Insert(): %s", err)
 	}
-    
+
 	err = stmt.QueryRow(*entity.VisitorId, *entity.Reaction1, *entity.Reaction2, *entity.Reaction3, *entity.Reaction4, *entity.CreatedAt).Scan(&id)
 	if err == nil {
 		entity.ID = &id
@@ -233,13 +229,12 @@ func (entity *Feedback) Insert(tx *sql.Tx, autocommit bool) error {
 		tx.Rollback()
 		return fmt.Errorf("error executing transaction statement in Feedback: %s", err)
 	}
-	
-	
+
 	if err := crudPostCreate(entity, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPostCreate() in Feedback.Insert(): %s", err)
 	}
-	
+
 	if autocommit {
 		err = tx.Commit()
 		if err != nil {
@@ -254,7 +249,6 @@ func (entity *Feedback) Insert(tx *sql.Tx, autocommit bool) error {
 func (entity *Feedback) Update(tx *sql.Tx, autocommit bool) error {
 	var (
 		err error
-		
 	)
 
 	if tx == nil {
@@ -263,30 +257,28 @@ func (entity *Feedback) Update(tx *sql.Tx, autocommit bool) error {
 			return err
 		}
 	}
-	
-	stmt, err := tx.Prepare("UPDATE  SET visitor_id = $2, reaction_1 = $3, reaction_2 = $4, reaction_3 = $5, reaction_4 = $6, created_at = $7 WHERE id = $1")
+
+	stmt, err := tx.Prepare("UPDATE  SET visitor_id = $1, reaction_1 = $2, reaction_2 = $3, reaction_3 = $4, reaction_4 = $5, created_at = $6 WHERE id = $1")
 	if err != nil {
 		return err
 	}
 
-	
-    if err := crudPreUpdate(entity, tx); err != nil {
+	if err := crudPreUpdate(entity, tx); err != nil {
 		tx.Rollback()
-        return fmt.Errorf("error executing crudPreUpdate() in Feedback.Update(): %s", err)
+		return fmt.Errorf("error executing crudPreUpdate() in Feedback.Update(): %s", err)
 	}
-    
+
 	_, err = stmt.Exec(*entity.VisitorId, *entity.Reaction1, *entity.Reaction2, *entity.Reaction3, *entity.Reaction4, *entity.CreatedAt)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing transaction statement in Feedback.Update(): %s", err)
 	}
-	
-	
+
 	if err := crudPostUpdate(entity, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPostUpdate() in Feedback.Update(): %s", err)
 	}
-	
+
 	if autocommit {
 		err = tx.Commit()
 		if err != nil {

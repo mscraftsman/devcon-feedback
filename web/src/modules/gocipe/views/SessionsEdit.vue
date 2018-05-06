@@ -3,7 +3,7 @@
 		<v-toolbar color="transparent" flat>
             <v-toolbar-title class="grey--text text--darken-4 ml-0"><h2>Session</h2></v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn ml-0 small color="grey" flat :to="{name: 'sessionsList'}">
+            <v-btn ml-0 small color="grey" flat :to="{name: 'api/sessionsList'}">
                 <v-icon dark>arrow_back</v-icon> Back
             </v-btn>
         </v-toolbar>
@@ -14,7 +14,7 @@
         
 
         <v-btn color="primary" @click="save()">Save</v-btn>
-        <v-btn color="gray" :to="{name: 'sessionsList'}">Cancel</v-btn>
+        <v-btn color="gray" :to="{name: 'api/sessionsList'}">Cancel</v-btn>
 	</div>
 </template>
   
@@ -28,7 +28,7 @@ export default {
             return
         }
 
-        axios.get("/api/sessions/" + this.id).then(response => {
+        axios.get("/api/api/sessions/" + this.id).then(response => {
             this.id = response.data.entity.id
             
             this.entity.title = response.data.entity.title
@@ -114,60 +114,56 @@ export default {
     },
     watch: {
         
-        "select.id.search": function(val) {
-            val && this.querySelections("id", "sessions", "/", val)
-        },
-        
         "select.title.search": function(val) {
-            val && this.querySelections("title", "sessions", "/", val)
+            val && this.querySelections("title", "api/sessions", "/api/", val)
         },
         
         "select.description.search": function(val) {
-            val && this.querySelections("description", "sessions", "/", val)
+            val && this.querySelections("description", "api/sessions", "/api/", val)
         },
         
         "select.level.search": function(val) {
-            val && this.querySelections("level", "sessions", "/", val)
+            val && this.querySelections("level", "api/sessions", "/api/", val)
         },
         
         "select.language.search": function(val) {
-            val && this.querySelections("language", "sessions", "/", val)
+            val && this.querySelections("language", "api/sessions", "/api/", val)
         },
         
         "select.format.search": function(val) {
-            val && this.querySelections("format", "sessions", "/", val)
+            val && this.querySelections("format", "api/sessions", "/api/", val)
         },
         
         "select.room.search": function(val) {
-            val && this.querySelections("room", "sessions", "/", val)
+            val && this.querySelections("room", "api/sessions", "/api/", val)
         },
         
         "select.speakers.search": function(val) {
-            val && this.querySelections("speakers", "sessions", "/", val)
+            val && this.querySelections("speakers", "api/sessions", "/api/", val)
         },
         
         "select.ratings_count.search": function(val) {
-            val && this.querySelections("ratings_count", "sessions", "/", val)
+            val && this.querySelections("ratings_count", "api/sessions", "/api/", val)
         },
         
         "select.score.search": function(val) {
-            val && this.querySelections("score", "sessions", "/", val)
+            val && this.querySelections("score", "api/sessions", "/api/", val)
         },
         
         "select.reaction_summary.search": function(val) {
-            val && this.querySelections("reaction_summary", "sessions", "/", val)
+            val && this.querySelections("reaction_summary", "api/sessions", "/api/", val)
         },
         
         "select.start_at.search": function(val) {
-            val && this.querySelections("start_at", "sessions", "/", val)
+            val && this.querySelections("start_at", "api/sessions", "/api/", val)
         },
         
         "select.end_at.search": function(val) {
-            val && this.querySelections("end_at", "sessions", "/", val)
+            val && this.querySelections("end_at", "api/sessions", "/api/", val)
         },
         
         "select.status.search": function(val) {
-            val && this.querySelections("status", "sessions", "/", val)
+            val && this.querySelections("status", "api/sessions", "/api/", val)
         }
         
     },
@@ -183,9 +179,9 @@ export default {
         },
         save() {
             if (this.id) {
-                axios.put("/api/sessions/" + this.id, this.entity).then(this.saved)
+                axios.put("/api/api/sessions/" + this.id, this.entity).then(this.saved)
             } else {
-                axios.post("/api/sessions", this.entity).then(this.saved)
+                axios.post("/api/api/sessions", this.entity).then(this.saved)
             }
 		},
 		saved(response) {

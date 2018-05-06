@@ -6,7 +6,7 @@ import routes from "./routes";
 const namespaced = true;
 
 const state = {
-  entities: routes
+  entities: routes.routes
 };
 
 export default {

@@ -3,7 +3,7 @@
 		<v-toolbar color="transparent" flat>
             <v-toolbar-title class="grey--text text--darken-4 ml-0"><h2>Feedback</h2></v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn ml-0 small color="grey" flat :to="{name: 'feedbacksList'}">
+            <v-btn ml-0 small color="grey" flat :to="{name: 'api/feedbacksList'}">
                 <v-icon dark>arrow_back</v-icon> Back
             </v-btn>
         </v-toolbar>
@@ -14,7 +14,7 @@
         
 
         <v-btn color="primary" @click="save()">Save</v-btn>
-        <v-btn color="gray" :to="{name: 'feedbacksList'}">Cancel</v-btn>
+        <v-btn color="gray" :to="{name: 'api/feedbacksList'}">Cancel</v-btn>
 	</div>
 </template>
   
@@ -28,7 +28,7 @@ export default {
             return
         }
 
-        axios.get("/api/feedbacks/" + this.id).then(response => {
+        axios.get("/api/api/feedbacks/" + this.id).then(response => {
             this.id = response.data.entity.id
             
             this.entity.visitor_id = response.data.entity.visitor_id
@@ -79,32 +79,28 @@ export default {
     },
     watch: {
         
-        "select.id.search": function(val) {
-            val && this.querySelections("id", "feedbacks", "/", val)
-        },
-        
         "select.visitor_id.search": function(val) {
-            val && this.querySelections("visitor_id", "feedbacks", "/", val)
+            val && this.querySelections("visitor_id", "api/feedbacks", "/api/", val)
         },
         
         "select.reaction_1.search": function(val) {
-            val && this.querySelections("reaction_1", "feedbacks", "/", val)
+            val && this.querySelections("reaction_1", "api/feedbacks", "/api/", val)
         },
         
         "select.reaction_2.search": function(val) {
-            val && this.querySelections("reaction_2", "feedbacks", "/", val)
+            val && this.querySelections("reaction_2", "api/feedbacks", "/api/", val)
         },
         
         "select.reaction_3.search": function(val) {
-            val && this.querySelections("reaction_3", "feedbacks", "/", val)
+            val && this.querySelections("reaction_3", "api/feedbacks", "/api/", val)
         },
         
         "select.reaction_4.search": function(val) {
-            val && this.querySelections("reaction_4", "feedbacks", "/", val)
+            val && this.querySelections("reaction_4", "api/feedbacks", "/api/", val)
         },
         
         "select.created_at.search": function(val) {
-            val && this.querySelections("created_at", "feedbacks", "/", val)
+            val && this.querySelections("created_at", "api/feedbacks", "/api/", val)
         }
         
     },
@@ -120,9 +116,9 @@ export default {
         },
         save() {
             if (this.id) {
-                axios.put("/api/feedbacks/" + this.id, this.entity).then(this.saved)
+                axios.put("/api/api/feedbacks/" + this.id, this.entity).then(this.saved)
             } else {
-                axios.post("/api/feedbacks", this.entity).then(this.saved)
+                axios.post("/api/api/feedbacks", this.entity).then(this.saved)
             }
 		},
 		saved(response) {

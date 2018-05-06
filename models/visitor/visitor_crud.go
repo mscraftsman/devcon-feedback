@@ -1,6 +1,13 @@
 package visitor
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+	"strconv"
+	"strings"
+
+	"github.com/mscraftsman/devcon-feedback/models"
+)
 
 var db *sql.DB
 
@@ -12,32 +19,29 @@ func Inject(database *sql.DB) {
 // Get returns a single Visitor from database by primary key
 func Get(id int64) (*Visitor, error) {
 	var entity = New()
-	
-    if err := crudPreGet(id); err != nil {
+
+	if err := crudPreGet(id); err != nil {
 		return nil, fmt.Errorf("error executing crudPreGet() in Get(%d) for entity 'Visitor': %s", id, err)
 	}
-    
-	rows, err := db.Query("SELECT t.id, t.code, t.name, t.affiliation, t.email, t.level FROM  t WHERE id = $1 ORDER BY t.id ASC", id)
+
+	rows, err := db.Query("SELECT t.code, t.name, t.affiliation, t.email, t.level FROM  t WHERE id = $1 ORDER BY t.id ASC", id)
 	if err != nil {
 		return nil, err
 	}
 
 	defer rows.Close()
 	for rows.Next() {
-		
 
-		err := rows.Scan(entity.ID, entity.Name, entity.Name, entity.Affiliation, entity.Email, entity.Level)
+		err := rows.Scan(entity.Name, entity.Name, entity.Affiliation, entity.Email, entity.Level)
 		if err != nil {
 			return nil, err
-		} 
-		
-		
+		}
+
 	}
-	
+
 	if err = crudPostGet(entity); err != nil {
 		return nil, fmt.Errorf("error executing crudPostGet() in Get(%d) for entity 'Visitor': %s", id, err)
 	}
-	
 
 	return entity, nil
 }
@@ -51,12 +55,12 @@ func List(filters []models.ListFilter) ([]*Visitor, error) {
 		err      error
 	)
 
-	query := "SELECT t.id, t.code, t.name, t.affiliation, t.email, t.level FROM "
-	
-    if filters, err = crudPreList(filters); err != nil {
+	query := "SELECT t.code, t.name, t.affiliation, t.email, t.level FROM "
+
+	if filters, err = crudPreList(filters); err != nil {
 		return nil, fmt.Errorf("error executing crudPreList() in List(filters) for entity 'Visitor': %s", err)
 	}
-    
+
 	for i, filter := range filters {
 		segments = append(segments, filter.Field+" "+filter.Operation+" $"+strconv.Itoa(i+1))
 		values = append(values, filter.Value)
@@ -67,7 +71,7 @@ func List(filters []models.ListFilter) ([]*Visitor, error) {
 	}
 
 	rows, err := db.Query(query+" ORDER BY id ASC", values...)
-	
+
 	if err != nil {
 		return nil, err
 	}
@@ -75,31 +79,26 @@ func List(filters []models.ListFilter) ([]*Visitor, error) {
 	defer rows.Close()
 	for rows.Next() {
 		entity := New()
-		err := rows.Scan(entity.ID, entity.Name, entity.Name, entity.Affiliation, entity.Email, entity.Level)
+		err := rows.Scan(entity.Name, entity.Name, entity.Affiliation, entity.Email, entity.Level)
 		if err != nil {
 			return nil, err
 		}
 
 		list = append(list, entity)
-		
-	}
-	
 
-	
+	}
+
 	if list, err = crudPostList(list); err != nil {
 		return nil, fmt.Errorf("error executing crudPostList() in List(filters) for entity 'Visitor': %s", err)
 	}
-	
+
 	return list, nil
 }
-
-
 
 // Delete deletes a Visitor record from database by id primary key
 func Delete(id int64, tx *sql.Tx, autocommit bool) error {
 	var (
 		err error
-		
 	)
 
 	if tx == nil {
@@ -113,24 +112,23 @@ func Delete(id int64, tx *sql.Tx, autocommit bool) error {
 	if err != nil {
 		return err
 	}
-	
+
 	if err := crudPreDelete(id, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPreDelete() in Delete(%d) for entity 'Visitor': %s", id, err)
 	}
-	
-	
+
 	_, err = stmt.Exec(id)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing transaction statement in Delete(%d) for entity 'Visitor': %s", id, err)
 	}
-	
+
 	if err := crudPostDelete(id, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("Error executing crudPostDelete() in Delete(%d) for entity 'Visitor': %s", id, err)
 	}
-	
+
 	if autocommit {
 		err = tx.Commit()
 		if err != nil {
@@ -145,7 +143,6 @@ func Delete(id int64, tx *sql.Tx, autocommit bool) error {
 func (entity *Visitor) Delete(tx *sql.Tx, autocommit bool) error {
 	var (
 		err error
-		
 	)
 
 	id := *entity.ID
@@ -161,13 +158,12 @@ func (entity *Visitor) Delete(tx *sql.Tx, autocommit bool) error {
 	if err != nil {
 		return err
 	}
-	
+
 	if err := crudPreDelete(id, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPreDelete() in Visitor.Delete() for ID = %d : %s", id, err)
 	}
-	
-	
+
 	_, err = stmt.Exec(id)
 	if err == nil {
 		entity.ID = nil
@@ -175,12 +171,12 @@ func (entity *Visitor) Delete(tx *sql.Tx, autocommit bool) error {
 		tx.Rollback()
 		return fmt.Errorf("error executing transaction statement in Visitor.Delete() for ID = %d : %s", id, err)
 	}
-	
+
 	if err = crudPostDelete(id, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPostDelete() in Visitor.Delete() for ID = %d : %s", id, err)
 	}
-	
+
 	if autocommit {
 		err = tx.Commit()
 		if err != nil {
@@ -205,7 +201,6 @@ func (entity *Visitor) Insert(tx *sql.Tx, autocommit bool) error {
 	var (
 		id  int64
 		err error
-		
 	)
 
 	if tx == nil {
@@ -214,17 +209,17 @@ func (entity *Visitor) Insert(tx *sql.Tx, autocommit bool) error {
 			return err
 		}
 	}
-	
-	stmt, err := tx.Prepare("INSERT INTO  ($2, $3, $4, $5, $6) VALUES ($2, $3, $4, $5, $6) RETURNING id")
+
+	stmt, err := tx.Prepare("INSERT INTO  ($1, $2, $3, $4, $5) VALUES ($1, $2, $3, $4, $5) RETURNING id")
 	if err != nil {
 		return err
 	}
-	
-    if err := crudPreCreate(entity, tx); err != nil {
+
+	if err := crudPreCreate(entity, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPreCreate() in Visitor.Insert(): %s", err)
 	}
-    
+
 	err = stmt.QueryRow(*entity.Name, *entity.Name, *entity.Affiliation, *entity.Email, *entity.Level).Scan(&id)
 	if err == nil {
 		entity.ID = &id
@@ -232,13 +227,12 @@ func (entity *Visitor) Insert(tx *sql.Tx, autocommit bool) error {
 		tx.Rollback()
 		return fmt.Errorf("error executing transaction statement in Visitor: %s", err)
 	}
-	
-	
+
 	if err := crudPostCreate(entity, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPostCreate() in Visitor.Insert(): %s", err)
 	}
-	
+
 	if autocommit {
 		err = tx.Commit()
 		if err != nil {
@@ -253,7 +247,6 @@ func (entity *Visitor) Insert(tx *sql.Tx, autocommit bool) error {
 func (entity *Visitor) Update(tx *sql.Tx, autocommit bool) error {
 	var (
 		err error
-		
 	)
 
 	if tx == nil {
@@ -262,30 +255,28 @@ func (entity *Visitor) Update(tx *sql.Tx, autocommit bool) error {
 			return err
 		}
 	}
-	
-	stmt, err := tx.Prepare("UPDATE  SET code = $2, name = $3, affiliation = $4, email = $5, level = $6 WHERE id = $1")
+
+	stmt, err := tx.Prepare("UPDATE  SET code = $1, name = $2, affiliation = $3, email = $4, level = $5 WHERE id = $1")
 	if err != nil {
 		return err
 	}
 
-	
-    if err := crudPreUpdate(entity, tx); err != nil {
+	if err := crudPreUpdate(entity, tx); err != nil {
 		tx.Rollback()
-        return fmt.Errorf("error executing crudPreUpdate() in Visitor.Update(): %s", err)
+		return fmt.Errorf("error executing crudPreUpdate() in Visitor.Update(): %s", err)
 	}
-    
+
 	_, err = stmt.Exec(*entity.Name, *entity.Name, *entity.Affiliation, *entity.Email, *entity.Level)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing transaction statement in Visitor.Update(): %s", err)
 	}
-	
-	
+
 	if err := crudPostUpdate(entity, tx); err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing crudPostUpdate() in Visitor.Update(): %s", err)
 	}
-	
+
 	if autocommit {
 		err = tx.Commit()
 		if err != nil {

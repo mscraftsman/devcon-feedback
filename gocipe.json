@@ -70,18 +70,6 @@
             "description": "represents feedback from a visitor on a session",
             "fields": [
                 {
-                    "label": "ID",
-                    "serialized": "id",
-                    "property": {
-                        "name": "ID",
-                        "type": "int64"
-                    },
-                    "schema": {
-                        "field": "id",
-                        "type": "SERIAL"
-                    }
-                },
-                {
                     "label": "Visitor ID",
                     "serialized": "visitor_id",
                     "property": {
@@ -160,18 +148,6 @@
             "description": "represents a conference visitor",
             "fields": [
                 {
-                    "label": "ID",
-                    "serialized": "id",
-                    "property": {
-                        "name": "ID",
-                        "type": "int64"
-                    },
-                    "schema": {
-                        "field": "id",
-                        "type": "SERIAL"
-                    }
-                },
-                {
                     "label": "Code",
                     "serialized": "code",
                     "property": {
@@ -237,18 +213,6 @@
             "name": "Session",
             "description": "represents a conference session",
             "fields": [
-                {
-                    "label": "Id",
-                    "serialized": "id",
-                    "property": {
-                        "name": "Id",
-                        "type": "int64"
-                    },
-                    "schema": {
-                        "field": "id",
-                        "type": "SERIAL"
-                    }
-                },
                 {
                     "label": "Title",
                     "serialized": "title",

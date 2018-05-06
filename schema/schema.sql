@@ -1,53 +1,6 @@
 DROP TABLE IF EXISTS ;
 
 CREATE TABLE  (
-	"id" 
-	SERIAL
-	 NOT NULL
-	,
-	
-	"visitor_id" 
-	INT
-	 NOT NULL
-	,
-	
-	"reaction_1" 
-	CHAR(1)
-	 NOT NULL
-	,
-	
-	"reaction_2" 
-	CHAR(1)
-	 NOT NULL
-	,
-	
-	"reaction_3" 
-	CHAR(1)
-	 NOT NULL
-	,
-	
-	"reaction_4" 
-	TEXT
-	 NOT NULL
-	,
-	
-	"created_at" 
-	TIMESTAMP
-	 NOT NULL
-	,
-	
-	PRIMARY KEY ("id")
-);
-
-
-DROP TABLE IF EXISTS ;
-
-CREATE TABLE  (
-	"id" 
-	SERIAL
-	 NOT NULL
-	,
-	
 	"title" 
 	VARCHAR(255)
 	 NOT NULL
@@ -120,11 +73,43 @@ CREATE TABLE  (
 DROP TABLE IF EXISTS ;
 
 CREATE TABLE  (
-	"id" 
-	SERIAL
+	"visitor_id" 
+	INT
 	 NOT NULL
 	,
 	
+	"reaction_1" 
+	CHAR(1)
+	 NOT NULL
+	,
+	
+	"reaction_2" 
+	CHAR(1)
+	 NOT NULL
+	,
+	
+	"reaction_3" 
+	CHAR(1)
+	 NOT NULL
+	,
+	
+	"reaction_4" 
+	TEXT
+	 NOT NULL
+	,
+	
+	"created_at" 
+	TIMESTAMP
+	 NOT NULL
+	,
+	
+	PRIMARY KEY ("id")
+);
+
+
+DROP TABLE IF EXISTS ;
+
+CREATE TABLE  (
 	"code" 
 	CHAR(6)
 	 NOT NULL
