@@ -1,6 +1,43 @@
 DROP TABLE IF EXISTS ;
 
 CREATE TABLE  (
+	"visitor_id" 
+	INT
+	 NOT NULL
+	,
+	
+	"reaction_1" 
+	CHAR(1)
+	 NOT NULL
+	,
+	
+	"reaction_2" 
+	CHAR(1)
+	 NOT NULL
+	,
+	
+	"reaction_3" 
+	CHAR(1)
+	 NOT NULL
+	,
+	
+	"reaction_4" 
+	TEXT
+	 NOT NULL
+	,
+	
+	"created_at" 
+	TIMESTAMP
+	 NOT NULL
+	,
+	
+	PRIMARY KEY ("id")
+);
+
+
+DROP TABLE IF EXISTS ;
+
+CREATE TABLE  (
 	"title" 
 	VARCHAR(255)
 	 NOT NULL
@@ -73,65 +110,18 @@ CREATE TABLE  (
 DROP TABLE IF EXISTS ;
 
 CREATE TABLE  (
-	"visitor_id" 
-	INT
-	 NOT NULL
-	,
-	
-	"reaction_1" 
-	CHAR(1)
-	 NOT NULL
-	,
-	
-	"reaction_2" 
-	CHAR(1)
-	 NOT NULL
-	,
-	
-	"reaction_3" 
-	CHAR(1)
-	 NOT NULL
-	,
-	
-	"reaction_4" 
-	TEXT
-	 NOT NULL
-	,
-	
-	"created_at" 
-	TIMESTAMP
-	 NOT NULL
-	,
-	
-	PRIMARY KEY ("id")
-);
-
-
-DROP TABLE IF EXISTS ;
-
-CREATE TABLE  (
-	"code" 
-	CHAR(6)
-	 NOT NULL
-	,
-	
 	"name" 
 	VARCHAR(255)
 	 NOT NULL
 	,
 	
-	"affiliation" 
-	VARCHAR(255)
+	"meetup_id" 
+	INT
 	 NOT NULL
 	,
 	
-	"email" 
+	"photo_link" 
 	VARCHAR(255)
-	 NOT NULL
-	,
-	
-	"level" 
-	CHAR(1)
 	 NOT NULL
 	,
 	

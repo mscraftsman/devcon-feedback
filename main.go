@@ -1,7 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"github.com/gorilla/mux"
+	"github.com/mscraftsman/devcon-feedback/app"
+)
 
 func main() {
-	fmt.Println("Hello World")
+	config := app.Bootstrap()
+	app.ServeHttp(config.HttpPort, func(router *mux.Router) error {
+		//routes registration goes here
+		return nil
+	})
 }

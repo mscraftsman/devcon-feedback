@@ -4,15 +4,11 @@ package visitor
 type Visitor struct {
 	ID *int64 `json:"id"`
 
-	Name *string `json:"code"`
-
 	Name *string `json:"name"`
 
-	Affiliation *string `json:"affiliation"`
+	MeetupID *int `json:"meetup_id"`
 
-	Email *string `json:"email"`
-
-	Level *String `json:"level"`
+	PhotoLink *string `json:"photo_link"`
 }
 
 // New returns an instance of Visitor
@@ -22,13 +18,9 @@ func New() *Visitor {
 
 	entity.Name = new(string)
 
-	entity.Name = new(string)
+	entity.MeetupID = new(int)
 
-	entity.Affiliation = new(string)
-
-	entity.Email = new(string)
-
-	entity.Level = new(String)
+	entity.PhotoLink = new(string)
 
 	return entity
 }

@@ -3,12 +3,26 @@
         "generate": true,
         "settings": [
             {
+                "name": "BaseURL",
+                "description": "Base URL of the webservice",
+                "public": true
+            },
+            {
                 "name": "MeetupKey",
                 "description": "Meetup.com API Key"
             },
             {
                 "name": "MeetupSecret",
                 "description": "Meetup.com API Secret"
+            },
+            {
+                "name": "MeetupRedirectURL",
+                "description": "Meetup.com Redirect URL",
+                "public": true
+            },
+            {
+                "name": "JWT_SECRET",
+                "description": "JWT Secret Signing Token"
             }
         ]
     },
@@ -61,7 +75,7 @@
         "prefix": "api"
     },
     "vuetify": {
-        "generate": true,
+        "generate": false,
         "module": "web"
 	},
 	"entities": [
@@ -148,18 +162,6 @@
             "description": "represents a conference visitor",
             "fields": [
                 {
-                    "label": "Code",
-                    "serialized": "code",
-                    "property": {
-                        "name": "Name",
-                        "type": "string"
-                    },
-                    "schema": {
-                        "field": "code",
-                        "type": "CHAR(6)"
-                    }
-                },
-                {
                     "label": "Name",
                     "serialized": "name",
                     "property": {
@@ -172,39 +174,27 @@
                     }
                 },
                 {
-                    "label": "Affiliation",
-                    "serialized": "affiliation",
+                    "label": "MeetupID",
+                    "serialized": "meetup_id",
                     "property": {
-                        "name": "Affiliation",
-                        "type": "string"
+                        "name": "MeetupID",
+                        "type": "int"
                     },
                     "schema": {
-                        "field": "affiliation",
-                        "type": "VARCHAR(255)"
+                        "field": "meetup_id",
+                        "type": "INT"
                     }
                 },
                 {
-                    "label": "",
-                    "serialized": "email",
+                    "label": "Photo",
+                    "serialized": "photo_link",
                     "property": {
-                        "name": "Email",
+                        "name": "PhotoLink",
                         "type": "string"
                     },
                     "schema": {
-                        "field": "email",
+                        "field": "photo_link",
                         "type": "VARCHAR(255)"
-                    }
-                },
-                {
-                    "label": "Level",
-                    "serialized": "level",
-                    "property": {
-                        "name": "Level",
-                        "type": "String"
-                    },
-                    "schema": {
-                        "field": "level",
-                        "type": "CHAR(1)"
                     }
                 }
             ]

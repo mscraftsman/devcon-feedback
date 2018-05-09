@@ -24,7 +24,7 @@ func Get(id int64) (*Visitor, error) {
 		return nil, fmt.Errorf("error executing crudPreGet() in Get(%d) for entity 'Visitor': %s", id, err)
 	}
 
-	rows, err := db.Query("SELECT t.code, t.name, t.affiliation, t.email, t.level FROM  t WHERE id = $1 ORDER BY t.id ASC", id)
+	rows, err := db.Query("SELECT t.name, t.meetup_id, t.photo_link FROM  t WHERE id = $1 ORDER BY t.id ASC", id)
 	if err != nil {
 		return nil, err
 	}
@@ -32,7 +32,7 @@ func Get(id int64) (*Visitor, error) {
 	defer rows.Close()
 	for rows.Next() {
 
-		err := rows.Scan(entity.Name, entity.Name, entity.Affiliation, entity.Email, entity.Level)
+		err := rows.Scan(entity.Name, entity.MeetupID, entity.PhotoLink)
 		if err != nil {
 			return nil, err
 		}
@@ -55,7 +55,7 @@ func List(filters []models.ListFilter) ([]*Visitor, error) {
 		err      error
 	)
 
-	query := "SELECT t.code, t.name, t.affiliation, t.email, t.level FROM "
+	query := "SELECT t.name, t.meetup_id, t.photo_link FROM "
 
 	if filters, err = crudPreList(filters); err != nil {
 		return nil, fmt.Errorf("error executing crudPreList() in List(filters) for entity 'Visitor': %s", err)
@@ -79,7 +79,7 @@ func List(filters []models.ListFilter) ([]*Visitor, error) {
 	defer rows.Close()
 	for rows.Next() {
 		entity := New()
-		err := rows.Scan(entity.Name, entity.Name, entity.Affiliation, entity.Email, entity.Level)
+		err := rows.Scan(entity.Name, entity.MeetupID, entity.PhotoLink)
 		if err != nil {
 			return nil, err
 		}
@@ -210,7 +210,7 @@ func (entity *Visitor) Insert(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("INSERT INTO  ($1, $2, $3, $4, $5) VALUES ($1, $2, $3, $4, $5) RETURNING id")
+	stmt, err := tx.Prepare("INSERT INTO  ($1, $2, $3) VALUES ($1, $2, $3) RETURNING id")
 	if err != nil {
 		return err
 	}
@@ -220,7 +220,7 @@ func (entity *Visitor) Insert(tx *sql.Tx, autocommit bool) error {
 		return fmt.Errorf("error executing crudPreCreate() in Visitor.Insert(): %s", err)
 	}
 
-	err = stmt.QueryRow(*entity.Name, *entity.Name, *entity.Affiliation, *entity.Email, *entity.Level).Scan(&id)
+	err = stmt.QueryRow(*entity.Name, *entity.MeetupID, *entity.PhotoLink).Scan(&id)
 	if err == nil {
 		entity.ID = &id
 	} else {
@@ -256,7 +256,7 @@ func (entity *Visitor) Update(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("UPDATE  SET code = $1, name = $2, affiliation = $3, email = $4, level = $5 WHERE id = $1")
+	stmt, err := tx.Prepare("UPDATE  SET name = $1, meetup_id = $2, photo_link = $3 WHERE id = $1")
 	if err != nil {
 		return err
 	}
@@ -266,7 +266,7 @@ func (entity *Visitor) Update(tx *sql.Tx, autocommit bool) error {
 		return fmt.Errorf("error executing crudPreUpdate() in Visitor.Update(): %s", err)
 	}
 
-	_, err = stmt.Exec(*entity.Name, *entity.Name, *entity.Affiliation, *entity.Email, *entity.Level)
+	_, err = stmt.Exec(*entity.Name, *entity.MeetupID, *entity.PhotoLink)
 	if err != nil {
 		tx.Rollback()
 		return fmt.Errorf("error executing transaction statement in Visitor.Update(): %s", err)
