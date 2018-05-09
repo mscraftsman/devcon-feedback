@@ -23,83 +23,103 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import moment from "moment";
+    import { mapActions, mapGetters } from "vuex";
+    import moment from "moment";
 
-export default {
-  methods: {
-    ...mapActions(["fetchSessions", "fetchSpeakers"]),
-    time: function(date) {
-      // console.log()
-      // return new Date(date).toDateString();
-      return moment(date).format("LT");
-    }
-  },
-  computed: {
-    ...mapGetters({
-      sessions: "getSessions"
-    })
-  },
-  mounted: function() {
-    this.fetchSessions();
-    this.fetchSpeakers();
-  },
-  components: {}
-};
+    export default {
+        methods: {
+            ...mapActions(["fetchSessions", "fetchSpeakers"]),
+            time: function(date) {
+                // console.log()
+                // return new Date(date).toDateString();
+                return moment(date).format("LT");
+            }
+        },
+        computed: {
+            ...mapGetters({
+                sessions: "getSessions"
+            })
+        },
+        mounted: function() {
+            this.fetchSessions();
+            this.fetchSpeakers();
+        },
+        components: {}
+    };
 </script>
 
 <style lang="scss" scoped>
-.dev-con-text {
-  color: white;
-  font-size: 60px;
-  padding: 30px 0;
-}
 
-.app-name {
-  color: white;
-  // font-size:
-  padding: 15vh 0;
-}
-
-.super-menu {
-  height: 100%;
-  width: 100%;
-  display: grid;
-  grid-template-rows: 1fr 100px 100px 100px;
-  grid-gap: 20px;
-  //   grid-template-areas:
-}
-
-.super-menu-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:nth-child(1) {
-    a {
-      //   background-image: url("../assets/schedule_1.jpg");
+    .page  {
+        background: linear-gradient(135deg, rgba(49,232,183, 0.9) 0%, rgba(40,71,217, 0.4) 50%), url('/assets/home-bg-2.jpg');
+        background-size: 100%, cover;
+        background-position: center center;
     }
-  }
-  &:nth-child(2) {
-    a {
-      //   background-image: url("../assets/duotone.jpg");
-      background: #31e8b7;
-      color: black;
-    }
-  }
 
-  a {
-    // height: 200px;
-    width: 80%;
-    // display: block;
-    padding: 30px 0;
-    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11),
-      0 5px 15px 0 rgba(0, 0, 0, 0.08);
-    background-size: cover;
-    text-decoration: none;
-    color: white;
-    border-radius: 5px;
-    background: #2847d9;
-  }
-}
+
+    .dev-con-text {
+        color: white;
+        font-size: 55px;
+        padding: 30px 0;
+        font-family: var(--font-glacial);
+        text-transform: uppercase;
+        padding: var(--gutter);
+    }
+
+    .app-name {
+        color: white;
+        // font-size:
+        padding: 15vh 0;
+    }
+
+    .super-menu {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-rows: 1fr 100px 100px 100px;
+        grid-gap: 20px;
+        //   grid-template-areas:
+    }
+
+    .super-menu-item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-shentox);
+        text-transform: uppercase;
+        font-weight: 800;
+
+        &:nth-child(1) {
+            a {
+                //   background-image: url("../assets/schedule_1.jpg");
+            }
+        }
+        &:nth-child(2) {
+            a {
+                //   background-image: url("../assets/duotone.jpg");
+                background: #31e8b7;
+                color: black;
+            }
+        }
+
+        a {
+            // height: 200px;
+            width: 80%;
+            // display: block;
+            padding: 30px 0;
+            box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.30),
+            0 5px 15px 0 rgba(0, 0, 0, 0.08);
+            background-size: cover;
+            text-decoration: none;
+            color: white;
+            border-radius: 5px;
+            background: #2847d9;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .dev-con-text {
+            font-size: 45px;
+        }
+    }
 </style>

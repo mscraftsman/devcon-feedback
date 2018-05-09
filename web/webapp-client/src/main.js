@@ -5,6 +5,8 @@ import store from "./store/index";
 import "./registerServiceWorker";
 import { Tabs, Tab } from "vue-tabs-component";
 
+import './assets/scss/main.scss'
+
 Vue.component("tabs", Tabs);
 Vue.component("tab", Tab);
 
