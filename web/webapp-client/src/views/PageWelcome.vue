@@ -1,25 +1,25 @@
 <template>
-    <div class="page">
-        <div class="super-menu">
-            <div class="dev-con-text">
-                Developers Conference 2018
-            </div>
-            <div class="super-menu-item">
-                <router-link :to="{ name: 'sessions' }">
-                    Schedule
-                </router-link>
-            </div>
-            <div class="super-menu-item">
+  <div class="page">
+    <div class="super-menu">
+      <div class="dev-con-text">
+        Developers Conference 2018
+      </div>
+      <div class="super-menu-item">
+        <router-link :to="{ name: 'sessions' }">
+          Schedule
+        </router-link>
+      </div>
+      <!-- <div class="super-menu-item">
                 <router-link :to="{ name: 'login' }">
                     Login
                 </router-link>
-            </div>
-        </div>
+            </div> -->
+    </div>
 
-        <!-- <router-link :to="{ name: 'login' }" class="btn">
+    <!-- <router-link :to="{ name: 'login' }" class="btn">
             ✅ Rate
         </router-link> -->
-    </div>
+  </div>
 </template>
 
 <script>
