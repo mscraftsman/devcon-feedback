@@ -21,7 +21,7 @@
                 "public": true
             },
             {
-                "name": "JWT_SECRET",
+                "name": "JWTSecret",
                 "description": "JWT Secret Signing Token"
             }
         ]

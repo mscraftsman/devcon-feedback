@@ -42,8 +42,8 @@ type Config struct {
 	// MeetupSecret Meetup.com API Secret
 	MeetupSecret string
 
-	// JWT_SECRET JWT Secret Signing Token
-	JWT_SECRET string
+	// JWTSecret JWT Secret Signing Token
+	JWTSecret string
 }
 
 // Boostrap loads environment variables and initializes the application
@@ -100,8 +100,8 @@ func Bootstrap() *Config {
 		log.Fatal("Environment variable MEETUP_SECRET (Meetup.com API Secret) must be defined.")
 	}
 
-	config.JWT_SECRET = os.Getenv("JWT_SECRET")
-	if config.JWT_SECRET == "" {
+	config.JWTSecret = os.Getenv("JWT_SECRET")
+	if config.JWTSecret == "" {
 		log.Fatal("Environment variable JWT_SECRET (JWT Secret Signing Token) must be defined.")
 	}
 
