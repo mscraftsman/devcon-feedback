@@ -25,7 +25,7 @@ func Get(id int64) (*Feedback, error) {
 		return nil, fmt.Errorf("error executing crudPreGet() in Get(%d) for entity 'Feedback': %s", id, err)
 	}
 
-	rows, err := db.Query("SELECT t.visitor_id, t.reaction_1, t.reaction_2, t.reaction_3, t.reaction_4, t.created_at FROM  t WHERE id = $1 ORDER BY t.id ASC", id)
+	rows, err := db.Query("SELECT t.visitor_id, t.reaction_1, t.reaction_2, t.reaction_3, t.reaction_4, t.created_at FROM feedbacks t WHERE id = $1 ORDER BY t.id ASC", id)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func List(filters []models.ListFilter) ([]*Feedback, error) {
 		err      error
 	)
 
-	query := "SELECT t.visitor_id, t.reaction_1, t.reaction_2, t.reaction_3, t.reaction_4, t.created_at FROM "
+	query := "SELECT t.visitor_id, t.reaction_1, t.reaction_2, t.reaction_3, t.reaction_4, t.created_at FROM feedbacks"
 
 	if filters, err = crudPreList(filters); err != nil {
 		return nil, fmt.Errorf("error executing crudPreList() in List(filters) for entity 'Feedback': %s", err)
@@ -109,7 +109,7 @@ func Delete(id int64, tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("DELETE FROM  WHERE id = $1")
+	stmt, err := tx.Prepare("DELETE FROM feedbacks WHERE id = $1")
 	if err != nil {
 		return err
 	}
@@ -155,7 +155,7 @@ func (entity *Feedback) Delete(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("DELETE FROM  WHERE id = $1")
+	stmt, err := tx.Prepare("DELETE FROM feedbacks WHERE id = $1")
 	if err != nil {
 		return err
 	}
@@ -212,7 +212,7 @@ func (entity *Feedback) Insert(tx *sql.Tx, autocommit bool) error {
 	}
 	*entity.CreatedAt = time.Now()
 
-	stmt, err := tx.Prepare("INSERT INTO  ($1, $2, $3, $4, $5, $6) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id")
+	stmt, err := tx.Prepare("INSERT INTO feedbacks ($1, $2, $3, $4, $5, $6) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id")
 	if err != nil {
 		return err
 	}
@@ -258,7 +258,7 @@ func (entity *Feedback) Update(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("UPDATE  SET visitor_id = $1, reaction_1 = $2, reaction_2 = $3, reaction_3 = $4, reaction_4 = $5, created_at = $6 WHERE id = $1")
+	stmt, err := tx.Prepare("UPDATE feedbacks SET visitor_id = $1, reaction_1 = $2, reaction_2 = $3, reaction_3 = $4, reaction_4 = $5, created_at = $6 WHERE id = $1")
 	if err != nil {
 		return err
 	}

@@ -24,7 +24,7 @@ func Get(id int64) (*Session, error) {
 		return nil, fmt.Errorf("error executing crudPreGet() in Get(%d) for entity 'Session': %s", id, err)
 	}
 
-	rows, err := db.Query("SELECT t.title, t.description, t.level, t.language, t.format, t.room, t.speakers, t.ratings_count, t.score, t.reaction_summary, t.start_at, t.end_at, t.status FROM  t WHERE id = $1 ORDER BY t.id ASC", id)
+	rows, err := db.Query("SELECT t.title, t.description, t.level, t.language, t.format, t.room, t.speakers, t.ratings_count, t.score, t.reaction_summary, t.start_at, t.end_at, t.status FROM sessions t WHERE id = $1 ORDER BY t.id ASC", id)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func List(filters []models.ListFilter) ([]*Session, error) {
 		err      error
 	)
 
-	query := "SELECT t.title, t.description, t.level, t.language, t.format, t.room, t.speakers, t.ratings_count, t.score, t.reaction_summary, t.start_at, t.end_at, t.status FROM "
+	query := "SELECT t.title, t.description, t.level, t.language, t.format, t.room, t.speakers, t.ratings_count, t.score, t.reaction_summary, t.start_at, t.end_at, t.status FROM sessions"
 
 	if filters, err = crudPreList(filters); err != nil {
 		return nil, fmt.Errorf("error executing crudPreList() in List(filters) for entity 'Session': %s", err)
@@ -108,7 +108,7 @@ func Delete(id int64, tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("DELETE FROM  WHERE id = $1")
+	stmt, err := tx.Prepare("DELETE FROM sessions WHERE id = $1")
 	if err != nil {
 		return err
 	}
@@ -154,7 +154,7 @@ func (entity *Session) Delete(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("DELETE FROM  WHERE id = $1")
+	stmt, err := tx.Prepare("DELETE FROM sessions WHERE id = $1")
 	if err != nil {
 		return err
 	}
@@ -210,7 +210,7 @@ func (entity *Session) Insert(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("INSERT INTO  ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id")
+	stmt, err := tx.Prepare("INSERT INTO sessions ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id")
 	if err != nil {
 		return err
 	}
@@ -256,7 +256,7 @@ func (entity *Session) Update(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("UPDATE  SET title = $1, description = $2, level = $3, language = $4, format = $5, room = $6, speakers = $7, ratings_count = $8, score = $9, reaction_summary = $10, start_at = $11, end_at = $12, status = $13 WHERE id = $1")
+	stmt, err := tx.Prepare("UPDATE sessions SET title = $1, description = $2, level = $3, language = $4, format = $5, room = $6, speakers = $7, ratings_count = $8, score = $9, reaction_summary = $10, start_at = $11, end_at = $12, status = $13 WHERE id = $1")
 	if err != nil {
 		return err
 	}

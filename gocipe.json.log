@@ -1,20 +1,20 @@
 [Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/filters.go
 [Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/app/http.go
-[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/feedback/feedback.go
 [Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/visitor/visitor.go
 [Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/app/bootstrap.go
-[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/session/session.go
 [Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/.env.dist
+[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/feedback/feedback.go
+[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/session/session.go
+[Skip] skipping existing file [GenerateRESTHooks] models/session/session_rest_hooks.go
+[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/session/session_rest.go
 [Skip] skipping existing file [GenerateRESTHooks] models/feedback/feedback_rest_hooks.go
 [Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/feedback/feedback_rest.go
+[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/visitor/visitor_crud.go
+[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/feedback/feedback_crud.go
+[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/session/session_crud.go
+[Skip] skipping existing file [GenerateCRUDHooks] models/visitor/visitor_crud_hooks.go
 [Skip] skipping existing file [GenerateRESTHooks] models/visitor/visitor_rest_hooks.go
 [Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/visitor/visitor_rest.go
-[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/feedback/feedback_crud.go
-[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/visitor/visitor_crud.go
 [Skip] skipping existing file [GenerateCRUDHooks] models/feedback/feedback_crud_hooks.go
-[Skip] skipping existing file [GenerateCRUDHooks] models/visitor/visitor_crud_hooks.go
-[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/session/session_crud.go
-[Skip] skipping existing file [GenerateRESTHooks] models/session/session_rest_hooks.go
 [Skip] skipping existing file [GenerateCRUDHooks] models/session/session_crud_hooks.go
-[Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/models/session/session_rest.go
 [Wrote] /home/fx/go/src/github.com/mscraftsman/devcon-feedback/schema/schema.sql

@@ -81,6 +81,7 @@
 	"entities": [
 		{
             "name": "Feedback",
+            "table": "feedbacks",
             "description": "represents feedback from a visitor on a session",
             "fields": [
                 {
@@ -159,6 +160,7 @@
         },
         {
             "name": "Visitor",
+            "table": "visitors",
             "description": "represents a conference visitor",
             "fields": [
                 {
@@ -201,6 +203,7 @@
         },
         {
             "name": "Session",
+            "table": "sessions",
             "description": "represents a conference session",
             "fields": [
                 {

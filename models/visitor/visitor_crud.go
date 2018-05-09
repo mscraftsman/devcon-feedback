@@ -24,7 +24,7 @@ func Get(id int64) (*Visitor, error) {
 		return nil, fmt.Errorf("error executing crudPreGet() in Get(%d) for entity 'Visitor': %s", id, err)
 	}
 
-	rows, err := db.Query("SELECT t.name, t.meetup_id, t.photo_link FROM  t WHERE id = $1 ORDER BY t.id ASC", id)
+	rows, err := db.Query("SELECT t.name, t.meetup_id, t.photo_link FROM visitors t WHERE id = $1 ORDER BY t.id ASC", id)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func List(filters []models.ListFilter) ([]*Visitor, error) {
 		err      error
 	)
 
-	query := "SELECT t.name, t.meetup_id, t.photo_link FROM "
+	query := "SELECT t.name, t.meetup_id, t.photo_link FROM visitors"
 
 	if filters, err = crudPreList(filters); err != nil {
 		return nil, fmt.Errorf("error executing crudPreList() in List(filters) for entity 'Visitor': %s", err)
@@ -108,7 +108,7 @@ func Delete(id int64, tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("DELETE FROM  WHERE id = $1")
+	stmt, err := tx.Prepare("DELETE FROM visitors WHERE id = $1")
 	if err != nil {
 		return err
 	}
@@ -154,7 +154,7 @@ func (entity *Visitor) Delete(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("DELETE FROM  WHERE id = $1")
+	stmt, err := tx.Prepare("DELETE FROM visitors WHERE id = $1")
 	if err != nil {
 		return err
 	}
@@ -210,7 +210,7 @@ func (entity *Visitor) Insert(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("INSERT INTO  ($1, $2, $3) VALUES ($1, $2, $3) RETURNING id")
+	stmt, err := tx.Prepare("INSERT INTO visitors ($1, $2, $3) VALUES ($1, $2, $3) RETURNING id")
 	if err != nil {
 		return err
 	}
@@ -256,7 +256,7 @@ func (entity *Visitor) Update(tx *sql.Tx, autocommit bool) error {
 		}
 	}
 
-	stmt, err := tx.Prepare("UPDATE  SET name = $1, meetup_id = $2, photo_link = $3 WHERE id = $1")
+	stmt, err := tx.Prepare("UPDATE visitors SET name = $1, meetup_id = $2, photo_link = $3 WHERE id = $1")
 	if err != nil {
 		return err
 	}
