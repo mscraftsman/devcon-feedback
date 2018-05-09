@@ -21,6 +21,8 @@ const state = {
     "Remarks for speaker or organisation?"
   ],
   sessions: [],
+  sessionsFlat: [],
+  speakers: [],
   viewingSession: null,
   sessionCurrent: {
     id: 0,
@@ -57,7 +59,16 @@ const mutations = {
     state.sessionCurrent.questionCurrent++;
   },
   UPDATE_SESSIONS(state, payload) {
+    let sessionsFlat = payload.data
+      .map(groups => groups.sessions)
+      .reduce(function(acc, curr) {
+        return [...acc, ...curr];
+      }, []);
     state.sessions = payload.data;
+    state.sessionsFlat = sessionsFlat;
+  },
+  UPDATE_SPEAKERS(state, payload) {
+    state.speakers = payload.data;
   },
   ERROR_LOG_ADD(state, payload) {
     let error = {
@@ -89,9 +100,16 @@ const getters = {
   getSessions(state) {
     return state.sessions;
   },
+  getSessionsFlat(state) {
+    return state.sessions;
+  },
   getSessionDetail(state) {
     return;
   },
+  getSpeakers(state) {
+    return state.speakers;
+  },
+  getSpeaker(state, id) {},
   getErrors(state) {
     return state.error.log;
   }
@@ -111,6 +129,18 @@ const actions = {
       .then(function(response) {
         // console.log(response);
         commit("UPDATE_SESSIONS", response);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+  fetchSpeakers({ commit, state }) {
+    let url = "https://sessionize.com/api/v2/m1l86vhf/view/Speakers";
+    axios
+      .get(url)
+      .then(function(response) {
+        console.log(response);
+        commit("UPDATE_SPEAKERS", response);
       })
       .catch(function(error) {
         console.log(error);
