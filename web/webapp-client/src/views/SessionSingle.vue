@@ -77,8 +77,6 @@ export default {
       if (this.speakers.length === 0) {
         this.fetchSpeakers();
       }
-      console.log(id);
-      console.log(this.speakers);
       let theSpeaker = this.speakers.filter(speaker => speaker.id === id);
       if (theSpeaker.length > 0) {
         return theSpeaker[0].profilePicture;
