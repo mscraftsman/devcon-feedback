@@ -207,7 +207,7 @@
                 grid-template-areas:
                         "title  time"
                         "author time" ;
-                grid-template-columns: 1fr 0.3fr;
+                grid-template-columns: 1fr 0.25fr;
                 grid-auto-rows: auto;
                 grid-column-gap: 10px;
 
@@ -269,6 +269,10 @@
                 a {
                     grid-template-areas: "time" "title" "author";
                     grid-template-columns: 1fr;
+
+                    .date-time {
+                        justify-content: flex-start;
+                    }
                 }
             }
         }
