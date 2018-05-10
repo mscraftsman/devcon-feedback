@@ -14,7 +14,8 @@
         </div>
         <div class="super-menu-item">
           <router-link :to="{ name: '' }">
-            Login (coming soon)
+            Login
+            <span>(coming soon)</span>
           </router-link>
         </div>
       </div>
@@ -129,7 +130,7 @@ export default {
 
 @media screen and (max-width: 600px) {
   .buttons-wrapper {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }
 
@@ -141,6 +142,10 @@ export default {
   text-transform: uppercase;
   font-weight: 800;
   // max-width: 250px;
+
+  span {
+    font-size: 10px;
+  }
 
   &:nth-child(1) {
     a {
@@ -175,7 +180,7 @@ export default {
 
 @media (max-width: 480px) {
   .dev-con-text {
-    font-size: 45px;
+    font-size: 30px;
   }
 }
 </style>

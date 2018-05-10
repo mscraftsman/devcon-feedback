@@ -1,9 +1,9 @@
 <template>
     <div class="page page-session">
-
         <div class="page-content" v-if="session">
             <!-- <span>{{id}}</span> -->
             <div class="session-title">{{session.title}}</div>
+
             <div class="speakers-wrapper" v-if="session.speakers">
                 <div class="speaker-wrapper" v-for="speaker in session.speakers" :key="speaker.id">
                     <div class="avatar"><img :src="getSpeaker(speaker.id)" alt=""></div>
@@ -13,39 +13,54 @@
 
             <div class="descriptions-row">
                 <div class="des-wrap" v-if="session.format">
-                    <label>Format</label>
+                    <label>
+                        <img src="../assets/icons/language.svg" alt="">
+                    </label>
                     <p>{{ session.format }}</p>
                 </div>
 
                 <div class="des-wrap" v-if="session.language">
-                    <label>Language</label>
+                    <label>
+                        <img src="../assets/icons/language.svg" alt="">
+                    </label>
                     <p>{{ session.language }}</p>
                 </div>
 
                 <div class="des-wrap">
-                    <label>Room</label>
+                    <label>
+                        <img src="../assets/icons/location.svg" alt="">
+                    </label>
                     <p>{{ session.room }}</p>
                 </div>
 
                 <div class="des-wrap">
-                    <label>Starts at</label>
+                    <label>
+                        <img src="../assets/icons/time.svg" alt="">
+                    </label>
                     <p>{{ time(session.startsAt) + getDay(session.startsAt) }} - {{ time(session.endsAt) }}</p>
                 </div>
 
                 <div class="des-wrap" v-if="session.level">
-                    <label>Level</label>
+                    <label>
+                        <img src="../assets/icons/level.svg" alt="">
+                    </label>
                     <p>{{ session.level }}</p>
                 </div>
             </div>
 
-            <div class="des-wrap full">
-                <label>Description</label>
+            <div class="description-text">
                 <p>{{ session.description }}</p>
             </div>
 
-            <router-link :to="{ name: 'sessions' }" class="btn small">
-                Back
-            </router-link>
+            <div class="button-wrappers">
+                <router-link :to="{ name: 'sessions' }" class="btn small back">
+                    Back
+                </router-link>
+
+                <router-link :to="{ name: 'feedback',  params: { id: id }}" class="btn small rate">
+                    Rate
+                </router-link>
+            </div>
 
         </div>
         <div class="page-content" v-else>
@@ -116,9 +131,7 @@
 <style lang="scss" scoped>
     .page-session {
         display: grid;
-        grid-template-areas:
-                "session session"
-                "footer footer";
+        grid-template-areas: "session session" "footer footer";
         grid-template-columns: 100px 1fr;
         grid-template-rows: 1fr 10vh;
         max-width: 900px;
@@ -130,7 +143,7 @@
     .page-content {
         grid-area: session;
         background: white;
-        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .session-title {
@@ -140,7 +153,7 @@
         font-size: 40px;
         font-weight: 700;
         margin: 0 auto;
-        padding: 20px 10px;
+        padding: 30px 10px;
         text-align: center;
     }
 
@@ -148,6 +161,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: 20px;
 
         .speaker-wrapper {
             --width: 70px;
@@ -198,11 +212,24 @@
         display: flex;
         align-items: center;
         font-size: 14px;
-        padding: 10px 0;
+        padding: 10px;
 
         .des-wrap {
-            min-width: 33.3%;
+            min-width: 20%;
+            margin-right: 10px;
+            color: white;
+            font-family: var(--font-glacial);
+            text-transform: uppercase;
             display: flex;
+            align-items: center;
+
+            label {
+                margin-right: 10px;
+
+                img {
+                    width: 20px;
+                }
+            }
 
             p {
                 margin: 0;
@@ -211,10 +238,37 @@
 
     }
 
+    .description-text {
+        padding: 10px;
+
+        p {
+            font-family: var(--font-glacial);
+            font-size: 18px;
+            line-height: 25px;
+            font-weight: 300;
+        }
+    }
+
+    .button-wrappers {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+
+        .back {
+            grid-column: 1 / 2;
+        }
+
+        .rate {
+            grid-column: 2 / 3;
+        }
+    }
+
     .footer {
         grid-area: footer;
         color: black;
-
+        text-transform: uppercase;
+        font-family: var(--font-shentox);
+        color: white;
         text-align: center;
         font-size: 13px;
         align-self: center;
