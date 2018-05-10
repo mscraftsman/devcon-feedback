@@ -4,16 +4,14 @@
     <div class="page-content" v-if="session">
       <!-- <span>{{id}}</span> -->
       <div class="session-title">{{session.title}}</div>
+      <div class="speakers-wrapper" v-if="session.speakers">
+        <div class="speaker-wrapper" v-for="speaker in session.speakers" :key="speaker.id">
+          <div class="avatar"><img :src="getSpeaker(speaker.id)" alt=""></div>
+          <p class="name">{{ speaker.name }}</p>
+        </div>
+      </div>
 
       <div class="descriptions">
-        <div class="des-wrap" v-if="session.speakers">
-          <label>Speaker(s)</label>
-          <div class="speaker-wrapper" v-for="speaker in session.speakers" :key="speaker.id">
-            <div class="avatar"><img :src="getSpeaker(speaker.id)" alt=""></div>
-            <p>{{ speaker.name }}</p>
-          </div>
-        </div>
-
         <div class="des-wrap" v-if="session.format">
           <label>Format</label>
           <p>{{ session.format }}</p>
@@ -31,23 +29,18 @@
 
         <div class="des-wrap">
           <label>Starts at</label>
-          <p>{{ time(session.startsAt) + getDay(session.startsAt) }}</p>
-        </div>
-
-        <div class="des-wrap">
-          <label>Ends at</label>
-          <p>{{ time(session.endsAt) }}</p>
+          <p>{{ time(session.startsAt) + getDay(session.startsAt) }} - {{ time(session.endsAt) }}</p>
         </div>
 
         <div class="des-wrap" v-if="session.level">
           <label>Level</label>
           <p>{{ session.level }}</p>
         </div>
+      </div>
 
-        <div class="des-wrap full">
-          <label>Description</label>
-          <p>{{ session.description }}</p>
-        </div>
+      <div class="des-wrap full">
+        <label>Description</label>
+        <p>{{ session.description }}</p>
       </div>
 
       <router-link :to="{ name: 'sessions' }" class="btn small">
@@ -130,45 +123,77 @@ export default {
     "footer footer";
   grid-template-columns: 100px 1fr;
   grid-template-rows: 1fr 10vh;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  margin-top: 50px;
 }
 
 .page-content {
   grid-area: session;
-  background: #333;
+  background: white;
+  padding: 20px;
 }
 
 .session-title {
-  color: white;
+  color: #333333;
+  text-transform: uppercase;
+  font-family: var(--font-glacial);
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0 auto;
   padding: 20px 10px;
+  text-align: center;
 }
 
-.speaker-wrapper {
-  --width: 100px;
-  display: grid;
-  grid-template-areas: "avatar name";
-  grid-template-columns: var(--width) 1fr;
+.speakers-wrapper {
+  display: flex;
   align-items: center;
-  grid-gap: 10px;
-  margin-bottom: 10px;
+  justify-content: center;
 
-  .avatar {
-    grid-area: avatar;
-    width: var(--width);
-    height: var(--width);
-    border-radius: var(--width);
-    overflow: hidden;
-    img {
-      width: 100%;
-      height: 100%;
-      display: block;
+  .speaker-wrapper {
+    --width: 70px;
+    display: grid;
+    width: 200px;
+    grid-template-areas: "avatar name";
+    grid-template-columns: var(--width) 1fr;
+    align-items: center;
+    grid-gap: 10px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    font-family: var(--font-shentox);
+    font-weight: 500;
+    text-transform: uppercase;
+
+    .avatar {
+      grid-area: avatar;
+      width: var(--width);
+      height: var(--width);
+      border-radius: var(--width);
+      box-shadow: 0 0 20px rgba(0,0,0,.1);
+      overflow: hidden;
+
+      img {
+        width: var(--width);
+        height: var(--width);
+        border-radius: var(--width);
+        display: block;
+        object-position: 50% 50%;
+        object-fit: cover;
+      }
+    }
+
+    p {
+      grid-area: name;
+      text-align: left;
+      font-size: 15px;
+      color: var(--color-blue);
+      font-weight: 700;
     }
   }
 
-  p {
-    grid-area: name;
-    text-align: center;
-  }
 }
+
 
 .descriptions {
   padding: 0 30px 30px;
@@ -176,6 +201,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-row-gap: 20px;
+  color: black;
 
   .full {
     grid-column: 1 / -1;
@@ -183,21 +209,22 @@ export default {
   label {
     text-transform: uppercase;
     font-size: 12px;
-    color: white;
     border-bottom: 2px solid white;
     margin-bottom: 10px;
+    color: black;
   }
   p {
     margin: 0;
     font-size: 20px;
     // color: #222;
-    color: white;
+    color: black;
   }
 }
 
 .footer {
   grid-area: footer;
-  color: white;
+  color: black;
+
   text-align: center;
   font-size: 13px;
   align-self: center;
