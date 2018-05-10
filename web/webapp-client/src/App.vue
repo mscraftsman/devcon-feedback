@@ -54,6 +54,14 @@ body,
   transform: translateX(-30%);
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 .btn {
   --size: 50px;
   height: var(--size);
@@ -80,6 +88,14 @@ body {
   font-size: 2rem;
   font-family: "Nunito", -apple-system, BlinkMacSystemFont, "avenir next",
     avenir, helvetica, "helvetica neue", Ubuntu, "segoe ui", arial, sans-serif;
+  background: linear-gradient(
+      135deg,
+      rgba(49, 232, 183, 1) 0%,
+      rgba(40, 71, 217, 0.8) 70%
+    ),
+    url("./assets/home-bg-2.jpg");
+  background-size: 100%, cover;
+  background-position: center center;
 }
 
 .page {
@@ -92,7 +108,7 @@ body {
     border-radius: 2px;
   }
 
-  max-width: 800px;
+  // max-width: 800px;
   width: 100%;
   margin: 0 auto;
 }
@@ -100,31 +116,34 @@ body {
 #app {
   // background: linear-gradient(166deg, #31e8b7 0%, #2847d9 100%);
   // background: linear-gradient(166deg, #333 0%, #31e8b7 100%);
-  background: #333;
 
   display: grid;
   grid-template-areas:
     "header"
     "page";
-  grid-template-rows: 10vh 90vh;
+  grid-template-rows: 33px calc(100vh - 33px);
 }
 
 .header {
   grid-area: header;
   display: grid;
+  background: #333;
+
   grid-template-areas: "logo userinfo";
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 1fr;
+  // justify-items: center;
 
   .logo-wrapper {
     height: 100%;
+
     a {
       display: block;
       height: 100%;
     }
     img {
-      padding: 15px;
+      padding: 5px 15px;
       display: block;
-      height: 10vh;
+      height: 33px;
       width: auto;
       box-sizing: border-box;
     }

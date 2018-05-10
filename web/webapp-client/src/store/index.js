@@ -139,7 +139,6 @@ const actions = {
     axios
       .get(url)
       .then(function(response) {
-        console.log(response);
         commit("UPDATE_SPEAKERS", response);
       })
       .catch(function(error) {

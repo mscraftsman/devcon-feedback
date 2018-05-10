@@ -4,7 +4,8 @@ import Router from "vue-router";
 import Welcome from "../views/PageWelcome.vue";
 import Login from "../views/PageLogin.vue";
 import Feedback from "../views/PageFeedback.vue";
-import Sessions from "../views/PageSessions.vue";
+// import Sessions from "../views/PageSessions.vue";
+import Sessions from "../views/SessionsPage.vue";
 import SessionSingle from "../views/SessionSingle.vue";
 
 Vue.use(Router);
