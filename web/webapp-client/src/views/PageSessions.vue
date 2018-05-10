@@ -6,7 +6,7 @@
         <div class="session-panes" v-for="session in group.sessions" :key="session.id">
           <router-link :to="{ name: 'session',  params: { id: session.id }}">
             <div class="date-time">{{ time(session.startsAt) }} - {{ time(session.endsAt) }}</div>
-            <div class="session-title">{{ session.title }} {{ session.id }}</div>
+            <div class="session-title">{{ session.title }}</div>
             <div class="session-author">{{ session.speakers[0].name }} - {{ session.room }}</div>
           </router-link>
         </div>
@@ -66,16 +66,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-  * {
-    box-sizing: border-box;
-  }
+* {
+  box-sizing: border-box;
+}
 
 .page-session {
   // display: grid;
   // grid-template-areas: "page";
   // grid-template-rows: 90vh;
-  background: rgba(0,0,0,.05);
+  background: rgba(0, 0, 0, 0.05);
 
   .tabs-container {
     height: 100%;
@@ -87,7 +86,11 @@ export default {
     .tabs-list {
       text-transform: uppercase;
       border-bottom: 0;
-      background: linear-gradient(135deg, rgba(49,232,183, 1) 0%, rgba(40,71,217, 1) 70%);
+      background: linear-gradient(
+        135deg,
+        rgba(49, 232, 183, 1) 0%,
+        rgba(40, 71, 217, 1) 70%
+      );
 
       .tabs-title {
         background: transparent;
@@ -116,7 +119,6 @@ export default {
             padding: 15px 0;
           }
         }
-
       }
     }
   }
@@ -169,19 +171,18 @@ ul.tabs-list {
   align-self: center;
 }
 
-  @media (max-width: 480px) {
-    .page-session {
-      .tabs-container {
-        .tabs-list {
-          .tabs-title {
-            a {
-              font-size: 20px;
-            }
+@media (max-width: 480px) {
+  .page-session {
+    .tabs-container {
+      .tabs-list {
+        .tabs-title {
+          a {
+            font-size: 20px;
           }
         }
       }
     }
   }
-
+}
 </style>
 
