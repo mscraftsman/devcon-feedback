@@ -65,25 +65,58 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
+  * {
+    box-sizing: border-box;
+  }
+
 .page-session {
   // display: grid;
   // grid-template-areas: "page";
   // grid-template-rows: 90vh;
-  background: white;
+  background: rgba(0,0,0,.05);
 
   .tabs-container {
     height: 100%;
     display: grid;
-    grid-template-rows: 33px 1fr;
+    grid-template-rows: 50px 1fr;
+    font-family: var(--font-glacial);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 
     .tabs-list {
+      text-transform: uppercase;
+      border-bottom: 0;
+      background: linear-gradient(135deg, rgba(49,232,183, 1) 0%, rgba(40,71,217, 1) 70%);
+
+      .tabs-title {
+        background: transparent;
+        border: 0;
+
+        a {
+          font-size: 30px;
+          color: var(--color-white);
+          font-family: var(--font-shentox);
+          padding: 0;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
     }
 
     .tabContent-wrap {
       .tabs-panel-content {
         height: 100%;
         overflow-y: scroll;
+
+        .session-panes {
+          a {
+            padding: 15px 0;
+          }
+        }
+
       }
     }
   }
@@ -135,5 +168,20 @@ ul.tabs-list {
   font-size: 13px;
   align-self: center;
 }
+
+  @media (max-width: 480px) {
+    .page-session {
+      .tabs-container {
+        .tabs-list {
+          .tabs-title {
+            a {
+              font-size: 20px;
+            }
+          }
+        }
+      }
+    }
+  }
+
 </style>
 

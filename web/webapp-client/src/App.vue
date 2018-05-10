@@ -113,10 +113,12 @@ body {
   grid-area: header;
   display: grid;
   grid-template-areas: "logo userinfo";
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 1fr;
+  justify-items: center;
 
   .logo-wrapper {
     height: 100%;
+
     a {
       display: block;
       height: 100%;
