@@ -54,6 +54,10 @@
         Back
       </router-link>
 
+      <router-link :to="{ name: 'feedback',  params: { id: id }}" class="btn small">
+        Rate
+      </router-link>
+
     </div>
     <div class="page-content" v-else>
       calling Ish..

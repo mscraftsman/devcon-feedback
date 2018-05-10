@@ -14,7 +14,8 @@
         </div>
         <div class="super-menu-item">
           <router-link :to="{ name: '' }">
-            Login (coming soon)
+            Login
+            <span>(coming soon)</span>
           </router-link>
         </div>
       </div>
@@ -141,6 +142,10 @@ export default {
   text-transform: uppercase;
   font-weight: 800;
   // max-width: 250px;
+
+  span {
+    font-size: 10px;
+  }
 
   &:nth-child(1) {
     a {

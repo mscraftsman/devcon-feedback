@@ -1,53 +1,53 @@
 <template>
-    <div class="page page-feedback">
-        <div class="logo-wrapper">
-            <router-link :to="{ name: 'welcome' }">
-                <img src="mscc-logo.png" alt="">
-            </router-link>
-        </div>
-        <div class="user-info">
-            <span class="title">Logged in as</span>
-            <span>{{ getName }}</span>
-            <span class="title">currently rating</span>
-            <span>{{ getSessionCurrent.questionCurrent }}</span>
-        </div>
-
-        <div class="questions-wrapper">
-            <div class="virer-mam">
-                <div class="devirer-mam">
-                    <transition name="slide-fade" v-for="(question, index) in getQuestionText" :key="index">
-                        <div class="question-holder" v-show="getSessionCurrent.questionCurrent == index">
-                            <div class="question">{{ question }}</div>
-                            <div v-if="index === 0" class="comment-wrapper">
-                                <div class="reaction-wrapper">
-                                    <Reactions />
-                                </div>
-                            </div>
-                            <div v-if="index === 1" class="comment-wrapper">
-                                <div class="reaction-wrapper">
-                                    <Reactions />
-                                </div>
-                            </div>
-                            <div v-else-if="index === 2" class="comment-wrapper">
-                                <div class="reaction-wrapper">
-                                    <Reactions type="yesno" />
-                                </div>
-                            </div>
-                            <div v-else-if="index === 3" class="comment-wrapper">
-                                <textarea class="textbox" placeholder="We would be grateful if you could leave some constructive critism."></textarea>
-                            </div>
-                        </div>
-                    </transition>
-                    <div class="button-next" @click="$store.commit('NEXT_QUESTION')">Next</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer">
-            Developer Conference 2018
-        </div>
-
+  <div class="page page-feedback">
+    <div class="logo-wrapper">
+      <router-link :to="{ name: 'welcome' }">
+        <img src="mscc-logo.png" alt="">
+      </router-link>
     </div>
+    <div class="user-info">
+      <span class="title">Logged in as</span>
+      <span>{{ getName }}</span>
+      <span class="title">currently rating x {{ id }} x</span>
+      <span>{{ getSessionCurrent.questionCurrent }}</span>
+    </div>
+
+    <div class="questions-wrapper">
+      <div class="virer-mam">
+        <div class="devirer-mam">
+          <transition name="slide-fade" v-for="(question, index) in getQuestionText" :key="index">
+            <div class="question-holder" v-show="getSessionCurrent.questionCurrent == index">
+              <div class="question">{{ question }}</div>
+              <div v-if="index === 0" class="comment-wrapper">
+                <div class="reaction-wrapper">
+                  <Reactions />
+                </div>
+              </div>
+              <div v-if="index === 1" class="comment-wrapper">
+                <div class="reaction-wrapper">
+                  <Reactions />
+                </div>
+              </div>
+              <div v-else-if="index === 2" class="comment-wrapper">
+                <div class="reaction-wrapper">
+                  <Reactions type="yesno" />
+                </div>
+              </div>
+              <div v-else-if="index === 3" class="comment-wrapper">
+                <textarea class="textbox" placeholder="We would be grateful if you could leave some constructive critism."></textarea>
+              </div>
+            </div>
+          </transition>
+          <div class="button-next" @click="$store.commit('NEXT_QUESTION')">Next</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Developer Conference 2018
+    </div>
+
+  </div>
 </template>
 
 <script>
@@ -55,6 +55,7 @@ import Reactions from "../components/Reactions";
 import { mapGetters } from "vuex";
 
 export default {
+  props: ["id"],
   methods: {
     next: function() {
       console.log("next");

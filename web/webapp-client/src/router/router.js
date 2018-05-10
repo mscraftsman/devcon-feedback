@@ -35,7 +35,7 @@ export default new Router({
       component: SessionSingle
     },
     {
-      path: "/feedback",
+      path: "/feedback/:id",
       name: "feedback",
       component: Feedback
     }
