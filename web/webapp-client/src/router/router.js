@@ -36,6 +36,7 @@ export default new Router({
     },
     {
       path: "/feedback/:id",
+      props: true,
       name: "feedback",
       component: Feedback
     }

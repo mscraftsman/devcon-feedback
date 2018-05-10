@@ -130,7 +130,7 @@ export default {
 
 @media screen and (max-width: 600px) {
   .buttons-wrapper {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 }
 
@@ -180,7 +180,7 @@ export default {
 
 @media (max-width: 480px) {
   .dev-con-text {
-    font-size: 45px;
+    font-size: 30px;
   }
 }
 </style>
