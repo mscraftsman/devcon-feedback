@@ -2,7 +2,8 @@
     <div class="page">
         <div class="super-menu">
             <div class="dev-con-text">
-                Developers Conference 2018
+                <div class="text">Developers Conference</div>
+                <div class="year">2018</div>
             </div>
             <div class="super-menu-item">
                 <router-link :to="{ name: 'sessions' }">
@@ -51,19 +52,42 @@
 <style lang="scss" scoped>
 
     .page  {
-        background: linear-gradient(135deg, rgba(49,232,183, 0.9) 0%, rgba(40,71,217, 0.4) 50%), url('/assets/home-bg-2.jpg');
+        background: linear-gradient(135deg, rgba(49,232,183, 1) 0%, rgba(40,71,217, 0.5) 70%), url('../assets/home-bg-2.jpg');
         background-size: 100%, cover;
         background-position: center center;
     }
 
-
     .dev-con-text {
         color: white;
-        font-size: 55px;
+        font-size: 56px;
         padding: 30px 0;
-        font-family: var(--font-glacial);
+        font-family: var(--font-shentox);
+        font-weight: 700;
         text-transform: uppercase;
         padding: var(--gutter);
+        display: flex;
+        align-items: center;
+        align-content: center;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .year {
+            display: block;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-shentox);
+            text-transform: uppercase;
+            color: var(--color-white);
+            font-size: 44px;
+            padding: calc(var(--gutter) / 1.5);
+            height: 40px;
+            line-height: 45px;
+            font-weight: 700;
+            background: linear-gradient(135deg,#31e8b7,#2847d9);
+            border-radius: 5px;
+            -webkit-box-shadow: 0 10px 50px rgba(0,0,0,.2);
+            box-shadow: 0 10px 50px rgba(0,0,0,.2);
+        }
     }
 
     .app-name {
