@@ -1,13 +1,17 @@
 <template>
   <div class="page-all-sessions">
     <div class="tabs-container">
-      <div class="tab-items">
-        <router-link :to="{ name: 'welcome' }">
-          🔙
-        </router-link>
+      <div class="left-wrapper">
+        <div class="back">
+          <router-link :to="{ name: 'welcome' }">
+            <img src="../assets/back.svg" alt="">
+          </router-link>
+        </div>
       </div>
-      <div class="tab-items" :class="{active : getDay(group.groupName) === active}" @click="active = getDay(group.groupName)" v-for="group in sessions" :key="group.groupId" :label="getDay(group.groupName)">
-        {{getDay(group.groupName)}}
+      <div class="right-wrapper">
+        <div class="tab-items" :class="{active : getDay(group.groupName) === active}" @click="active = getDay(group.groupName)" v-for="group in sessions" :key="group.groupId" :label="getDay(group.groupName)">
+          {{getDay(group.groupName)}}
+        </div>
       </div>
     </div>
     <div class="tabs-content">
@@ -90,7 +94,7 @@ export default {
 }
 .page-all-sessions {
   display: grid;
-  grid-template-rows: 50px calc(100vh - 50px - 33px);
+  grid-template-rows: 60px calc(100vh - 50px - 33px);
 }
 
 .tabs-container,
@@ -102,18 +106,51 @@ export default {
 }
 .tabs-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   background: white;
 
-  .tab-items {
-    font-size: 18px;
-    height: 50px;
-    text-transform: uppercase;
-    box-sizing: border-box;
-    cursor: pointer;
+  .left-wrapper {
+    width: 40%;
+    height: 60px;
+    display: flex;
+    align-items: center;
 
-    &.active {
-      border-bottom: 3px solid red;
+    .back {
+      a {
+        color: var(--color-white);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-blue);
+        height: 40px;
+        width: 40px;
+        border-radius: 50px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+        img {
+          height: 20px;
+          padding-right: 5px;
+        }
+      }
+    }
+  }
+
+  .right-wrapper {
+    width: 60%;
+    display: flex;
+
+    .tab-items {
+      font-size: 18px;
+      height: 60px;
+      text-transform: uppercase;
+      box-sizing: border-box;
+      cursor: pointer;
+      width: 33.3%;
+
+      &.active {
+        border-bottom: 5px solid var(--color-blue);
+      }
     }
   }
 }
@@ -124,6 +161,7 @@ export default {
     color: white;
     height: 100%;
     overflow-y: scroll;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -156,7 +194,7 @@ export default {
 
 .tabs-panel-content {
   background: var(--color-white);
-  padding: 0 10px;
+  padding: 10px 20px;
   font-family: var(--font-glacial);
 
   .session-panes {
@@ -201,6 +239,33 @@ export default {
       color: #333;
       text-transform: uppercase;
       font-weight: 300;
+    }
+  }
+}
+
+
+
+@media (max-width: 1000px) {
+  .tabs-container {
+    .left-wrapper {
+      padding-left: 10px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .tabs-panel-content {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tabs-container {
+    .left-wrapper {
+      width: 20%;
+    }
+    .right-wrapper {
+      width: 80%;
     }
   }
 }

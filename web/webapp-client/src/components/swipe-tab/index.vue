@@ -320,7 +320,7 @@ ul {
 .tabs-container {
     height: 100%;
     display: grid;
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: 46px 1fr;
     font-family: var(--font-glacial);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 
@@ -332,6 +332,11 @@ ul {
         .tabs-title {
             background: transparent;
             border: 0;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+
+            &:after {
+                display: none;
+            }
 
             a {
                 font-size: 30px;
