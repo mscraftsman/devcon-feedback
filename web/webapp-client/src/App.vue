@@ -96,6 +96,11 @@ body {
     url("./assets/home-bg-2.jpg");
   background-size: 100%, cover;
   background-position: center center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .page {

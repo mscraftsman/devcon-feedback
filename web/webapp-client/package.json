@@ -1,6 +1,6 @@
 {
-  "name": "webapp-client",
-  "version": "0.1.0",
+  "name": "DevCon18",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --open",
@@ -14,8 +14,6 @@
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
-    "vue-swipe-tab": "^2.0.2",
-    "vue-tabs-component": "^1.4.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
@@ -32,9 +30,5 @@
     "sass-loader": "^6.0.6",
     "vue-template-compiler": "^2.5.13"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"]
 }
