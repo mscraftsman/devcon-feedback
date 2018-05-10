@@ -1,11 +1,6 @@
 <template>
   <div class="page-all-sessions">
     <div class="tabs-container">
-      <div class="tab-items">
-        <router-link :to="{ name: 'welcome' }">
-          🔙
-        </router-link>
-      </div>
       <div class="tab-items" :class="{active : getDay(group.groupName) === active}" @click="active = getDay(group.groupName)" v-for="group in sessions" :key="group.groupId" :label="getDay(group.groupName)">
         {{getDay(group.groupName)}}
       </div>
