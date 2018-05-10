@@ -13,9 +13,8 @@
           </router-link>
         </div>
         <div class="super-menu-item">
-          <router-link :to="{ name: 'sessionspage' }">
-            Login
-            <strikethrough>(coming soon)</strikethrough>
+          <router-link :to="{ name: '' }">
+            Login (coming soon)
           </router-link>
         </div>
       </div>
