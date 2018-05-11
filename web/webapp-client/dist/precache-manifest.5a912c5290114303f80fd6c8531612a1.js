@@ -12,7 +12,7 @@ self.__precacheManifest = [
     "url": "/fonts/Shentox-Bold.00c2e286.woff"
   },
   {
-    "revision": "c41db4ac1f42cfb9aeb5c667ee4065c1",
+    "revision": "e3775bb7dfbf4fbfb8a33d83b9d9b289",
     "url": "/index.html"
   },
   {
