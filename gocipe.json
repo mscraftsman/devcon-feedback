@@ -88,7 +88,7 @@
                     "label": "Visitor ID",
                     "serialized": "visitor_id",
                     "property": {
-                        "name": "VisitorId",
+                        "name": "VisitorID",
                         "type": "int64"
                     },
                     "schema": {
@@ -205,6 +205,7 @@
             "name": "Session",
             "table": "sessions",
             "description": "represents a conference session",
+            "primary_key": "string",
             "fields": [
                 {
                     "label": "Title",

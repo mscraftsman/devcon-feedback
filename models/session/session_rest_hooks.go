@@ -7,7 +7,7 @@ import (
 	"github.com/mscraftsman/devcon-feedback/models"
 )
 
-func restPreGet(w http.ResponseWriter, r *http.Request, id int64) (bool, error) {
+func restPreGet(w http.ResponseWriter, r *http.Request, id string) (bool, error) {
 	return false, nil
 }
 
@@ -39,10 +39,10 @@ func restPostUpdate(w http.ResponseWriter, r *http.Request, entity *Session, tx 
 	return false, nil
 }
 
-func restPreDelete(w http.ResponseWriter, r *http.Request, id int64, tx *sql.Tx) (bool, error) {
+func restPreDelete(w http.ResponseWriter, r *http.Request, id string, tx *sql.Tx) (bool, error) {
 	return false, nil
 }
 
-func restPostDelete(w http.ResponseWriter, r *http.Request, id int64, tx *sql.Tx) (bool, error) {
+func restPostDelete(w http.ResponseWriter, r *http.Request, id string, tx *sql.Tx) (bool, error) {
 	return false, nil
 }

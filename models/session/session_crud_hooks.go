@@ -6,7 +6,7 @@ import (
 	"github.com/mscraftsman/devcon-feedback/models"
 )
 
-func crudPreGet(id int64) error {
+func crudPreGet(id string) error {
 	return nil
 }
 
@@ -22,11 +22,11 @@ func crudPostList(list []*Session) ([]*Session, error) {
 	return list, nil
 }
 
-func crudPreDelete(id int64, tx *sql.Tx) error {
+func crudPreDelete(id string, tx *sql.Tx) error {
 	return nil
 }
 
-func crudPostDelete(id int64, tx *sql.Tx) error {
+func crudPostDelete(id string, tx *sql.Tx) error {
 	return nil
 }
 
