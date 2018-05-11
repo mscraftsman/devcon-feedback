@@ -37,7 +37,7 @@
                     <label>
                         <img src="../assets/icons/time.svg" alt="">
                     </label>
-                    <p>{{ time(session.startsAt) + getDay(session.startsAt) }} - {{ time(session.endsAt) }}</p>
+                    <p>{{ time(session.startsAt) }} - {{ time(session.endsAt) }}</p>
                 </div>
 
                 <div class="des-wrap" v-if="session.level">
@@ -45,6 +45,12 @@
                         <img src="../assets/icons/level.svg" alt="">
                     </label>
                     <p>{{ session.level }}</p>
+                </div>
+
+                <div class="des-wrap rate">
+                    <router-link :to="{ name: 'feedback',  params: { id: id }}" class="rate">
+                        Rate
+                    </router-link>
                 </div>
             </div>
 
@@ -57,9 +63,6 @@
                     Back
                 </router-link>
 
-                <router-link :to="{ name: 'feedback',  params: { id: id }}" class="btn small rate">
-                    Rate
-                </router-link>
             </div>
 
         </div>
@@ -129,11 +132,15 @@
 </script>
 
 <style lang="scss" scoped>
+    * {
+        box-sizing: border-box;
+    }
+
     .page-session {
         display: grid;
         grid-template-areas: "session session" "footer footer";
         grid-template-columns: 100px 1fr;
-        grid-template-rows: 1fr 10vh;
+        grid-auto-rows: auto;
         max-width: 900px;
         margin: 0 auto;
         width: 100%;
@@ -177,6 +184,10 @@
             font-weight: 500;
             text-transform: uppercase;
 
+            &:last-child {
+                margin-right: 0;
+            }
+
             .avatar {
                 grid-area: avatar;
                 width: var(--width);
@@ -211,17 +222,37 @@
         width: 100%;
         display: flex;
         align-items: center;
-        font-size: 14px;
-        padding: 10px;
+        font-size: 18px;
 
         .des-wrap {
-            min-width: 20%;
+            width: 33.3%;
             margin-right: 10px;
             color: white;
             font-family: var(--font-glacial);
             text-transform: uppercase;
             display: flex;
             align-items: center;
+            padding: 10px;
+            height: 50px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            &.rate {
+                padding: 0;
+
+                a {
+                    background: var(--color-green);
+                    height: 50px;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    text-decoration: none;
+                    font-size: 20px;
+                }
+            }
 
             label {
                 margin-right: 10px;
@@ -239,7 +270,11 @@
     }
 
     .description-text {
-        padding: 10px;
+        padding: 20px;
+
+        .back {
+
+        }
 
         p {
             font-family: var(--font-glacial);
@@ -251,16 +286,13 @@
 
     .button-wrappers {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         grid-template-rows: 1fr;
 
         .back {
             grid-column: 1 / 2;
         }
 
-        .rate {
-            grid-column: 2 / 3;
-        }
     }
 
     .footer {
