@@ -1,5 +1,10 @@
 <template>
     <div class="page page-session">
+        <div class="back-button-wrapper">
+            <router-link :to="{ name: 'sessions' }" class="back">
+                <img src="../assets/back.svg" alt="">
+            </router-link>
+        </div>
         <div class="page-content" v-if="session">
             <!-- <span>{{id}}</span> -->
             <div class="session-title">{{session.title}}</div>
@@ -56,13 +61,6 @@
 
             <div class="description-text">
                 <p>{{ session.description }}</p>
-            </div>
-
-            <div class="button-wrappers">
-                <router-link :to="{ name: 'sessions' }" class="btn small back">
-                    Back
-                </router-link>
-
             </div>
 
         </div>
@@ -138,13 +136,39 @@
 
     .page-session {
         display: grid;
-        grid-template-areas: "session session" "footer footer";
+        grid-template-areas:
+                "back back"
+                "session session"
+                "footer footer";
         grid-template-columns: 100px 1fr;
+        grid-template-rows: 50px auto;
         grid-auto-rows: auto;
         max-width: 900px;
         margin: 0 auto;
         width: 100%;
-        margin-top: 50px;
+        margin-top: 20px;
+    }
+
+    .back-button-wrapper {
+        grid-area: back;
+        text-align: left;
+
+        a {
+            display: flex;
+            align-items: center;
+            height: 40px;
+            width: 40px;
+            padding: 10px;
+            background: var(--color-blue);
+            border-radius: 40px;
+            padding-left: 13px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+
+            img {
+                height: 100%;
+                margin-right: 15px;
+            }
+        }
     }
 
     .page-content {
@@ -251,6 +275,7 @@
                     justify-content: center;
                     text-decoration: none;
                     font-size: 20px;
+                    color: var(--color-blue)
                 }
             }
 
@@ -302,8 +327,53 @@
         font-family: var(--font-shentox);
         color: white;
         text-align: center;
-        font-size: 13px;
+        font-size: 15px;
         align-self: center;
+        padding: var(--gutter) 0;
     }
+
+    @media (max-width: 1000px) {
+        .back-button-wrapper {
+            padding: 0 10px;
+        }
+
+        .session-title {
+            font-size: 30px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .descriptions-row {
+            flex-wrap: wrap;
+
+
+            .des-wrap {
+                width: 100%;
+            }
+        }
+
+        .speakers-wrapper {
+            flex-wrap: wrap;
+
+            .speaker-wrapper {
+                --width: 40px;
+                width: 100%;
+
+                margin-right: 0;
+                padding: 0 10px;
+
+                .name {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        .session-title {
+            font-size: 25px;
+        }
+    }
+
 </style>
 
