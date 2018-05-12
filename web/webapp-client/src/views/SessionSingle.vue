@@ -2,7 +2,7 @@
   <div class="page page-session">
     <div class="back-button-wrapper">
       <router-link :to="{ name: 'sessions' }" class="back">
-        <img src="../assets/back.svg" alt="">
+        <img src="../assets/back.svg" alt=""> Back
       </router-link>
     </div>
     <div class="page-content" v-if="session">
@@ -141,32 +141,67 @@ export default {
     "session session"
     "footer footer";
   grid-template-columns: 100px 1fr;
-  grid-template-rows: 50px auto;
+  grid-template-rows: 70px auto;
   grid-auto-rows: auto;
   max-width: 900px;
   margin: 0 auto;
   width: 100%;
-  margin-top: 20px;
+}
+
+a.back {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 14px;
 }
 
 .back-button-wrapper {
-  grid-area: back;
+  --backsize: 70px;
+  // grid-area: back;
   text-align: left;
+  // margin-top: 5px;
+  transform: translateX(calc(var(--backsize) / 2 * -1))
+    translateY(var(--backsize));
+  position: absolute;
 
   a {
     display: flex;
     align-items: center;
-    height: 40px;
-    width: 40px;
-    padding: 10px;
-    background: var(--color-blue);
-    border-radius: 40px;
-    padding-left: 13px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    height: var(--backsize);
+    width: var(--backsize);
+    padding: calc(var(--backsize)/4);
+    // background: var(--color-blue);
+    color: var(--color-blue);
+    background: white;
+    border-radius: var(--backsize) 0 0 var(--backsize);
+    padding-left: calc(var(--backsize)/3.5);
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 
     img {
       height: 100%;
       margin-right: 15px;
+    }
+  }
+
+  &:hover {
+    a {
+      transform: translateX(-5px);
+      transition: transform 0.2s ease-in-out;
+    }
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .back-button-wrapper {
+    position: static;
+    grid-area: back;
+    transform: unset;
+    padding: unset;
+    a {
+      width: auto;
+      border-radius: unset;
+      // padding-left: ;
     }
   }
 }
@@ -184,7 +219,7 @@ export default {
   font-size: 40px;
   font-weight: 700;
   margin: 0 auto;
-  padding: 30px 10px;
+  padding: 30px 4vw;
   text-align: center;
 }
 
@@ -330,7 +365,7 @@ export default {
 
 @media (max-width: 1000px) {
   .back-button-wrapper {
-    padding: 0 10px;
+    // padding: 0 10px;
   }
 
   .session-title {
