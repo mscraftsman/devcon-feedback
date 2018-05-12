@@ -162,6 +162,7 @@
             "name": "Visitor",
             "table": "visitors",
             "description": "represents a conference visitor",
+            "primary_key": "string",
             "fields": [
                 {
                     "label": "Name",
@@ -173,18 +174,6 @@
                     "schema": {
                         "field": "name",
                         "type": "VARCHAR(255)"
-                    }
-                },
-                {
-                    "label": "MeetupID",
-                    "serialized": "meetup_id",
-                    "property": {
-                        "name": "MeetupID",
-                        "type": "int"
-                    },
-                    "schema": {
-                        "field": "meetup_id",
-                        "type": "INT"
                     }
                 },
                 {
@@ -288,42 +277,6 @@
                     },
                     "schema": {
                         "field": "speakers",
-                        "type": "TEXT"
-                    }
-                },
-                {
-                    "label": "Ratings",
-                    "serialized": "ratings_count",
-                    "property": {
-                        "name": "RatingsCount",
-                        "type": "int"
-                    },
-                    "schema": {
-                        "field": "ratings_count",
-                        "type": "INT"
-                    }
-                },
-                {
-                    "label": "Score",
-                    "serialized": "score",
-                    "property": {
-                        "name": "Score",
-                        "type": "int"
-                    },
-                    "schema": {
-                        "field": "score",
-                        "type": "INT"
-                    }
-                },
-                {
-                    "label": "Reaction",
-                    "serialized": "reaction_summary",
-                    "property": {
-                        "name": "ReactionSummary",
-                        "type": "string"
-                    },
-                    "schema": {
-                        "field": "reaction_summary",
                         "type": "JSONB"
                     }
                 },
@@ -361,6 +314,62 @@
                     "schema": {
                         "field": "status",
                         "type": "BOOLEAN"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Rating",
+            "table": "ratings",
+            "primary_key": "string",
+            "description": "represents a summary of the feedback received for a session",
+            "fields": [
+                {
+                    "label": "Ratings",
+                    "serialized": "ratings_count",
+                    "property": {
+                        "name": "RatingsCount",
+                        "type": "int"
+                    },
+                    "schema": {
+                        "field": "ratings_count",
+                        "type": "INT"
+                    }
+                },
+                {
+                    "label": "Score",
+                    "serialized": "score",
+                    "property": {
+                        "name": "Score",
+                        "type": "int"
+                    },
+                    "schema": {
+                        "field": "score",
+                        "type": "INT"
+                    }
+                },
+                {
+                    "label": "Reaction",
+                    "serialized": "reaction_summary",
+                    "property": {
+                        "name": "ReactionSummary",
+                        "type": "string"
+                    },
+                    "schema": {
+                        "field": "reaction_summary",
+                        "type": "JSONB"
+                    }
+                },
+                {
+                    "label": "Updated At",
+                    "serialized": "updated_at",
+                    "property": {
+                        "name": "UpdatedAt",
+                        "type": "time.Time"
+                    },
+                    "schema": {
+                        "field": "updated_at",
+                        "type": "TIMESTAMP"
                     }
                 }
             ]
