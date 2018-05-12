@@ -18,6 +18,11 @@
             <span>(coming soon)</span>
           </router-link>
         </div>
+        <div class="super-menu-item">
+          <router-link :to="{ name: 'speakers' }">
+            Speakers
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -110,7 +115,8 @@ export default {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: 1fr 100px 100px 100px;
+  grid-template-rows: 1fr auto;
+  grid-auto-rows: auto;
   grid-template-columns: 1fr 4fr 1fr;
   grid-gap: 20px;
   // align-content: center;
@@ -124,7 +130,7 @@ export default {
   display: grid;
   // align-content: center;
   justify-content: center;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 30px;
 }
 
