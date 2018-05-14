@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/fonts/Shentox-Light.4d98fda9.woff"
   },
   {
-    "revision": "e0cccc72af030c17295a",
-    "url": "/js/vendor.e0cccc72.js"
+    "revision": "6c9f1603cb997c06b1e9",
+    "url": "/js/vendor.6c9f1603.js"
   },
   {
     "revision": "00c2e286c59070c7b1fc2d3757392677",
     "url": "/fonts/Shentox-Bold.00c2e286.woff"
   },
   {
-    "revision": "39cb95101c6c837c03083c99c8be3274",
+    "revision": "0cf18a7d94c3cd3b7b23b87f2467fc59",
     "url": "/index.html"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = [
     "url": "/js/manifest.bb41d6d8.js"
   },
   {
-    "revision": "ae091b1a892b92cac319",
-    "url": "/js/app.ae091b1a.js"
+    "revision": "55f06f221d20725b13ec",
+    "url": "/js/app.55f06f22.js"
   },
   {
     "revision": "895cd7e825e0c6818616b24e43337e25",
@@ -68,7 +68,7 @@ self.__precacheManifest = [
     "url": "/fonts/Shentox-Medium.cc215ddc.woff"
   },
   {
-    "revision": "ae091b1a892b92cac319",
+    "revision": "55f06f221d20725b13ec",
     "url": "/css/app.25eb5c08.css"
   }
 ];
