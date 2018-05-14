@@ -60,7 +60,7 @@
       </div>
 
       <div class="description-text">
-        <p>{{ session.description }}</p>
+        <p v-html="session.description">{{ session.description }}</p>
       </div>
 
     </div>
@@ -158,6 +158,7 @@ a.back {
 }
 
 .back-button-wrapper {
+  cursor: pointer;
   --backsize: 70px;
   // grid-area: back;
   text-align: left;
@@ -331,8 +332,7 @@ a.back {
 }
 
 .description-text {
-  padding: 20px;
-
+  padding: 20px 30px;
   .back {
   }
 
@@ -341,6 +341,8 @@ a.back {
     font-size: 18px;
     line-height: 25px;
     font-weight: 300;
+    white-space: pre-wrap;
+    text-align: left;
   }
 }
 

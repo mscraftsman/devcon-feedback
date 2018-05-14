@@ -130,6 +130,7 @@ a.back {
   transform: translateX(calc(var(--backsize) / 2 * -1))
     translateY(var(--backsize));
   position: absolute;
+  cursor: pointer;
 
   a {
     display: flex;
