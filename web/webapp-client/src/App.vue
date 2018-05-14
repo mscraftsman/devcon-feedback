@@ -12,7 +12,7 @@
       </div> -->
     </div>
 
-    <transition name="page" mode="out-in">
+    <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
   </div>
@@ -95,6 +95,7 @@ body {
     ),
     url("./assets/home-bg-2.jpg");
   background-size: 100%, cover;
+  background-attachment: fixed;
   background-position: center center;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
