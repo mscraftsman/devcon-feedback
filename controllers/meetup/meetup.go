@@ -6,11 +6,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strconv"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/mscraftsman/devcon-feedback/app"
+	"github.com/mscraftsman/devcon-feedback/models/visitor"
 )
 
 var (
@@ -50,6 +50,7 @@ func retrieveProfile(code string) (*Profile, error) {
 			AccessToken string `json:"access_token"`
 			TokenType   string `json:"token_type"`
 			ExpiresIn   int    `json:"expires_in"`
+			Error       string `json:"error"`
 		}
 
 		meetupProfile Profile
@@ -62,10 +63,11 @@ func retrieveProfile(code string) (*Profile, error) {
 
 		rs, e := client.PostForm("https://secure.meetup.com/oauth2/access",
 			url.Values{
-				"client_id":    {_key},
-				"grant_type":   {"authorization_code"},
-				"redirect_uri": {app.MeetupRedirectURL},
-				"code":         {code},
+				"client_id":     {_key},
+				"client_secret": {_secret},
+				"grant_type":    {"authorization_code"},
+				"redirect_uri":  {app.MeetupRedirectURL},
+				"code":          {code},
 			},
 		)
 
@@ -81,6 +83,10 @@ func retrieveProfile(code string) (*Profile, error) {
 		e = json.Unmarshal(resp, &meetupAccess)
 		if e != nil {
 			return e
+		}
+
+		if meetupAccess.Error != "" {
+			return errors.New("meetup login error: " + meetupAccess.Error)
 		}
 
 		return nil
@@ -124,7 +130,7 @@ func retrieveProfile(code string) (*Profile, error) {
 }
 
 // DecodeToken returns a Profile from a request containing jwt token
-func DecodeToken(r *http.Request) (*Profile, error) {
+func DecodeToken(r *http.Request) (*visitor.Visitor, error) {
 	var (
 		tokenString string
 		cookie      *http.Cookie
@@ -145,7 +151,7 @@ func DecodeToken(r *http.Request) (*Profile, error) {
 		return nil, ErrorInvalidToken
 	}
 
-	profile, ok := func() (*Profile, bool) {
+	visitor, ok := func() (*visitor.Visitor, bool) {
 		var (
 			id          string
 			idOk        bool
@@ -162,10 +168,8 @@ func DecodeToken(r *http.Request) (*Profile, error) {
 			photoLink, photoLinkOk = claims["photo_link"].(string)
 		}
 
-		idint, _ := strconv.Atoi(id)
-
-		return &Profile{
-			ID: idint, Name: name, Photo: ProfilePhoto{PhotoLink: photoLink},
+		return &visitor.Visitor{
+			ID: &id, Name: &name, PhotoLink: &photoLink,
 		}, idOk && nameOk && photoLinkOk
 	}()
 
@@ -173,5 +177,5 @@ func DecodeToken(r *http.Request) (*Profile, error) {
 		return nil, ErrorInvalidToken
 	}
 
-	return profile, nil
+	return visitor, nil
 }

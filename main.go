@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"time"
 
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
@@ -22,10 +21,10 @@ func main() {
 
 	inject(config)
 
-	go func() {
-		sessionize.Sync()
-		time.Sleep(time.Minute * 5)
-	}()
+	// go func() {
+	// 	sessionize.Sync()
+	// 	time.Sleep(time.Minute * 5)
+	// }()
 
 	assetsHandler := http.FileServer(rice.MustFindBox("web/webapp-client/dist").HTTPBox())
 
