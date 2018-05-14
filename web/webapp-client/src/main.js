@@ -7,7 +7,8 @@ import "./assets/scss/main.scss";
 import VueAnalytics from "vue-analytics";
 
 Vue.use(VueAnalytics, {
-  id: "UA-12103827-11"
+  id: "UA-12103827-11",
+  router
 });
 
 Vue.config.productionTip = false;
