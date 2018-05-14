@@ -1,17 +1,42 @@
 package main
 
 import (
+	"net/http"
+	"time"
+
+	"github.com/gorilla/mux"
 	"github.com/mscraftsman/devcon-feedback/app"
 	"github.com/mscraftsman/devcon-feedback/controllers/meetup"
+	"github.com/mscraftsman/devcon-feedback/models/feedback"
+	"github.com/mscraftsman/devcon-feedback/models/rating"
+	"github.com/mscraftsman/devcon-feedback/models/session"
+	"github.com/mscraftsman/devcon-feedback/models/visitor"
+	"github.com/mscraftsman/devcon-feedback/sessionize"
 )
 
 func main() {
 	config := app.Bootstrap()
 
-	meetup.Init(config.MeetupKey, config.MeetupSecret, config.JWTSecret)
+	inject(config)
 
-	// app.ServeHTTP(config.HTTPPort, func(router *mux.Router) error {
-	// 	router.HandleFunc("/b/meetup", meetup.LoginCallback).Methods(http.MethodGet)
-	// 	return nil
-	// })
+	go func() {
+		sessionize.Sync()
+		time.Sleep(time.Minute * 5)
+	}()
+
+	app.ServeHTTP(config.HTTPPort, func(router *mux.Router) error {
+		router.HandleFunc("/b/meetup", meetup.LoginCallback).Methods(http.MethodGet)
+		router.HandleFunc("/b/me", meetup.Me).Methods(http.MethodGet)
+		router.HandleFunc("/b/api/feedbacks", feedback.RestCreate).Methods("POST")
+		return nil
+	})
+}
+
+func inject(config *app.Config) {
+	meetup.Init(config.MeetupKey, config.MeetupSecret, config.JWTSecret)
+	sessionize.Init(config.DB)
+	feedback.Inject(config.DB)
+	rating.Inject(config.DB)
+	session.Inject(config.DB)
+	visitor.Inject(config.DB)
 }

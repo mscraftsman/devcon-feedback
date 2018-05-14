@@ -2,17 +2,39 @@ package meetup
 
 import (
 	"encoding/json"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strconv"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/mscraftsman/devcon-feedback/app"
-	"github.com/mscraftsman/devcon-feedback/models/visitor"
+)
+
+var (
+	cookieName = "devcon"
+	// ErrorNoToken indicates token not present in request
+	ErrorNoToken = errors.New("token not found")
+	// ErrorInvalidToken indicates an invalid token provided in request
+	ErrorInvalidToken = errors.New("token is invalid")
 )
 
 var _key, _secret, _jwt string
+
+// Profile represents meetup.com user profile
+type Profile struct {
+	ID    int          `json:"id"`
+	Name  string       `json:"name"`
+	Photo ProfilePhoto `json:"photo"`
+}
+
+// ProfilePhoto contains profile photo information
+type ProfilePhoto struct {
+	// PhotoLink represents link to the profile photo
+	PhotoLink string `json:"photo_link"`
+}
 
 // Init is used to initialize dependencies
 func Init(meetupKey, meetupSecret, jwtSecret string) {
@@ -21,8 +43,8 @@ func Init(meetupKey, meetupSecret, jwtSecret string) {
 	_jwt = jwtSecret
 }
 
-// retrieveVisitor retrieves visitor profile information given code (automatically exchanges code for accessToken)
-func retrieveVisitor(code string) (*visitor.Visitor, error) {
+// retrieveProfile retrieves visitor profile information given code (automatically exchanges code for accessToken)
+func retrieveProfile(code string) (*Profile, error) {
 	var (
 		meetupAccess struct {
 			AccessToken string `json:"access_token"`
@@ -30,97 +52,126 @@ func retrieveVisitor(code string) (*visitor.Visitor, error) {
 			ExpiresIn   int    `json:"expires_in"`
 		}
 
-		meetupProfile struct {
-			ID    int    `json:"id"`
-			Name  string `json:"name"`
-			Photo struct {
-				PhotoLink string `json:"photo_link"`
-			} `json:"photo"`
-		}
+		meetupProfile Profile
 
 		err error
 	)
 
-	client := &http.Client{Timeout: time.Second * 30}
+	err = func() error {
+		client := &http.Client{Timeout: time.Second * 30}
 
-	rs, err := client.PostForm("https://secure.meetup.com/oauth2/access",
-		url.Values{
-			"client_id":    {_key},
-			"grant_type":   {"authorization_code"},
-			"redirect_uri": {app.MeetupRedirectURL},
-			"code":         {code},
-		},
-	)
+		rs, e := client.PostForm("https://secure.meetup.com/oauth2/access",
+			url.Values{
+				"client_id":    {_key},
+				"grant_type":   {"authorization_code"},
+				"redirect_uri": {app.MeetupRedirectURL},
+				"code":         {code},
+			},
+		)
 
-	if err != nil {
-		return nil, err
-	}
+		if e != nil {
+			return e
+		}
 
-	resp, err := ioutil.ReadAll(rs.Body)
-	if err != nil {
-		return nil, err
-	}
+		resp, e := ioutil.ReadAll(rs.Body)
+		if e != nil {
+			return e
+		}
 
-	err = json.Unmarshal(resp, &meetupAccess)
-	if err != nil {
-		return nil, err
-	}
+		e = json.Unmarshal(resp, &meetupAccess)
+		if e != nil {
+			return e
+		}
 
-	client.Get("https://api.meetup.com/2/member/self?" +
-		url.Values{
-			"access_token": {meetupAccess.AccessToken},
-		}.Encode(),
-	)
+		return nil
+	}()
 
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err = ioutil.ReadAll(rs.Body)
+	err = func() error {
+		client := &http.Client{Timeout: time.Second * 30}
+
+		rs, e := client.Get("https://api.meetup.com/2/member/self?" +
+			url.Values{
+				"access_token": {meetupAccess.AccessToken},
+			}.Encode(),
+		)
+
+		if e != nil {
+			return e
+		}
+
+		resp, e := ioutil.ReadAll(rs.Body)
+		if e != nil {
+			return e
+		}
+
+		e = json.Unmarshal(resp, &meetupProfile)
+		if e != nil {
+			return e
+		}
+
+		return nil
+	}()
+
 	if err != nil {
 		return nil, err
 	}
 
-	err = json.Unmarshal(resp, &meetupProfile)
-	if err != nil {
-		return nil, err
-	}
-
-	v := visitor.New()
-	*v.MeetupID = meetupProfile.ID
-	*v.Name = meetupProfile.Name
-	*v.PhotoLink = meetupProfile.Photo.PhotoLink
-
-	err = v.Save(nil, true)
-	if err != nil {
-		return nil, err
-	}
-
-	return v, nil
+	return &meetupProfile, nil
 }
 
-// LoginCallback is an http endpoint for meetup.com auth flow
-func LoginCallback(w http.ResponseWriter, r *http.Request) {
-	code := r.URL.Query().Get("code")
-	visitor, err := retrieveVisitor(code)
+// DecodeToken returns a Profile from a request containing jwt token
+func DecodeToken(r *http.Request) (*Profile, error) {
+	var (
+		tokenString string
+		cookie      *http.Cookie
+		err         error
+	)
 
-	if err != nil {
-		return
+	if cookie, err = r.Cookie(cookieName); err != nil {
+		return nil, ErrorNoToken
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":         *visitor.ID,
-		"name":       *visitor.Name,
-		"meetup_id":  *visitor.MeetupID,
-		"photo_link": *visitor.PhotoLink,
+	tokenString = cookie.Value
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(_jwt), nil
 	})
-	tokenString, err := token.SignedString([]byte(_jwt))
 
-	if err != nil {
-		return
+	if token == nil || err != nil {
+		return nil, ErrorInvalidToken
 	}
 
-	cookie := http.Cookie{Name: "devcon", Value: tokenString, Expires: time.Now().Add(72 * time.Hour), HttpOnly: true, Path: "/"}
-	http.SetCookie(w, &cookie)
-	http.Redirect(w, r, app.BaseURL+"/", http.StatusFound)
+	profile, ok := func() (*Profile, bool) {
+		var (
+			id          string
+			idOk        bool
+			name        string
+			nameOk      bool
+			photoLink   string
+			photoLinkOk bool
+		)
+		claims, claimok := token.Claims.(jwt.MapClaims)
+
+		if claimok && token.Valid {
+			id, idOk = claims["id"].(string)
+			name, nameOk = claims["name"].(string)
+			photoLink, photoLinkOk = claims["photo_link"].(string)
+		}
+
+		idint, _ := strconv.Atoi(id)
+
+		return &Profile{
+			ID: idint, Name: name, Photo: ProfilePhoto{PhotoLink: photoLink},
+		}, idOk && nameOk && photoLinkOk
+	}()
+
+	if !ok {
+		return nil, ErrorInvalidToken
+	}
+
+	return profile, nil
 }
