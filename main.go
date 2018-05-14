@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	rice "github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
 	"github.com/mscraftsman/devcon-feedback/app"
 	"github.com/mscraftsman/devcon-feedback/controllers/meetup"
@@ -24,10 +25,13 @@ func main() {
 		time.Sleep(time.Minute * 5)
 	}()
 
-	app.ServeHTTP(config.HTTPPort, func(router *mux.Router) error {
+	assetsHandler := http.FileServer(rice.MustFindBox("web/webapp-client/dist").HTTPBox())
+
+	app.ServeHTTP(":"+config.HTTPPort, func(router *mux.Router) error {
 		router.HandleFunc("/b/meetup", meetup.LoginCallback).Methods(http.MethodGet)
 		router.HandleFunc("/b/me", meetup.Me).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/feedbacks", feedback.RestCreate).Methods("POST")
+		router.PathPrefix("/").Handler(assetsHandler)
 		return nil
 	})
 }
