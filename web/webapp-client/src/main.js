@@ -3,10 +3,7 @@ import App from "./App.vue";
 import router from "./router/router";
 import store from "./store/index";
 import "./registerServiceWorker";
-import { Tabs, Tab } from "vue-tabs-component";
-
-Vue.component("tabs", Tabs);
-Vue.component("tab", Tab);
+import "./assets/scss/main.scss";
 
 Vue.config.productionTip = false;
 

@@ -1,15 +1,20 @@
 <template>
   <div id="app">
+    <div class="header">
+      <div class="logo-wrapper">
+        <router-link :to="{ name: 'welcome' }">
+          <img src="@/assets/logo.svg" alt="">
+        </router-link>
+      </div>
+      <!-- <div class="user-info">
+        <span class="title">Logged in as</span>
+        <span>User Name</span>
+      </div> -->
+    </div>
+
     <transition name="page" mode="out-in">
       <router-view></router-view>
     </transition>
-    <div class="error-log">
-      <ul>
-        <li v-for="error in errors" :class="error.type" :key="error.timestamp">
-          {{ error.text }}
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 
@@ -31,7 +36,7 @@ html,
 body,
 #app,
 .page {
-  min-height: 100vh;
+  min-height: 90vh;
   /* contain: strict; */
 }
 
@@ -41,7 +46,7 @@ body,
 }
 .page-enter {
   opacity: 0;
-  transform: translateX(30%);
+  // transform: translateX(30%);
 }
 
 .page-leave-to {
@@ -49,6 +54,14 @@ body,
   transform: translateX(-30%);
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 .btn {
   --size: 50px;
   height: var(--size);
@@ -73,25 +86,87 @@ body,
 body {
   margin: 0;
   font-size: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, "avenir next", avenir,
-    helvetica, "helvetica neue", Ubuntu, "segoe ui", arial, sans-serif;
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, "avenir next",
+    avenir, helvetica, "helvetica neue", Ubuntu, "segoe ui", arial, sans-serif;
+  background: linear-gradient(
+      135deg,
+      rgba(49, 232, 183, 1) 0%,
+      rgba(40, 71, 217, 0.8) 70%
+    ),
+    url("./assets/home-bg-2.jpg");
+  background-size: 100%, cover;
+  background-position: center center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .page {
   text-align: center;
   /* nesting for the need to test postcss */
+  grid-area: page;
   code {
     background-color: #f0f0f0;
     padding: 3px 5px;
     border-radius: 2px;
   }
 
-  max-width: 800px;
+  // max-width: 800px;
+  width: 100%;
   margin: 0 auto;
 }
 
 #app {
-  background: linear-gradient(166deg, #31e8b7 0%, #2847d9 100%);
+  // background: linear-gradient(166deg, #31e8b7 0%, #2847d9 100%);
+  // background: linear-gradient(166deg, #333 0%, #31e8b7 100%);
+
+  display: grid;
+  grid-template-areas:
+    "header"
+    "page";
+  grid-template-rows: 33px calc(100vh - 33px);
+}
+
+.header {
+  grid-area: header;
+  display: grid;
+  background: #333;
+
+  grid-template-areas: "logo userinfo";
+  grid-template-columns: 1fr;
+  // justify-items: center;
+
+  .logo-wrapper {
+    height: 100%;
+
+    a {
+      display: block;
+      height: 100%;
+    }
+    img {
+      padding: 5px 15px;
+      display: block;
+      height: 33px;
+      width: auto;
+      box-sizing: border-box;
+    }
+  }
+
+  .user-info {
+    padding: 18px;
+    span {
+      display: block;
+      text-align: right;
+
+      &.title {
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+    }
+    font-size: 14px;
+  }
 }
 
 .error-log {
@@ -130,34 +205,62 @@ body {
 
 .tabs-component {
   margin: 0;
+  display: grid;
+  grid-template-areas:
+    "top"
+    "bottom";
+  grid-template-rows: 8vh 82vh;
 }
 
 .tabs-component-tabs {
-  border: solid 1px #ddd;
-  border-radius: 6px;
-  margin-bottom: 5px;
+  // border: solid 1px #ddd;
+  // border-radius: 6px;
+  // margin-bottom: 5px;
+  height: 8vh;
 }
 
-@media (min-width: 700px) {
+.tabs-component-tabs {
+  grid-area: top;
+}
+.tabs-component-panels {
+  grid-area: bottom;
+}
+
+@media (max-width: 768px) {
+  .tabs-component {
+    grid-template-rows: 82vh 8vh;
+  }
   .tabs-component-tabs {
-    border: 0;
-    align-items: stretch;
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: -1px;
+    grid-area: bottom;
+  }
+  .tabs-component-panels {
+    grid-area: top;
   }
 }
+.tabs-component-tabs {
+  border: 0;
+  align-items: stretch;
+  display: flex;
+  justify-content: space-between;
+  // margin-bottom: -1px;
+}
+// }
 
+ul.tabs-component-tabs {
+  margin: 0 !important;
+  padding: 0;
+}
 .tabs-component-tab {
   color: #999;
-  font-size: 14px;
+  // font-size: 14px;
   font-weight: 600;
   margin-right: 0;
+  font-size: 18px;
   list-style: none;
 }
 
 .tabs-component-tab:not(:last-child) {
-  border-bottom: dotted 1px #ddd;
+  // border-bottom: dotted 1px #ddd;
 }
 
 .tabs-component-tab:hover {
@@ -173,22 +276,23 @@ body {
   cursor: not-allowed !important;
 }
 
-@media (min-width: 700px) {
-  .tabs-component-tab {
-    background-color: #fff;
-    border: solid 1px #ddd;
-    border-radius: 3px 3px 0 0;
-    margin-right: 0.5em;
-    transform: translateY(2px);
-    transition: transform 0.3s ease;
-  }
-
-  .tabs-component-tab.is-active {
-    border-bottom: solid 1px #fff;
-    z-index: 2;
-    transform: translateY(0);
-  }
+// @media (min-width: 700px) {
+.tabs-component-tab {
+  // background-color: #fff;
+  // border: solid 1px #ddd;
+  // border-radius: 3px 3px 0 0;
+  // margin-right: 0.5em;
+  transform: translateY(2px);
+  transition: transform 0.3s ease;
 }
+
+.tabs-component-tab.is-active {
+  border-bottom: solid 10px #31e8b7;
+  border-bottom: solid 10px #2847d9;
+  z-index: 2;
+  // transform: translateY(0);
+}
+// }
 
 .tabs-component-tab-a {
   align-items: center;
@@ -199,17 +303,23 @@ body {
 }
 
 .tabs-component-panels {
-  // padding: 4em 0;
+  // margin: 10px;
 }
 
-@media (min-width: 700px) {
-  .tabs-component-panels {
-    border-top-left-radius: 0;
-    background-color: #fff;
-    border: solid 1px #ddd;
-    border-radius: 0 6px 6px 6px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-    // padding: 4em 2em;
-  }
+.tabs-component-panel {
+  max-height: 82vh;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
+
+// @media (min-width: 700px) {
+.tabs-component-panels {
+  // border-top-left-radius: 0;
+  // background-color: #fff;
+  // border: solid 1px #ddd;
+  // border-radius: 0 6px 6px 6px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  // padding: 4em 2em;
+}
+// }
 </style>

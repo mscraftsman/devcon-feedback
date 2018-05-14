@@ -1,15 +1,5 @@
 <template>
-  <div class="page page-session">
-    <div class="logo-wrapper">
-      <router-link :to="{ name: 'welcome' }">
-        <img src="@/assets/mscc-logo.png" alt="">
-      </router-link>
-    </div>
-    <div class="user-info">
-      <span class="title">Logged in as</span>
-      <span>User Name</span>
-    </div>
-
+  <div class="page ">
     <div class="session-id-wrapper">
       <div class="form-label">Enter your unique id</div>
       <input type="text" placeholder="1234" v-model="userid">
