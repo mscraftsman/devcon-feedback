@@ -1,8 +1,6 @@
 package meetup
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -10,37 +8,38 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/mscraftsman/devcon-feedback/app"
 	"github.com/mscraftsman/devcon-feedback/models/visitor"
+	"github.com/mscraftsman/devcon-feedback/util"
 )
 
 // LoginCallback is an http endpoint for meetup.com auth flow
 func LoginCallback(w http.ResponseWriter, r *http.Request) {
-	var (
-		visitor visitor.Visitor
-		err     error
-	)
 	code := r.URL.Query().Get("code")
 	profile, err := retrieveProfile(code)
 
 	if err != nil {
+		util.JSONOutputError(w, http.StatusUnauthorized, err.Error())
 		return
 	}
 
+	visitor := visitor.New()
 	*visitor.ID = strconv.Itoa(profile.ID)
 	*visitor.Name = profile.Name
 	*visitor.PhotoLink = profile.Photo.PhotoLink
 
 	if err = visitor.Merge(nil, true); err != nil {
+		util.JSONOutputError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":         profile.ID,
-		"name":       profile.Name,
-		"photo_link": profile.Photo.PhotoLink,
+		"id":         *visitor.ID,
+		"name":       *visitor.Name,
+		"photo_link": *visitor.PhotoLink,
 	})
 	tokenString, err := token.SignedString([]byte(_jwt))
 
 	if err != nil {
+		util.JSONOutputError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -55,8 +54,6 @@ func Me(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		var msg string
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusUnauthorized)
 
 		switch err {
 		default:
@@ -67,11 +64,9 @@ func Me(w http.ResponseWriter, r *http.Request) {
 			msg = "You must login to proceed"
 		}
 
-		fmt.Fprint(w, `{"status": false, "error": "`+msg+`"}`)
+		util.JSONOutputError(w, http.StatusInternalServerError, msg)
+		return
 	}
 
-	output, _ := json.Marshal(profile)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, string(output))
+	util.JSONOutputResponse(w, profile)
 }
