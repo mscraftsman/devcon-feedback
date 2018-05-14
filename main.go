@@ -15,6 +15,8 @@ import (
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 )
 
+//go:generate rice embed-go
+
 func main() {
 	config := app.Bootstrap()
 
