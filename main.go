@@ -29,6 +29,7 @@ func main() {
 	assetsHandler := http.FileServer(rice.MustFindBox("web/webapp-client/dist").HTTPBox())
 
 	app.ServeHTTP(":"+config.HTTPPort, func(router *mux.Router) error {
+		router.HandleFunc("/b/login", meetup.Login).Methods(http.MethodGet)
 		router.HandleFunc("/b/meetup", meetup.LoginCallback).Methods(http.MethodGet)
 		router.HandleFunc("/b/me", meetup.Me).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/feedbacks", feedback.RestCreate).Methods("POST")

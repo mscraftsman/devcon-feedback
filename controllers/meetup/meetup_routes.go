@@ -2,6 +2,7 @@ package meetup
 
 import (
 	"net/http"
+	"net/url"
 	"strconv"
 	"time"
 
@@ -10,6 +11,15 @@ import (
 	"github.com/mscraftsman/devcon-feedback/models/visitor"
 	"github.com/mscraftsman/devcon-feedback/util"
 )
+
+// Login redirects to meetup url for user authentication
+func Login(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, `https://secure.meetup.com/oauth2/authorize?`+url.Values{
+		"client_id":     {_key},
+		"response_type": {"code"},
+		"redirect_uri":  {app.BaseURL + "/b/meetup"},
+	}.Encode(), http.StatusFound)
+}
 
 // LoginCallback is an http endpoint for meetup.com auth flow
 func LoginCallback(w http.ResponseWriter, r *http.Request) {
