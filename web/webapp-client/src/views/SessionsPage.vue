@@ -42,9 +42,6 @@ export default {
     },
     getDay: function(str) {
       return str.split(",")[0];
-    },
-    changePage(idx) {
-      console.log(idx);
     }
   },
   computed: {

@@ -6,7 +6,9 @@ import Login from "../views/PageLogin.vue";
 import Feedback from "../views/PageFeedback.vue";
 // import Sessions from "../views/PageSessions.vue";
 import Sessions from "../views/SessionsPage.vue";
+import Speakers from "../views/SpeakersPage.vue";
 import SessionSingle from "../views/SessionSingle.vue";
+import SpeakerSingle from "../views/SpeakerSingle.vue";
 
 Vue.use(Router);
 
@@ -29,10 +31,21 @@ export default new Router({
       component: Sessions
     },
     {
+      path: "/speakers",
+      name: "speakers",
+      component: Speakers
+    },
+    {
       path: "/session/:id",
       name: "session",
       props: true,
       component: SessionSingle
+    },
+    {
+      path: "/speaker/:id",
+      name: "speaker",
+      props: true,
+      component: SpeakerSingle
     },
     {
       path: "/feedback/:id",

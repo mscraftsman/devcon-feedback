@@ -5,70 +5,41 @@
         <img src="../assets/back.svg" alt=""> Back
       </a>
     </div>
-    <div class="page-content" v-if="session">
+    <div class="page-content" v-if="speaker">
       <!-- <span>{{id}}</span> -->
-      <div class="session-title">{{session.title}}</div>
+      <div class="session-title">{{speaker.fullName}}</div>
 
-      <div class="speakers-wrapper" v-if="session.speakers">
-        <router-link class="speaker-wrapper" v-for="speaker in session.speakers" :key="speaker.id" :to="{ name: 'speaker',  params: { id: speaker.id }}">
-          <div class="avatar"><img :src="getSpeaker(speaker.id)" alt=""></div>
-          <p class="name">{{ speaker.name }}</p>
-        </router-link>
+      <div class="speakers-wrapper" v-if="speakers">
+        <div class="speaker-wrapper">
+          <div class="avatar"><img :src="speaker.profilePicture" alt=""></div>
+        </div>
       </div>
 
       <div class="descriptions-row">
-        <div class="des-wrap" v-if="session.format">
-          <label>
-            <img src="../assets/icons/language.svg" alt="">
-          </label>
-          <p>{{ session.format }}</p>
-        </div>
-
-        <div class="des-wrap" v-if="session.language">
-          <label>
-            <img src="../assets/icons/language.svg" alt="">
-          </label>
-          <p>{{ session.language }}</p>
-        </div>
-
-        <div class="des-wrap">
-          <label>
-            <img src="../assets/icons/location.svg" alt="">
-          </label>
-          <p>{{ session.room }}</p>
-        </div>
-
-        <div class="des-wrap">
-          <label>
-            <img src="../assets/icons/time.svg" alt="">
-          </label>
-          <p>{{ getDay(session.startsAt) }} {{ time(session.startsAt) }} - {{ time(session.endsAt) }}</p>
-        </div>
-
-        <div class="des-wrap" v-if="session.level">
-          <label>
-            <img src="../assets/icons/level.svg" alt="">
-          </label>
-          <p>{{ session.level }}</p>
-        </div>
-
-        <div class="des-wrap rate">
-          <!-- <router-link :to="{ name: 'feedback',  params: { id: id }}" class="rate">
-            Rate
-          </router-link> -->
+        <div class="des-wrap" v-if="speaker.tagLine">
+          <p>{{ speaker.tagLine }}</p>
         </div>
       </div>
 
       <div class="description-text">
-        <p v-html="session.description">{{ session.description }}</p>
+        <p>{{ speaker.bio }}</p>
+      </div>
+
+      <div class="descriptions-row">
+        <div class="des-wrap">
+          <p>Speaking about : </p>
+        </div>
+      </div>
+
+      <div class="session-title" v-for="session in speaker.sessions" :key="session.name">
+        <router-link :to="{ name: 'session',  params: { id: session.id }}">
+          {{ session.name }}
+        </router-link>
       </div>
 
     </div>
     <div class="page-content" v-else>
-      <p>
-        loading session...
-      </p>
-      <a href="javascript:location.reload()" title="i'm not proud of this code. please send PR">is this taking too long? click here</a>
+      finding speaker details..
     </div>
     <div class="footer">
       Developer Conference 2018
@@ -85,15 +56,6 @@ export default {
   props: ["id"],
   methods: {
     ...mapActions(["fetchSessions", "fetchSpeakers"]),
-    getSpeaker: function(id) {
-      if (this.speakers.length === 0) {
-        this.fetchSpeakers();
-      }
-      let theSpeaker = this.speakers.filter(speaker => speaker.id === id);
-      if (theSpeaker.length > 0) {
-        return theSpeaker[0].profilePicture;
-      }
-    },
     time: function(date) {
       return moment(date).format("LT");
     },
@@ -106,25 +68,28 @@ export default {
       sessions: "getSessions",
       speakers: "getSpeakers"
     }),
-    session: function() {
-      if (typeof this.sessions == "undefined") {
-        this.fetchSessions();
+    speaker: function() {
+      if (this.speakers.length === 0) {
+        this.fetchSpeakers();
       }
+      let theSpeaker = this.speakers.filter(speaker => speaker.id === this.id);
+      return theSpeaker[0];
+    },
+    session: function() {
       let sessions = this.sessions
         .map(groups => groups.sessions)
         .reduce(function(acc, curr) {
           return [...acc, ...curr];
         }, []);
+      console.log(sessions);
       let session = _.filter(sessions, { id: this.id })[0];
       return session;
     }
   },
-  watch: {},
   beforeMount() {
     if (this.$store.state.sessions.length === 0) {
       // console.error("no sessions found");
       this.fetchSessions();
-      this.fetchSpeakers();
     } else {
       // console.info("sessions found !");
     }
@@ -158,7 +123,6 @@ a.back {
 }
 
 .back-button-wrapper {
-  cursor: pointer;
   --backsize: 70px;
   // grid-area: back;
   text-align: left;
@@ -166,6 +130,7 @@ a.back {
   transform: translateX(calc(var(--backsize) / 2 * -1))
     translateY(var(--backsize));
   position: absolute;
+  cursor: pointer;
 
   a {
     display: flex;
@@ -225,6 +190,11 @@ a.back {
   margin: 0 auto;
   padding: 30px 5vw;
   text-align: center;
+  a {
+    text-decoration: none;
+    color: var(--color-blue);
+    font-size: 20px;
+  }
 }
 
 .speakers-wrapper {
@@ -234,7 +204,7 @@ a.back {
   margin-bottom: 20px;
 
   .speaker-wrapper {
-    --width: 100px;
+    --width: 200px;
     display: grid;
     width: 200px;
     grid-template-areas: "avatar name";
@@ -284,18 +254,21 @@ a.back {
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 18px;
 
   .des-wrap {
-    width: 33.3%;
+    // width: 33.3%;
     margin-right: 10px;
     color: white;
     font-family: var(--font-glacial);
     text-transform: uppercase;
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     padding: 10px;
-    height: 50px;
+    // height: 50px;
 
     &:last-child {
       margin-right: 0;
@@ -332,7 +305,8 @@ a.back {
 }
 
 .description-text {
-  padding: 20px 30px;
+  padding: 20px;
+
   .back {
   }
 
@@ -341,8 +315,6 @@ a.back {
     font-size: 18px;
     line-height: 25px;
     font-weight: 300;
-    white-space: pre-wrap;
-    text-align: left;
   }
 }
 
@@ -384,22 +356,6 @@ a.back {
 
     .des-wrap {
       width: 100%;
-    }
-  }
-
-  .speakers-wrapper {
-    flex-wrap: wrap;
-
-    .speaker-wrapper {
-      --width: 40px;
-      width: 100%;
-
-      margin-right: 0;
-      padding: 0 10px;
-
-      .name {
-        font-size: 13px;
-      }
     }
   }
 }
