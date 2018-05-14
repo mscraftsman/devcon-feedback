@@ -41,38 +41,24 @@
         "read_list": true,
         "update": true,
         "delete": true,
+        "merge": true,
         "hooks": {
-            "pre_create": true,
-            "post_create": true,
+            "pre_save": true,
+            "post_save": true,
             "pre_read": true,
             "post_read": true,
             "pre_list": true,
             "post_list": true,
-            "pre_update": true,
-            "post_update": true,
             "pre_delete": true,
             "post_delete": true
         }
     },
     "rest": {
-        "create": true,
-        "read": true,
-        "read_list": true,
-        "update": true,
-        "delete": true,
-        "hooks": {
-            "pre_create": true,
-            "post_create": true,
-            "pre_read": true,
-            "post_read": true,
-            "pre_list": true,
-            "post_list": true,
-            "pre_update": true,
-            "post_update": true,
-            "pre_delete": true,
-            "post_delete": true
-        },
-        "prefix": "api"
+        "create": false,
+        "read": false,
+        "read_list": false,
+        "update": false,
+        "delete": false
     },
     "vuetify": {
         "generate": false,
@@ -83,6 +69,10 @@
             "name": "Feedback",
             "table": "feedbacks",
             "description": "represents feedback from a visitor on a session",
+            "rest": {
+                "create": true,
+                "prefix": "b/api"
+            },
             "fields": [
                 {
                     "label": "Visitor ID",
@@ -116,6 +106,7 @@
                         "type": "string"
                     },
                     "schema": {
+                        "nullable": true,
                         "field": "reaction_2",
                         "type": "CHAR(1)"
                     }
@@ -128,6 +119,7 @@
                         "type": "string"
                     },
                     "schema": {
+                        "nullable": true,
                         "field": "reaction_3",
                         "type": "CHAR(1)"
                     }
@@ -140,6 +132,7 @@
                         "type": "string"
                     },
                     "schema": {
+                        "nullable": true,
                         "field": "reaction_4",
                         "type": "TEXT"
                     }
@@ -185,7 +178,8 @@
                     },
                     "schema": {
                         "field": "photo_link",
-                        "type": "VARCHAR(255)"
+                        "type": "VARCHAR(255)",
+                        "nullable": true
                     }
                 }
             ]
@@ -216,6 +210,7 @@
                         "type": "string"
                     },
                     "schema": {
+                        "nullable": true,
                         "field": "description",
                         "type": "Text"
                     }
@@ -228,6 +223,7 @@
                         "type": "string"
                     },
                     "schema": {
+                        "nullable": true,
                         "field": "level",
                         "type": "CHAR(1)"
                     }
@@ -240,6 +236,7 @@
                         "type": "string"
                     },
                     "schema": {
+                        "nullable": true,
                         "field": "language",
                         "type": "CHAR(2)"
                     }
@@ -252,6 +249,7 @@
                         "type": "string"
                     },
                     "schema": {
+                        "nullable": true,
                         "field": "format",
                         "type": "CHAR(1)"
                     }
@@ -264,6 +262,7 @@
                         "type": "string"
                     },
                     "schema": {
+                        "nullable": true,
                         "field": "room",
                         "type": "VARCHAR(255)"
                     }
@@ -276,8 +275,9 @@
                         "type": "string"
                     },
                     "schema": {
+                        "nullable": true,
                         "field": "speakers",
-                        "type": "JSONB"
+                        "type": "TEXT"
                     }
                 },
                 {

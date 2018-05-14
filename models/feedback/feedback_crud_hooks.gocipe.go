@@ -30,18 +30,10 @@ func crudPostDelete(id int64, tx *sql.Tx) error {
 	return nil
 }
 
-func crudPreCreate(entity *Feedback, tx *sql.Tx) error {
+func crudPreSave(op string, entity *Feedback, tx *sql.Tx) error {
 	return nil
 }
 
-func crudPostCreate(entity *Feedback, tx *sql.Tx) error {
-	return nil
-}
-
-func crudPreUpdate(entity *Feedback, tx *sql.Tx) error {
-	return nil
-}
-
-func crudPostUpdate(entity *Feedback, tx *sql.Tx) error {
+func crudPostSave(op string, entity *Feedback, tx *sql.Tx) error {
 	return nil
 }
