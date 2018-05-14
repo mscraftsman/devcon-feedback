@@ -4,6 +4,11 @@ import router from "./router/router";
 import store from "./store/index";
 import "./registerServiceWorker";
 import "./assets/scss/main.scss";
+import VueAnalytics from "vue-analytics";
+
+Vue.use(VueAnalytics, {
+  id: "UA-12103827-11"
+});
 
 Vue.config.productionTip = false;
 
