@@ -27,7 +27,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	profile, err := retrieveProfile(code)
 
 	if err != nil {
-		util.JSONOutputError(w, http.StatusUnauthorized, err.Error())
+		http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)
 		return
 	}
 
@@ -37,7 +37,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	*visitor.PhotoLink = profile.Photo.PhotoLink
 
 	if err = visitor.Merge(nil, true); err != nil {
-		util.JSONOutputError(w, http.StatusInternalServerError, err.Error())
+		http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)
 		return
 	}
 
@@ -49,7 +49,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	tokenString, err := token.SignedString([]byte(_jwt))
 
 	if err != nil {
-		util.JSONOutputError(w, http.StatusInternalServerError, err.Error())
+		http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)
 		return
 	}
 

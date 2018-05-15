@@ -27,6 +27,8 @@ func main() {
 
 	if err := sessionize.Sync(); err != nil {
 		log.Fatalf("Failed to load sessions information: %s", err)
+	} else {
+		log.Println("Sessionize data loaded")
 	}
 
 	go func() {
