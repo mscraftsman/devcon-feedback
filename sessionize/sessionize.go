@@ -1,49 +1,80 @@
 package sessionize
 
 import (
-	"database/sql"
 	"encoding/json"
-	"errors"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
-
-	"github.com/mscraftsman/devcon-feedback/models/session"
 )
 
-var db *sql.DB
+var (
+	_sessions map[string]Session
+	_speakers map[string]Speaker
+	_rooms    map[string]Room
+)
+
+// Time represents json time without timezone
+type Time time.Time
+
+// UnmarshalJSON decodes from json string
+func (m *Time) UnmarshalJSON(p []byte) error {
+	t, err := time.Parse("2006-01-02T15:04:05", strings.Trim(string(p), `"`))
+
+	if err != nil {
+		return err
+	}
+
+	*m = Time(t)
+
+	return nil
+}
+
+// APIResponse represents api response from sessionize
+type APIResponse struct {
+	Sessions []Session `json:"sessions"`
+	Speakers []Speaker `json:"speakers"`
+	Rooms    []Room    `json:"rooms"`
+}
 
 // Session represents a session on sessionize
 type Session struct {
-	ID          string    `json:"id"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	StartsAt    time.Time `json:"starts_at"`
-	EndsAt      time.Time `json:"ends_at"`
-	Room        string    `json:"room"`
-	Speakers    []struct {
-		Name string `json:"name"`
-	} `json:"name"`
+	ID          string   `json:"id"`
+	Title       string   `json:"title"`
+	Description string   `json:"description"`
+	StartsAt    Time     `json:"startsAt"`
+	EndsAt      Time     `json:"endsAt"`
+	RoomID      int      `json:"roomID"`
+	Speakers    []string `json:"speakers"`
 }
 
-// Init allows injection of services into the package
-func Init(database *sql.DB) {
-	db = database
+// Speaker represents a speaker profile on sessionize
+type Speaker struct {
+	ID             string `json:"id"`
+	FirstName      string `json:"firstName"`
+	LastName       string `json:"lastName"`
+	Bio            string `json:"bio"`
+	TagLine        string `json:"tagLine"`
+	ProfilePicture string `json:"profilePicture"`
+	Sessions       []int  `json:"sessions"`
 }
 
-func retrieveSessions() ([]Session, error) {
+// Room represents session venue on sessionize
+type Room struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+// ReadFromAPI loads data from sessionize API
+func ReadFromAPI() (*APIResponse, error) {
 	var err error
 
-	var response struct {
-		groups []struct {
-			Sessions []Session `json:"sessions"`
-		}
-	}
+	var response APIResponse
 
 	client := &http.Client{Timeout: time.Second * 30}
 
-	rs, err := client.Get("https://sessionize.com/api/v2/351ijy5v/view/Sessions")
+	rs, err := client.Get("https://sessionize.com/api/v2/351ijy5v/view/All")
 
 	if err != nil {
 		return nil, err
@@ -59,48 +90,31 @@ func retrieveSessions() ([]Session, error) {
 		return nil, err
 	}
 
-	if len(response.groups) == 0 {
-		return nil, errors.New("no groups found from sessionize")
-	}
-
-	return response.groups[0].Sessions, nil
+	return &response, nil
 }
 
-// Sync synchronizes session from sessionize api onto database
-func Sync() {
-	var err error
-	sessions, err := retrieveSessions()
+// Sync keeps Sessionize data up to date
+func Sync() error {
+	response, err := ReadFromAPI()
+
 	if err != nil {
-		return
+		return err
 	}
 
-	tx, err := db.Begin()
-	if err != nil {
-		return
+	_sessions = make(map[string]Session)
+	for _, session := range response.Sessions {
+		_sessions[session.ID] = session
 	}
 
-	for _, sess := range sessions {
-		var (
-			s        session.Session
-			speakers []string
-		)
-
-		*s.ID = sess.ID
-		*s.Title = sess.Title
-		*s.Description = sess.Description
-		*s.Room = sess.Room
-
-		for _, speaker := range sess.Speakers {
-			speakers = append(speakers, speaker.Name)
-		}
-
-		*s.Speakers = strings.Join(speakers, ", ")
-		*s.StartAt = sess.StartsAt
-		*s.EndAt = sess.EndsAt
-		*s.Status = true
-
-		s.Merge(tx, false)
+	_speakers = make(map[string]Speaker)
+	for _, speaker := range response.Speakers {
+		_speakers[speaker.ID] = speaker
 	}
 
-	tx.Commit()
+	_rooms = make(map[string]Room)
+	for _, room := range response.Rooms {
+		_rooms[strconv.Itoa(room.ID)] = room
+	}
+
+	return nil
 }
