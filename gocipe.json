@@ -71,7 +71,11 @@
             "description": "represents feedback from a visitor on a session",
             "rest": {
                 "create": true,
-                "prefix": "b/api"
+                "prefix": "b/api",
+                "hooks": {
+                    "pre_create": true,
+                    "post_create": true
+                }
             },
             "fields": [
                 {
@@ -180,140 +184,6 @@
                         "field": "photo_link",
                         "type": "VARCHAR(255)",
                         "nullable": true
-                    }
-                }
-            ]
-        },
-        {
-            "name": "Session",
-            "table": "sessions",
-            "description": "represents a conference session",
-            "primary_key": "string",
-            "fields": [
-                {
-                    "label": "Title",
-                    "serialized": "title",
-                    "property": {
-                        "name": "Title",
-                        "type": "string"
-                    },
-                    "schema": {
-                        "field": "title",
-                        "type": "VARCHAR(255)"
-                    }
-                },
-                {
-                    "label": "Description",
-                    "serialized": "description",
-                    "property": {
-                        "name": "Description",
-                        "type": "string"
-                    },
-                    "schema": {
-                        "nullable": true,
-                        "field": "description",
-                        "type": "Text"
-                    }
-                },
-                {
-                    "label": "Level",
-                    "serialized": "level",
-                    "property": {
-                        "name": "Level",
-                        "type": "string"
-                    },
-                    "schema": {
-                        "nullable": true,
-                        "field": "level",
-                        "type": "CHAR(1)"
-                    }
-                },
-                {
-                    "label": "Language",
-                    "serialized": "language",
-                    "property": {
-                        "name": "Language",
-                        "type": "string"
-                    },
-                    "schema": {
-                        "nullable": true,
-                        "field": "language",
-                        "type": "CHAR(2)"
-                    }
-                },
-                {
-                    "label": "Format",
-                    "serialized": "format",
-                    "property": {
-                        "name": "Format",
-                        "type": "string"
-                    },
-                    "schema": {
-                        "nullable": true,
-                        "field": "format",
-                        "type": "CHAR(1)"
-                    }
-                },
-                {
-                    "label": "Room",
-                    "serialized": "room",
-                    "property": {
-                        "name": "Room",
-                        "type": "string"
-                    },
-                    "schema": {
-                        "nullable": true,
-                        "field": "room",
-                        "type": "VARCHAR(255)"
-                    }
-                },
-                {
-                    "label": "Speakers",
-                    "serialized": "speakers",
-                    "property": {
-                        "name": "Speakers",
-                        "type": "string"
-                    },
-                    "schema": {
-                        "nullable": true,
-                        "field": "speakers",
-                        "type": "TEXT"
-                    }
-                },
-                {
-                    "label": "StartAt",
-                    "serialized": "start_at",
-                    "property": {
-                        "name": "StartAt",
-                        "type": "time.Time"
-                    },
-                    "schema": {
-                        "field": "start_at",
-                        "type": "TIMESTAMP"
-                    }
-                },
-                {
-                    "label": "EndAt",
-                    "serialized": "end_at",
-                    "property": {
-                        "name": "EndAt",
-                        "type": "time.Time"
-                    },
-                    "schema": {
-                        "field": "end_at",
-                        "type": "TIMESTAMP"
-                    }
-                },
-                {
-                    "label": "Status",
-                    "serialized": "status",
-                    "property": {
-                        "name": "Status",
-                        "type": "bool"
-                    },
-                    "schema": {
-                        "field": "status",
-                        "type": "BOOLEAN"
                     }
                 }
             ]
