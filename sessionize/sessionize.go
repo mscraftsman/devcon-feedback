@@ -93,6 +93,12 @@ func ReadFromAPI() (*APIResponse, error) {
 	return &response, nil
 }
 
+// IsValidSession check if given session id is valid
+func IsValidSession(id string) bool {
+	_, ok := _sessions[id]
+	return ok
+}
+
 // Sync keeps Sessionize data up to date
 func Sync() error {
 	response, err := ReadFromAPI()
