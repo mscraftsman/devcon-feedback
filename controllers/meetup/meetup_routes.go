@@ -80,3 +80,13 @@ func Me(w http.ResponseWriter, r *http.Request) {
 
 	util.JSONOutputResponse(w, profile)
 }
+
+// Logout clears JWT cookie
+func Logout(w http.ResponseWriter, r *http.Request) {
+	c := http.Cookie{
+		Name:   cookieName,
+		MaxAge: -1}
+	http.SetCookie(w, &c)
+
+	util.JSONOutputResponse(w, nil)
+}
