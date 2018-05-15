@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"time"
 
 	rice "github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
@@ -21,18 +23,28 @@ func main() {
 
 	inject(config)
 
-	// go func() {
-	// 	sessionize.Sync()
-	// 	time.Sleep(time.Minute * 5)
-	// }()
-
 	assetsHandler := http.FileServer(rice.MustFindBox("web/webapp-client/dist").HTTPBox())
+
+	if err := sessionize.Sync(); err != nil {
+		log.Fatalf("Failed to load sessions information: %s", err)
+	}
+
+	go func() {
+		time.Sleep(time.Minute * 5)
+		sessionize.Sync()
+	}()
 
 	app.ServeHTTP(":"+config.HTTPPort, func(router *mux.Router) error {
 		router.HandleFunc("/b/login", meetup.Login).Methods(http.MethodGet)
 		router.HandleFunc("/b/meetup", meetup.LoginCallback).Methods(http.MethodGet)
 		router.HandleFunc("/b/me", meetup.Me).Methods(http.MethodGet)
-		router.HandleFunc("/b/api/feedbacks", feedback.RestCreate).Methods("POST")
+		router.HandleFunc("/b/api/feedbacks", feedback.RestCreate).Methods(http.MethodPost)
+		router.HandleFunc("/b/api/speakers/{id}", sessionize.GetSpeaker).Methods(http.MethodGet)
+		router.HandleFunc("/b/api/speakers", sessionize.GetSpeakers).Methods(http.MethodGet)
+		router.HandleFunc("/b/api/sessions/{id}", sessionize.GetSession).Methods(http.MethodGet)
+		router.HandleFunc("/b/api/sessions", sessionize.GetSessions).Methods(http.MethodGet)
+		router.HandleFunc("/b/api/rooms/{id}", sessionize.GetRoom).Methods(http.MethodGet)
+		router.HandleFunc("/b/api/rooms", sessionize.GetRooms).Methods(http.MethodGet)
 		router.PathPrefix("/").Handler(assetsHandler)
 		return nil
 	})
@@ -40,7 +52,6 @@ func main() {
 
 func inject(config *app.Config) {
 	meetup.Init(config.MeetupKey, config.MeetupSecret, config.JWTSecret)
-	sessionize.Init(config.DB)
 	feedback.Inject(config.DB)
 	rating.Inject(config.DB)
 	session.Inject(config.DB)
