@@ -41,17 +41,7 @@
         "read_list": true,
         "update": true,
         "delete": true,
-        "merge": true,
-        "hooks": {
-            "pre_save": true,
-            "post_save": true,
-            "pre_read": true,
-            "post_read": true,
-            "pre_list": true,
-            "post_list": true,
-            "pre_delete": true,
-            "post_delete": true
-        }
+        "merge": true
     },
     "rest": {
         "create": false,

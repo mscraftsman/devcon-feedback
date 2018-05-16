@@ -26,7 +26,7 @@ func areResponsesInvalid(entity *Feedback) bool {
 		return true
 	}
 
-	switch *entity.Reaction2 {
+	switch *entity.Reaction3 {
 	case "no", "yes":
 	default:
 		return true

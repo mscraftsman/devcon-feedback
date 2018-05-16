@@ -11,7 +11,6 @@ import (
 	"github.com/mscraftsman/devcon-feedback/controllers/meetup"
 	"github.com/mscraftsman/devcon-feedback/models/feedback"
 	"github.com/mscraftsman/devcon-feedback/models/rating"
-	"github.com/mscraftsman/devcon-feedback/models/session"
 	"github.com/mscraftsman/devcon-feedback/models/visitor"
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 )
@@ -57,6 +56,5 @@ func inject(config *app.Config) {
 	meetup.Init(config.MeetupKey, config.MeetupSecret, config.JWTSecret)
 	feedback.Inject(config.DB)
 	rating.Inject(config.DB)
-	session.Inject(config.DB)
 	visitor.Inject(config.DB)
 }
