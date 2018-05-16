@@ -9,6 +9,7 @@ const state = {
   api: "http://localhost:8080",
   count: 0,
   userid: "abcs",
+  votes: [],
   user: {
     status: false, // true or false
     data: {
@@ -93,6 +94,9 @@ const mutations = {
       photo: ""
     };
   },
+  USER_VOTES(state, payload) {
+    state.votes = payload.data;
+  },
   setUserId(state, payload) {
     state.userid = payload;
   }
@@ -123,6 +127,9 @@ const getters = {
   },
   getSpeakers(state) {
     return state.speakers;
+  },
+  getVotes(state) {
+    return state.votes;
   },
   getSpeaker(state, id) {},
   getErrors(state) {
@@ -183,6 +190,19 @@ const actions = {
         }
       })
       .catch(function(error) {});
+  },
+  fetchVotes({ commit }) {
+    let url = "b/api/feedbacks/me";
+    axios
+      .get(url)
+      .then(function(response) {
+        if (response.status) {
+          commit("USER_VOTES", response.data);
+        }
+      })
+      .catch(function(error) {
+        //jo bolé so nihal !
+      });
   },
   submitVote({ commit }, payload) {
     console.log(payload);
