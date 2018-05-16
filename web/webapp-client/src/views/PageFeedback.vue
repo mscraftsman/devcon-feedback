@@ -102,7 +102,7 @@ export default {
           text: "Did you learn something new?",
           type: "options",
           options: ["no", "yes"],
-          value: ""
+          value: "yes"
         },
         {
           text: "Remarks for speaker or organisation",
