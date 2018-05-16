@@ -7,16 +7,6 @@
       </div>
       <div class="buttons-wrapper">
 
-        <div class="super-menu-item" v-if="!user.status">
-          <a href="/b/login">
-            Login
-          </a>
-        </div>
-        <div class="super-menu-item" v-else>
-          <a @click="triggerLogout">
-            Logout
-          </a>
-        </div>
         <div class="super-menu-item">
           <router-link :to="{ name: 'sessions' }">
             Schedule
@@ -26,6 +16,17 @@
           <router-link :to="{ name: 'speakers' }">
             Speakers
           </router-link>
+        </div>
+
+        <div class="super-menu-item meetup" v-if="!user.status">
+          <a href="/b/login">
+            Login with meetup
+          </a>
+        </div>
+        <div class="super-menu-item meetup" v-else>
+          <a @click="triggerLogout">
+            🔌 Logout
+          </a>
         </div>
       </div>
     </div>
@@ -163,21 +164,21 @@ export default {
       //   background-image: url("../assets/schedule_1.jpg");
     }
   }
-  &:nth-child(1) {
-    filter: saturate(0);
-    opacity: 0.5;
-    a {
-      //   background-image: url("../assets/duotone.jpg");
-      background: #31e8b7;
-      color: black;
-    }
-  }
+  // &:nth-child(3) {
+  //   filter: saturate(0);
+  //   opacity: 0.5;
+  //   a {
+  //     //   background-image: url("../assets/duotone.jpg");
+  //     background: #31e8b7;
+  //     color: black;
+  //   }
+  // }
 
   a {
     // height: 200px;
     width: 100%;
     display: block;
-    padding: 30px 0;
+    padding: 20px 0;
     margin-bottom: 20px;
     box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.3),
       0 5px 15px 0 rgba(0, 0, 0, 0.08);
@@ -186,6 +187,15 @@ export default {
     color: white;
     border-radius: 5px;
     background: #2847d9;
+    font-size: 24px;
+  }
+
+  &.meetup {
+    a {
+      background: #fff;
+      color: #f64060;
+      font-size: 16px;
+    }
   }
 }
 
