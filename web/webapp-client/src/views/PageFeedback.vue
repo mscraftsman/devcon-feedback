@@ -5,7 +5,8 @@
       <!-- <span>{{ getSessionCurrent.questionCurrent }}</span> -->
     </div>
 
-    <div class="questions-wrapper">
+    <div class="questions-wrapper" v-if="!voted">
+
       <div class="virer-mam">
         <div class="devirer-mam">
           <transition name="fade" v-for="(question, index) in questions" :key="index">
@@ -29,12 +30,21 @@
             </div>
           </transition>
 
-          <div class="button-cancel" @click="cancel">Cancel</div>
-          <div class="button-next" v-if="currentQuestion < 3" @click="next">Next</div>
-          <div class="button-next button-submit" v-else @click="submit">Submit</div>
+          <div class="buttons-wrapper">
+
+            <div class="button button-cancel" @click="cancel">Cancel</div>
+            <div class="button button-next" v-if="currentQuestion < 3" @click="next">Next</div>
+            <div class="button button-submit" v-else @click="submit">Submit</div>
+          </div>
 
         </div>
       </div>
+    </div>
+    <div class="questions-wrapper voted-wrapper" v-else>
+      <p>😱</p>
+      <span class="title">You've already submitted feedback for this session !</span>
+      <p></p>
+      <div class="button" @click="cancel">back</div>
     </div>
 
     <!-- <div class="footer">
@@ -58,8 +68,8 @@ export default {
         height: 20,
         bgStyle: {
           // backgroundColor: "#fff",
-          backgroundImage: "-webkit-linear-gradient(left, black, #31e8b7)"
-          // boxShadow: "inset 0.5px 0.5px 3px 1px rgba(0,0,0,.36)"
+          // backgroundImage: "-webkit-linear-gradient(left, black, #31e8b7)"
+          boxShadow: "inset 0.5px 0.5px 3px 1px rgba(0,0,0,.1)"
         },
         sliderStyle: [
           {
@@ -91,7 +101,7 @@ export default {
         {
           text: "Did you learn something new?",
           type: "options",
-          options: ["-1", "1"],
+          options: ["-1", "yes"],
           value: "1"
         },
         {
@@ -103,9 +113,8 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["submitVote"]),
+    ...mapActions(["submitVote", "fetchVotes"]),
     next: function() {
-      console.log("next");
       this.currentQuestion++;
     },
     submit: function() {
@@ -116,11 +125,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getName", "getSessionCurrent", "getUser"]),
+    ...mapGetters(["getName", "getSessionCurrent", "getUser", "getVotes"]),
     ...mapGetters({
       sessions: "getSessions",
       speakers: "getSpeakers"
     }),
+    beforeMount() {
+      this.fetchVotes();
+    },
+    voted: function() {
+      let allVoted = _.map(this.getVotes, "session_id");
+      if (allVoted.indexOf(this.id) !== -1) {
+        return true;
+      }
+      return false;
+    },
     reaction: function() {
       let userid = "none";
       if (this.getUser.status) {
@@ -132,8 +151,7 @@ export default {
         reaction_1: this.questions[0].value,
         reaction_2: this.questions[1].value,
         reaction_3: this.questions[2].value,
-        reaction_4: this.questions[3].value,
-        created_at: new Date()
+        reaction_4: this.questions[3].value
       };
       return reaction;
     },
@@ -154,10 +172,9 @@ export default {
   },
   watch: {
     currentQuestion(val) {
-      console.log(val);
-
-      this.$refs.slider1[0].refresh();
-      // }
+      if (typeof this.$refs["slider" + val] !== "undefined") {
+        this.$refs["slider" + val][0].refresh();
+      }
     }
   }
 };
@@ -183,10 +200,12 @@ export default {
 
 .info {
   grid-area: userinfo;
-  padding: 18px;
+  padding: 5px 10px;
+  align-self: center;
+  justify-self: center;
   span {
     display: block;
-    text-align: right;
+    text-align: center;
 
     &.title {
       text-transform: uppercase;
@@ -244,9 +263,15 @@ export default {
         padding: 50px 0;
       }
     }
-    .button-next {
+    .buttons-wrapper {
       grid-area: next;
-      justify-self: center;
+    }
+    .button-next,
+    .button-submit {
+      justify-self: flex-end;
+    }
+    .button-submit {
+      background-color: var(--color-green);
     }
 
     .vue-slider-component {
@@ -264,23 +289,50 @@ export default {
 }
 
 .help-text {
-  font-size: 10px;
+  font-size: 12px;
 }
 
-.button-next {
+.buttons-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-gap: 10px;
+  // justify-content: center;
+}
+
+.button {
   cursor: pointer;
   background: white;
   color: var(--color-blue);
   color: black;
   border-radius: 2px;
   font-size: 18px;
-  padding: 20px;
-  width: 200px;
+  padding: 20px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 200px;
+  align-self: end;
+
+  transition: transform 0.2s ease-in-out;
+  &:active,
+  &:focus {
+    transform: scale(0.97);
+    transition: transform 0.2s ease-in-out;
+  }
+}
+
+.button-next {
+  background: white;
+  // width: 200px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 
   &.button-submit {
     background: var(--color-green);
   }
+}
+
+.button-cancel {
+  font-size: 10px;
+  background-color: #efefef;
 }
 
 .textbox {
@@ -292,6 +344,21 @@ export default {
   margin-top: 10px;
   box-shadow: 0 0 4px #999;
   resize: disable;
+}
+
+.voted-wrapper {
+  span.title {
+    color: white;
+    font-size: 16px;
+    padding: 0 20px;
+  }
+
+  p {
+    font-size: 100px;
+    margin: 0;
+    padding: 10px;
+  }
+  justify-items: center;
 }
 
 .footer {
