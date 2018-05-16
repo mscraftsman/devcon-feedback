@@ -239,13 +239,13 @@ export default {
   overflow: hidden;
 
   .virer-mam {
-    transform: rotate(-5deg);
+    // transform: rotate(-5deg);
     background: white;
     width: 120vw;
   }
 
   .devirer-mam {
-    transform: rotate(5deg);
+    // transform: rotate(5deg);
     padding: 50px 10vw;
     display: grid;
     grid-row-gap: 30px;
@@ -331,7 +331,7 @@ export default {
 }
 
 .button-cancel {
-  font-size: 10px;
+  // font-size: 10px;
   background-color: #efefef;
 }
 
