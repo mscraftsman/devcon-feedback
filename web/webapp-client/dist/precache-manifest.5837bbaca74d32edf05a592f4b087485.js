@@ -4,15 +4,15 @@ self.__precacheManifest = [
     "url": "/fonts/Shentox-Light.4d98fda9.woff"
   },
   {
-    "revision": "6c9f1603cb997c06b1e9",
-    "url": "/js/vendor.6c9f1603.js"
+    "revision": "d6b765a103e8c89c2335",
+    "url": "/js/vendor.d6b765a1.js"
   },
   {
     "revision": "00c2e286c59070c7b1fc2d3757392677",
     "url": "/fonts/Shentox-Bold.00c2e286.woff"
   },
   {
-    "revision": "3bdd9c65031efda2944eca7c9513fab1",
+    "revision": "01226b8903bfa12c575344e9fc23cf25",
     "url": "/index.html"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = [
     "url": "/js/manifest.bb41d6d8.js"
   },
   {
-    "revision": "2a5305dbee09e1734a7a",
-    "url": "/js/app.2a5305db.js"
+    "revision": "583ca5da0c3c2b2adadb",
+    "url": "/js/app.583ca5da.js"
   },
   {
     "revision": "895cd7e825e0c6818616b24e43337e25",
@@ -68,7 +68,7 @@ self.__precacheManifest = [
     "url": "/fonts/Shentox-Medium.cc215ddc.woff"
   },
   {
-    "revision": "2a5305dbee09e1734a7a",
-    "url": "/css/app.f1b9453c.css"
+    "revision": "583ca5da0c3c2b2adadb",
+    "url": "/css/app.d8816aa3.css"
   }
 ];
