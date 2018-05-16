@@ -54,7 +54,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookie := http.Cookie{Name: cookieName, Value: tokenString, Expires: time.Now().Add(72 * time.Hour), HttpOnly: true, Path: "/"}
+	cookie := http.Cookie{Name: cookieName, Value: tokenString, Expires: time.Now().Add(72 * time.Hour), HttpOnly: false, Path: "/"}
 	http.SetCookie(w, &cookie)
 	http.Redirect(w, r, app.BaseURL+"/", http.StatusFound)
 }
@@ -80,14 +80,4 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	}
 
 	util.JSONOutputResponse(w, profile)
-}
-
-// Logout clears JWT cookie
-func Logout(w http.ResponseWriter, r *http.Request) {
-	c := http.Cookie{
-		Name:   cookieName,
-		MaxAge: -1}
-	http.SetCookie(w, &c)
-
-	util.JSONOutputResponse(w, nil)
 }
