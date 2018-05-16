@@ -204,15 +204,17 @@ const actions = {
         //jo bolé so nihal !
       });
   },
-  submitVote({ commit }, payload) {
+  submitVote({ commit, dispatch }, payload) {
     console.log(payload);
 
     let url = "/b/api/feedbacks";
 
     axios
       .post(url, payload)
-      .then(function(response) {
+      .then(response => {
+        // thanks
         console.log(response);
+        dispatch("fetchVotes");
       })
       .catch(function(error) {
         console.log(error);

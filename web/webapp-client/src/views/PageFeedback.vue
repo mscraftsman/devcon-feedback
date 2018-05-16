@@ -41,8 +41,8 @@
       </div>
     </div>
     <div class="questions-wrapper voted-wrapper" v-else>
-      <p>😱</p>
-      <span class="title">You've already submitted feedback for this session !</span>
+      <p>👌</p>
+      <span class="title">We've received your feedback for this session. Thanks!</span>
       <p></p>
       <div class="button" @click="cancel">back</div>
     </div>
@@ -101,8 +101,8 @@ export default {
         {
           text: "Did you learn something new?",
           type: "options",
-          options: ["-1", "yes"],
-          value: "1"
+          options: ["no", "yes"],
+          value: ""
         },
         {
           text: "Remarks for speaker or organisation",
@@ -369,4 +369,3 @@ export default {
   align-self: center;
 }
 </style>
-
