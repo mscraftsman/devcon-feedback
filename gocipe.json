@@ -114,7 +114,7 @@
                     },
                     "schema": {
                         "field": "reaction_1",
-                        "type": "CHAR(1)"
+                        "type": "VARCHAR(2)"
                     }
                 },
                 {
@@ -127,7 +127,7 @@
                     "schema": {
                         "nullable": true,
                         "field": "reaction_2",
-                        "type": "CHAR(1)"
+                        "type": "VARCHAR(2)"
                     }
                 },
                 {
@@ -140,7 +140,7 @@
                     "schema": {
                         "nullable": true,
                         "field": "reaction_3",
-                        "type": "CHAR(1)"
+                        "type": "VARCHAR(3)"
                     }
                 },
                 {
