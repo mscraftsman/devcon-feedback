@@ -53,9 +53,18 @@
         </div>
 
         <div class="des-wrap rate" v-if="user.status">
-          <router-link :to="{ name: 'feedback',  params: { id: id }}" class="rate">
+          <router-link v-if="voted" :to="{ name: 'feedback',  params: { id: id }}" class="rate rated">
+            ✅ Rated. Thanks!
+          </router-link>
+          <router-link v-else :to="{ name: 'feedback',  params: { id: id }}" class="rate">
             Rate
           </router-link>
+        </div>
+
+        <div class="des-wrap rate meetup" v-else>
+          <a href="/b/login" class="rate">
+            Login with meetup to rate
+          </a>
         </div>
       </div>
 
@@ -84,7 +93,7 @@ import moment from "moment";
 export default {
   props: ["id"],
   methods: {
-    ...mapActions(["fetchSessions", "fetchSpeakers"]),
+    ...mapActions(["fetchSessions", "fetchSpeakers", "fetchVotes"]),
     getSpeaker: function(id) {
       if (this.speakers.length === 0) {
         this.fetchSpeakers();
@@ -105,7 +114,8 @@ export default {
     ...mapGetters({
       sessions: "getSessions",
       speakers: "getSpeakers",
-      user: "getUser"
+      user: "getUser",
+      getVotes: "getVotes"
     }),
     session: function() {
       if (typeof this.sessions == "undefined") {
@@ -118,12 +128,20 @@ export default {
         }, []);
       let session = _.filter(sessions, { id: this.id })[0];
       return session;
+    },
+    voted: function() {
+      let allVoted = _.map(this.getVotes, "session_id");
+      if (allVoted.indexOf(this.id) !== -1) {
+        return true;
+      }
+      return false;
     }
   },
   watch: {},
   beforeMount() {
     if (this.$store.state.sessions.length === 0) {
       // console.error("no sessions found");
+      this.fetchVotes();
       this.fetchSessions();
       this.fetchSpeakers();
     } else {
@@ -173,12 +191,12 @@ a.back {
     align-items: center;
     height: var(--backsize);
     width: var(--backsize);
-    padding: calc(var(--backsize)/4);
+    padding: calc(var(--backsize) / 4);
     // background: var(--color-blue);
     color: var(--color-blue);
     background: white;
     border-radius: var(--backsize) 0 0 var(--backsize);
-    padding-left: calc(var(--backsize)/3.5);
+    padding-left: calc(var(--backsize) / 3.5);
     text-align: center;
     transition: transform 0.2s ease-in-out;
     // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
@@ -316,6 +334,19 @@ a.back {
         font-size: 20px;
         color: var(--color-blue);
       }
+    }
+
+    &.meetup {
+      a {
+        background: #f64060;
+        font-size: 14px;
+        color: white;
+      }
+    }
+
+    a.rated {
+      background: black;
+      color: var(--color-green);
     }
 
     label {
