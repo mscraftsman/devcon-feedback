@@ -8,30 +8,31 @@
     <div class="questions-wrapper">
       <div class="virer-mam">
         <div class="devirer-mam">
-          <transition name="slide-fade" v-for="(question, index) in questions" :key="index">
-            <div class="question-holder" v-show="getSessionCurrent.questionCurrent == index">
-              <div class="question">{{ question }}</div>
-              <div v-if="index === 0" class="comment-wrapper">
-                <div class="reaction-wrapper">
-                  <Reactions />
+          <transition name="fade" v-for="(question, index) in questions" :key="index">
+            <div class="question-holder" v-show="currentQuestion == index">
+
+              <div class="question">{{ question.text }}</div>
+              <template v-if="question.type === 'options'">
+                <div class="comment-wrapper">
+                  <div class="reaction-wrapper">
+                    <Reactions v-model="question.value" />
+                  </div>
                 </div>
-              </div>
-              <div v-if="index === 1" class="comment-wrapper">
+                <vue-slider :height="style.height" :processStyle="style.processStyle" :bgStyle="style.bgStyle" :sliderStyle="style.sliderStyle" :dotSize="style.dotSize" tooltip="false" :show="currentQuestion == index" :ref="'slider' + index" :data="question.options" v-model="question.value"></vue-slider>
+                <span class="help-text">Slide that 👆 thing left or right to rate 👈 👉 </span>
+              </template>
+              <div v-else class="comment-wrapper">
                 <div class="reaction-wrapper">
-                  <Reactions />
+                  <textarea class="textbox" v-model="question.value" placeholder="We would be grateful if you could leave some constructive critism."></textarea>
                 </div>
-              </div>
-              <div v-else-if="index === 2" class="comment-wrapper">
-                <div class="reaction-wrapper">
-                  <Reactions type="yesno" />
-                </div>
-              </div>
-              <div v-else-if="index === 3" class="comment-wrapper">
-                <textarea class="textbox" placeholder="We would be grateful if you could leave some constructive critism."></textarea>
               </div>
             </div>
           </transition>
-          <div class="button-next" @click="$store.commit('NEXT_QUESTION')">Next</div>
+
+          <div class="button-cancel" @click="cancel">Cancel</div>
+          <div class="button-next" v-if="currentQuestion < 3" @click="next">Next</div>
+          <div class="button-next button-submit" v-else @click="submit">Submit</div>
+
         </div>
       </div>
     </div>
@@ -44,41 +45,98 @@
 </template>
 
 <script>
+import vueSlider from "vue-slider-component";
 import Reactions from "../components/Reactions";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: ["id"],
   data() {
     return {
-      reaction: {
-        session_id: this.id,
-        visitor_id: "userid",
-        reaction_1: "",
-        reaction_2: "",
-        reaction_3: "",
-        reaction_4: "",
-        created_at: ""
+      style: {
+        dotSize: 50,
+        height: 20,
+        bgStyle: {
+          // backgroundColor: "#fff",
+          backgroundImage: "-webkit-linear-gradient(left, black, #31e8b7)"
+          // boxShadow: "inset 0.5px 0.5px 3px 1px rgba(0,0,0,.36)"
+        },
+        sliderStyle: [
+          {
+            backgroundColor: "red"
+          },
+          {
+            backgroundColor: "white"
+          }
+        ],
+        processStyle: {
+          // backgroundImage: "-webkit-linear-gradient(left, #f05b72, #3498db)"
+          backgroundColor: "transparent"
+        }
       },
+      currentQuestion: 0,
       questions: [
-        "How would you rate the speaker?",
-        "How would you rate the session content?",
-        "Did you learn something new?",
-        "Remarks for speaker or organisation?"
+        {
+          text: "How would you rate the speaker?",
+          type: "options",
+          options: ["-2", "-1", "1", "2", "3"],
+          value: "1"
+        },
+        {
+          text: "How would you rate the session content?",
+          type: "options",
+          options: ["-2", "-1", "1", "2", "3"],
+          value: "1"
+        },
+        {
+          text: "Did you learn something new?",
+          type: "options",
+          options: ["-1", "1"],
+          value: "1"
+        },
+        {
+          text: "Remarks for speaker or organisation",
+          type: "text",
+          value: ""
+        }
       ]
     };
   },
   methods: {
+    ...mapActions(["submitVote"]),
     next: function() {
       console.log("next");
+      this.currentQuestion++;
+    },
+    submit: function() {
+      this.submitVote(this.reaction);
+    },
+    cancel: function() {
+      this.$router.go(-1);
     }
   },
   computed: {
-    ...mapGetters(["getName", "getSessionCurrent"]),
+    ...mapGetters(["getName", "getSessionCurrent", "getUser"]),
     ...mapGetters({
       sessions: "getSessions",
       speakers: "getSpeakers"
     }),
+    reaction: function() {
+      let userid = "none";
+      if (this.getUser.status) {
+        userid = this.getUser.data.id;
+      }
+      let reaction = {
+        session_id: this.id,
+        // visitor_id: userid,
+        reaction_1: this.questions[0].value,
+        reaction_2: this.questions[1].value,
+        reaction_3: this.questions[2].value,
+        reaction_4: this.questions[3].value,
+        created_at: new Date()
+      };
+      return reaction;
+    },
     session: function() {
       let sessions = this.sessions
         .map(groups => groups.sessions)
@@ -91,7 +149,16 @@ export default {
     }
   },
   components: {
-    Reactions
+    Reactions,
+    vueSlider
+  },
+  watch: {
+    currentQuestion(val) {
+      console.log(val);
+
+      this.$refs.slider1[0].refresh();
+      // }
+    }
   }
 };
 </script>
@@ -153,22 +220,38 @@ export default {
   overflow: hidden;
 
   .virer-mam {
-    transform: rotate(-10deg);
+    transform: rotate(-5deg);
     background: white;
     width: 120vw;
   }
 
   .devirer-mam {
-    transform: rotate(10deg);
+    transform: rotate(5deg);
     padding: 50px 10vw;
     display: grid;
-    grid-template-areas: "here";
-    grid-template-columns: 1;
-    grid-template-rows: 40vh;
+    grid-row-gap: 30px;
+    grid-template-areas:
+      ". here ."
+      ". next .";
+    grid-template-columns: 10vw minmax(200px, 2fr) 10vw;
+    // grid-template-rows: 40vh;
     //   width: 100vw;
 
     .question-holder {
       grid-area: here;
+
+      .comment-wrapper {
+        padding: 50px 0;
+      }
+    }
+    .button-next {
+      grid-area: next;
+      justify-self: center;
+    }
+
+    .vue-slider-component {
+      max-width: 400px;
+      margin: 0 auto;
     }
   }
 
@@ -180,8 +263,24 @@ export default {
   }
 }
 
+.help-text {
+  font-size: 10px;
+}
+
 .button-next {
-  background: red;
+  cursor: pointer;
+  background: white;
+  color: var(--color-blue);
+  color: black;
+  border-radius: 2px;
+  font-size: 18px;
+  padding: 20px;
+  width: 200px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+
+  &.button-submit {
+    background: var(--color-green);
+  }
 }
 
 .textbox {

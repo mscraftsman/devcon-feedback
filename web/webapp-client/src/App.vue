@@ -6,10 +6,9 @@
           <img src="@/assets/logo.svg" alt="">
         </router-link>
       </div>
-      <!-- <div class="user-info">
-        <span class="title">Logged in as</span>
-        <span>User Name</span>
-      </div> -->
+      <div class="user-info" v-if="user.status">
+        <span class="title">Logged in as {{ user.data.name }}</span>
+      </div>
     </div>
 
     <transition name="fade" mode="out-in">
@@ -19,13 +18,21 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
     ...mapGetters({
-      errors: "getErrors"
+      errors: "getErrors",
+      user: "getUser"
     })
+  },
+  methods: {
+    ...mapActions(["checkUser", "triggerLogout"])
+  },
+  mounted() {
+    // see if user is logged in
+    this.checkUser();
   }
 };
 </script>
@@ -156,7 +163,7 @@ body {
   }
 
   .user-info {
-    padding: 18px;
+    // padding: 18px;
     span {
       display: block;
       text-align: right;
@@ -164,6 +171,9 @@ body {
       &.title {
         text-transform: uppercase;
         font-size: 12px;
+        line-height: 33px;
+        color: white;
+        padding-right: 20px;
       }
     }
     font-size: 14px;
