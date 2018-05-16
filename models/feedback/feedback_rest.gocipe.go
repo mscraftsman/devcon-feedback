@@ -102,6 +102,7 @@ func RestCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	response.Status = true
 	output, err := json.Marshal(response)
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json")
