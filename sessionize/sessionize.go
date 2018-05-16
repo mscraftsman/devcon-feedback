@@ -100,9 +100,10 @@ func ReadFromAPI() (*APIResponse, error) {
 }
 
 // IsVotableSession check if given session id is valid
+// returns valid, open
 func IsVotableSession(id string) (bool, bool) {
 	sess, ok := _sessions[id]
-	return false, ok && _now.After(time.Time(sess.StartsAt))
+	return ok, _now.After(time.Time(sess.StartsAt))
 }
 
 // Sync keeps Sessionize data up to date
