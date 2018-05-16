@@ -52,10 +52,10 @@
           <p>{{ session.level }}</p>
         </div>
 
-        <div class="des-wrap rate">
-          <!-- <router-link :to="{ name: 'feedback',  params: { id: id }}" class="rate">
+        <div class="des-wrap rate" v-if="user.status">
+          <router-link :to="{ name: 'feedback',  params: { id: id }}" class="rate">
             Rate
-          </router-link> -->
+          </router-link>
         </div>
       </div>
 
@@ -104,7 +104,8 @@ export default {
   computed: {
     ...mapGetters({
       sessions: "getSessions",
-      speakers: "getSpeakers"
+      speakers: "getSpeakers",
+      user: "getUser"
     }),
     session: function() {
       if (typeof this.sessions == "undefined") {

@@ -1,0 +1,32 @@
+{
+  "services": [
+    {
+      "cmd":
+        "$GOPATH/src/github.com/mscraftsman/devcon-feedback/devcon-feedback",
+      "dir": "$GOPATH/src/github.com/mscraftsman/devcon-feedback",
+      "env": "HTTP_PORT={PORT1}"
+    },
+    {
+      "cmd": "npm",
+      "dir":
+        "$GOPATH/src/github.com/mscraftsman/devcon-feedback/web/webapp-client",
+      "args": "run serve -- --port={PORT2}"
+    }
+  ],
+  "mappings": [
+    {
+      "path": "/b",
+      "destination": "http://localhost:{PORT1}"
+    },
+    {
+      "path": "/",
+      "destination": "http://localhost:{PORT2}"
+    },
+    {
+      "path": "/",
+      "destination": "ws://localhost:{PORT2}"
+    }
+  ],
+  "port": 3000,
+  "parallel": false
+}

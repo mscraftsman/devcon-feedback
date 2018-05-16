@@ -7,15 +7,19 @@
       </div>
       <div class="buttons-wrapper">
 
+        <div class="super-menu-item" v-if="!user.status">
+          <a href="/b/login">
+            Login
+          </a>
+        </div>
+        <div class="super-menu-item" v-else>
+          <a @click="triggerLogout">
+            Logout
+          </a>
+        </div>
         <div class="super-menu-item">
           <router-link :to="{ name: 'sessions' }">
             Schedule
-          </router-link>
-        </div>
-        <div class="super-menu-item">
-          <router-link :to="{ name: '' }">
-            Login
-            <span>(coming soon)</span>
           </router-link>
         </div>
         <div class="super-menu-item">
@@ -38,7 +42,7 @@ import moment from "moment";
 
 export default {
   methods: {
-    ...mapActions(["fetchSessions", "fetchSpeakers"]),
+    ...mapActions(["fetchSessions", "fetchSpeakers", "triggerLogout"]),
     time: function(date) {
       // console.log()
       // return new Date(date).toDateString();
@@ -47,7 +51,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      sessions: "getSessions"
+      sessions: "getSessions",
+      user: "getUser"
     })
   },
   mounted: function() {
@@ -158,7 +163,7 @@ export default {
       //   background-image: url("../assets/schedule_1.jpg");
     }
   }
-  &:nth-child(2) {
+  &:nth-child(1) {
     filter: saturate(0);
     opacity: 0.5;
     a {

@@ -10,9 +10,12 @@ const state = {
   count: 0,
   userid: "abcs",
   user: {
-    authenticated: true, // true or false
-    name: "Sandeep Ramgolam",
-    jwt: ""
+    status: false, // true or false
+    data: {
+      id: "",
+      name: "",
+      photo: ""
+    }
   },
   questions: [
     "How would you rate the speaker?",
@@ -78,6 +81,18 @@ const mutations = {
     };
     state.error.log.push(error);
   },
+  USER_LOGIN(state, payload) {
+    state.user.status = true;
+    state.user.data = payload;
+  },
+  USER_LOGOUT(state) {
+    state.user.status = false;
+    state.user.data = {
+      name: "",
+      id: "",
+      photo: ""
+    };
+  },
   setUserId(state, payload) {
     state.userid = payload;
   }
@@ -87,8 +102,8 @@ const getters = {
   getName(state) {
     return state.user.name;
   },
-  getUserId(state) {
-    return state.userid;
+  getUser(state) {
+    return state.user;
   },
   getSessionCurrent(state) {
     return state.sessionCurrent;
@@ -146,27 +161,38 @@ const actions = {
       });
   },
   checkUser({ commit, state }) {
-    let url = state.api + "/users.json";
+    let url = "/b/me";
     axios
       .get(url)
       .then(function(response) {
-        // console.log(response);
-        let user = _.filter(response.data, { id: state.userid });
-        if (user.length > 0) {
-          //found someone
-          commit("ERROR_LOG_ADD", {
-            type: "success",
-            text: "Succesfully Logged In"
-          });
-        } else {
-          // didn't find anyone
-          commit("ERROR_LOG_ADD", {
-            type: "error",
-            text: "You don't exist"
-          });
+        if (response.data) {
+          commit("USER_LOGIN", response.data.data);
         }
-        console.log(user);
-        // commit('UPDATE_SESSIONS', response)
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+  triggerLogout({ commit }) {
+    let url = "/b/logout";
+    axios
+      .get(url)
+      .then(function(response) {
+        if (response.data.status) {
+          commit("USER_LOGOUT");
+        }
+      })
+      .catch(function(error) {});
+  },
+  submitVote({ commit }, payload) {
+    console.log(payload);
+
+    let url = "/b/api/feedbacks";
+
+    axios
+      .post(url, payload)
+      .then(function(response) {
+        console.log(response);
       })
       .catch(function(error) {
         console.log(error);

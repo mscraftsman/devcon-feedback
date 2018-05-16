@@ -1,5 +1,5 @@
 <template>
-    <div class="reaction-container" v-if="type === 'yesno'">
+  <!-- <div class="reaction-container" v-if="type === ''yesno''">
         <div class="emoji  emoji--sad">
             <div class="emoji__face">
                 <div class="emoji__eyebrows"></div>
@@ -13,50 +13,51 @@
                 <div class="emoji__mouth"></div>
             </div>
         </div>
+    </div> -->
+
+  <div class="reaction-container">
+    <div class="emoji  emoji--angry" v-if="value === '-2'">
+      <div class="emoji__face">
+        <div class="emoji__eyebrows"></div>
+        <div class="emoji__eyes"></div>
+        <div class="emoji__mouth"></div>
+      </div>
     </div>
-    <div class="reaction-container" v-else>
-        <div class="emoji  emoji--angry">
-            <div class="emoji__face">
-                <div class="emoji__eyebrows"></div>
-                <div class="emoji__eyes"></div>
-                <div class="emoji__mouth"></div>
-            </div>
-        </div>
-        <div class="emoji  emoji--sad">
-            <div class="emoji__face">
-                <div class="emoji__eyebrows"></div>
-                <div class="emoji__eyes"></div>
-                <div class="emoji__mouth"></div>
-            </div>
-        </div>
-        <div class="emoji  emoji--like">
-            <div class="emoji__hand">
-                <div class="emoji__thumb"></div>
-            </div>
-        </div>
-        <div class="emoji  emoji--love">
-            <div class="emoji__heart"></div>
-        </div>
-        <!-- <div class="emoji  emoji--yay">
+    <div class="emoji  emoji--sad" v-else-if="value === '-1'">
+      <div class="emoji__face">
+        <div class="emoji__eyebrows"></div>
+        <div class="emoji__eyes"></div>
+        <div class="emoji__mouth"></div>
+      </div>
+    </div>
+    <div class="emoji  emoji--like" v-else-if="value === '1'">
+      <div class="emoji__hand">
+        <div class="emoji__thumb"></div>
+      </div>
+    </div>
+    <div class="emoji  emoji--love" v-else-if="value === '2'">
+      <div class="emoji__heart"></div>
+    </div>
+    <!-- <div class="emoji  emoji--yay">
             <div class="emoji__face">
                 <div class="emoji__eyebrows"></div>
                 <div class="emoji__mouth"></div>
             </div>
         </div> -->
-        <div class="emoji  emoji--wow">
-            <div class="emoji__face">
-                <div class="emoji__eyebrows"></div>
-                <div class="emoji__eyes"></div>
-                <div class="emoji__mouth"></div>
-            </div>
-        </div>
-
+    <div class="emoji  emoji--wow" v-else-if="value === '3'">
+      <div class="emoji__face">
+        <div class="emoji__eyebrows"></div>
+        <div class="emoji__eyes"></div>
+        <div class="emoji__mouth"></div>
+      </div>
     </div>
+
+  </div>
 </template>
 
 <script>
 export default {
-  props: ["type"]
+  props: ["type", "value"]
 };
 </script>
 
@@ -80,7 +81,7 @@ $size: 120px;
   display: inline-block;
   border-radius: 50%;
   position: relative;
-  transform: scale(0.5);
+  // transform: scale(0.5);
   transition: 0.2s ease-in-out;
 
   &:after {
@@ -119,7 +120,7 @@ $size: 120px;
   background: $emoji-like-color;
 
   &:after {
-    content: "Liked it";
+    content: "Liked";
   }
 
   .emoji__hand {
@@ -172,7 +173,7 @@ $size: 120px;
   background: $emoji-love-color;
 
   &:after {
-    content: "Loved it!";
+    content: "Loved!";
   }
 
   .emoji__heart {
@@ -738,22 +739,22 @@ $size: 120px;
   }
 }
 
-[class^="emoji__"] {
-  animation-play-state: paused !important;
-}
+// [class^="emoji__"] {
+//   animation-play-state: paused !important;
+// }
 
-.emoji:not(.active) {
-  filter: saturate(1%);
-}
+// .emoji:not(.active) {
+//   filter: saturate(1%);
+// }
 
-.emoji.active,
-.emoji:hover {
-  transform: scale(0.7);
-  filter: saturate(100%);
-  transition: 0.2s ease-in-out;
+// .emoji.active,
+// .emoji:hover {
+//   // transform: scale(0.7);
+//   filter: saturate(100%);
+//   transition: 0.2s ease-in-out;
 
-  [class^="emoji__"] {
-    animation-play-state: running !important;
-  }
-}
+//   [class^="emoji__"] {
+//     animation-play-state: running !important;
+//   }
+// }
 </style>
