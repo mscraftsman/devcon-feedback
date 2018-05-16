@@ -13,6 +13,7 @@ var (
 	_sessions map[string]Session
 	_speakers map[string]Speaker
 	_rooms    map[string]Room
+	_now      time.Time
 )
 
 // Time represents json time without timezone
@@ -29,6 +30,11 @@ func (m *Time) UnmarshalJSON(p []byte) error {
 	*m = Time(t)
 
 	return nil
+}
+
+// Inject external dependencies
+func Inject(now time.Time) {
+	_now = now
 }
 
 // APIResponse represents api response from sessionize
@@ -93,10 +99,10 @@ func ReadFromAPI() (*APIResponse, error) {
 	return &response, nil
 }
 
-// IsValidSession check if given session id is valid
-func IsValidSession(id string) bool {
-	_, ok := _sessions[id]
-	return ok
+// IsVotableSession check if given session id is valid
+func IsVotableSession(id string) (bool, bool) {
+	sess, ok := _sessions[id]
+	return false, ok && _now.After(time.Time(sess.StartsAt))
 }
 
 // Sync keeps Sessionize data up to date

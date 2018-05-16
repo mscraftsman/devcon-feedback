@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -54,6 +55,14 @@ func main() {
 
 func inject(config *app.Config) {
 	meetup.Init(config.MeetupKey, config.MeetupSecret, config.JWTSecret)
+
+	if now, err := time.Parse("2006-01-02T15:04:05", config.Now); err == nil {
+		sessionize.Inject(now)
+		fmt.Println("Faking time for sessions: ", now.Format(time.RFC3339))
+	} else {
+		sessionize.Inject(time.Now())
+	}
+
 	feedback.Inject(config.DB)
 	rating.Inject(config.DB)
 	visitor.Inject(config.DB)

@@ -23,6 +23,10 @@
             {
                 "name": "JWTSecret",
                 "description": "JWT Secret Signing Token"
+            },
+            {
+                "name": "Now",
+                "description": "If set, this will be used for session voting validation"
             }
         ]
     },

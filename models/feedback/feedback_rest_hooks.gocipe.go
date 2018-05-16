@@ -41,8 +41,15 @@ func restPreCreate(w http.ResponseWriter, r *http.Request, entity *Feedback, tx 
 	if err != nil {
 		util.JSONOutputError(w, http.StatusForbidden, err.Error())
 		return true, nil
-	} else if entity.SessionID == nil || !sessionize.IsValidSession(*entity.SessionID) {
-		util.JSONOutputError(w, http.StatusForbidden, "invalid session")
+	} else if entity.SessionID == nil {
+		util.JSONOutputError(w, http.StatusForbidden, "session not specified")
+		return true, nil
+	} else if valid, open := sessionize.IsVotableSession(*entity.SessionID); !valid || !open {
+		if !valid {
+			util.JSONOutputError(w, http.StatusForbidden, "invalid session")
+		} else if !open {
+			util.JSONOutputError(w, http.StatusForbidden, "session has not yet started")
+		}
 		return true, nil
 	} else if areResponsesInvalid(entity) {
 		util.JSONOutputError(w, http.StatusBadRequest, "incomplete feedback")
