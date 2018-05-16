@@ -35,6 +35,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	*visitor.ID = strconv.Itoa(profile.ID)
 	*visitor.Name = profile.Name
 	*visitor.PhotoLink = profile.Photo.PhotoLink
+	*visitor.Status = true
 
 	if err = visitor.Merge(nil, true); err != nil {
 		http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)

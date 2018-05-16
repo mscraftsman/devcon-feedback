@@ -41,6 +41,7 @@ func main() {
 		router.HandleFunc("/b/logout", meetup.Logout).Methods(http.MethodGet)
 		router.HandleFunc("/b/meetup", meetup.LoginCallback).Methods(http.MethodGet)
 		router.HandleFunc("/b/me", meetup.Me).Methods(http.MethodGet)
+		router.HandleFunc("/b/api/feedbacks/me", feedback.MyFeedback).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/feedbacks", feedback.RestCreate).Methods(http.MethodPost)
 		router.HandleFunc("/b/api/speakers/{id}", sessionize.GetSpeaker).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/speakers", sessionize.GetSpeakers).Methods(http.MethodGet)
