@@ -195,6 +195,7 @@ export default {
       background: #fff;
       color: #f64060;
       font-size: 16px;
+      align-self: center;
     }
   }
 }

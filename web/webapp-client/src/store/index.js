@@ -181,15 +181,8 @@ const actions = {
       });
   },
   triggerLogout({ commit }) {
-    let url = "/b/logout";
-    axios
-      .get(url)
-      .then(function(response) {
-        if (response.data.status) {
-          commit("USER_LOGOUT");
-        }
-      })
-      .catch(function(error) {});
+    commit("USER_LOGOUT");
+    // TODO clear jwt
   },
   fetchVotes({ commit }) {
     let url = "b/api/feedbacks/me";
@@ -205,15 +198,13 @@ const actions = {
       });
   },
   submitVote({ commit, dispatch }, payload) {
-    console.log(payload);
-
     let url = "/b/api/feedbacks";
 
     axios
       .post(url, payload)
       .then(response => {
         // thanks
-        console.log(response);
+        // console.log(response);
         dispatch("fetchVotes");
       })
       .catch(function(error) {
