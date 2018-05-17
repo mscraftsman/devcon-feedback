@@ -52,14 +52,19 @@
                     <p>{{ session.level }}</p>
                 </div>
 
-                <template v-if="checkSessionStatus">
                     <div class="des-wrap rate" v-if="user.status">
-                        <router-link v-if="voted" :to="{ name: 'feedback',  params: { id: id }}" class="rate rated">
-                            ✅ Rated. Thanks!
-                        </router-link>
-                        <router-link v-else :to="{ name: 'feedback',  params: { id: id }}" class="rate">
-                            Rate
-                        </router-link>
+                        <template v-if="checkSessionStatus">
+                            <router-link v-if="voted" :to="{ name: 'feedback',  params: { id: id }}" class="rate rated">
+                                ✅ Rated. Thanks!
+                            </router-link>
+                            <router-link v-else :to="{ name: 'feedback',  params: { id: id }}" class="rate">
+                                Rate
+                            </router-link>
+                        </template>
+                        <template v-else>
+                            Session not started yet
+                        </template>
+
                     </div>
 
                     <div class="des-wrap rate meetup" v-else>
@@ -67,13 +72,6 @@
                             Login with meetup to rate
                         </a>
                     </div>
-                </template>
-                <template v-else>
-                    <div class="des-wrap rate">
-                        Session not started yet
-                    </div>
-                </template>
-
             </div>
 
             <div class="description-text">
