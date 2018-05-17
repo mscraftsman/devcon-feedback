@@ -62,9 +62,8 @@
                             </router-link>
                         </template>
                         <template v-else>
-                            Session not started yet
+                            🚫 Session not started yet
                         </template>
-
                     </div>
 
                     <div class="des-wrap rate meetup" v-else>
@@ -143,16 +142,19 @@
                 return false;
             },
             checkSessionStatus () {
-
                 let timeNow = moment().format().substr(0,19)
                 let timeStart = this.session.startsAt
                 let difference = moment(timeNow).diff(moment(timeStart), 'minutes')
 
-                if (difference > 0) {
-                    return true
-                }
+                console.log(timeNow)
+                console.log(timeStart)
+                console.log(difference)
 
-                return false
+                if (difference && difference > 0) {
+                    return true
+                } else {
+                    return false
+                }
             }
         },
         watch: {},
