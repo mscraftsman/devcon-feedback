@@ -12,7 +12,7 @@ self.__precacheManifest = [
     "url": "/fonts/Shentox-Bold.00c2e286.woff"
   },
   {
-    "revision": "ad0d050d039b0ae068d1ef309e9b618e",
+    "revision": "8c0c4edef2b3209c8738a89ec6e4d9bb",
     "url": "/index.html"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = [
     "url": "/js/manifest.bb41d6d8.js"
   },
   {
-    "revision": "ce9cb69fcba12dbbf539",
-    "url": "/js/app.ce9cb69f.js"
+    "revision": "e4a76c90ae2ec04ec4cc",
+    "url": "/js/app.e4a76c90.js"
   },
   {
     "revision": "895cd7e825e0c6818616b24e43337e25",
@@ -68,7 +68,7 @@ self.__precacheManifest = [
     "url": "/fonts/Shentox-Medium.cc215ddc.woff"
   },
   {
-    "revision": "ce9cb69fcba12dbbf539",
-    "url": "/css/app.871bfab7.css"
+    "revision": "e4a76c90ae2ec04ec4cc",
+    "url": "/css/app.5c264208.css"
   }
 ];
