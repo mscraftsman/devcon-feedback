@@ -2,6 +2,7 @@ package sessionize
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -13,11 +14,19 @@ var (
 	_sessions map[string]Session
 	_speakers map[string]Speaker
 	_rooms    map[string]Room
-	_now      time.Time
+	_timeZone *time.Location
 )
 
 // Time represents json time without timezone
 type Time time.Time
+
+func init() {
+	var e error
+	_timeZone, e = time.LoadLocation("Indian/Mauritius")
+	if e != nil {
+		fmt.Println(e)
+	}
+}
 
 // UnmarshalJSON decodes from json string
 func (m *Time) UnmarshalJSON(p []byte) error {
@@ -30,11 +39,6 @@ func (m *Time) UnmarshalJSON(p []byte) error {
 	*m = Time(t)
 
 	return nil
-}
-
-// Inject external dependencies
-func Inject(now time.Time) {
-	_now = now
 }
 
 // APIResponse represents api response from sessionize
@@ -103,7 +107,7 @@ func ReadFromAPI() (*APIResponse, error) {
 // returns valid, open
 func IsVotableSession(id string) (bool, bool) {
 	sess, ok := _sessions[id]
-	return ok, _now.After(time.Time(sess.StartsAt))
+	return ok, time.Now().In(_timeZone).After(time.Time(sess.StartsAt))
 }
 
 // Sync keeps Sessionize data up to date
