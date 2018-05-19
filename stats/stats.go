@@ -4,8 +4,10 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"strings"
 	"sync"
 
+	"github.com/mscraftsman/devcon-feedback/sessionize"
 	"github.com/mscraftsman/devcon-feedback/util"
 )
 
@@ -13,6 +15,8 @@ var db *sql.DB
 
 type sessionSummary struct {
 	SessionID string `json:"session_id"`
+	Title     string `json:"title"`
+	Speakers  string `json:"speakers"`
 	Reaction1 int    `json:"reaction_1"`
 	Reaction2 int    `json:"reaction_2"`
 }
@@ -72,6 +76,10 @@ func topSessions() []sessionSummary {
 		if err != nil {
 			return nil
 		}
+		sess := sessionize.Get(s.SessionID)
+
+		s.Title = sess.Title
+		s.Speakers = strings.Join(sess.Speakers, ", ")
 
 		sessions = append(sessions, s)
 	}
