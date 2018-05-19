@@ -7,10 +7,11 @@
             <h2>How would you rate the speaker?</h2>
             <div class="chart-wrapper">
                 <div class="speakers" v-if="stats.sessions">
-                    <div class="speaker" v-for="session in _.orderBy(stats.sessions, 'reaction_1', ['desc']).slice(0, 3)" :key="session.session_id">
+                    <div class="speaker" v-for="session in _.orderBy(stats.sessions, 'reaction_1', ['desc']).slice(0, 10)" :key="session.session_id">
                         <router-link :to="{ name: 'session',  params: { id: session.session_id }}" class="name">{{ session.session_id }}</router-link>
                         <div class="graph rectangle">
                             <div class="bar" :style="{ width: (parseInt(session.reaction_1)/max_reaction_1) * 100 + '%' }">
+                                <span class="bar-label" v-if="session.speaker"> {{ session.speakers }}</span>
                             </div>
                         </div>
                         <div class="value">
@@ -24,10 +25,11 @@
             <h2>How would you rate the session content?</h2>
             <div class="chart-wrapper">
                 <div class="speakers" v-if="stats.sessions">
-                    <div class="speaker" v-for="session in _.orderBy(stats.sessions, 'reaction_2', ['desc']).slice(0, 3)" :key="session.session_id">
-                        <router-link :to="{ name: 'session',  params: { id: session.session_id }}" class="name">{{ session.session_id }}</router-link>
+                    <div class="speaker" v-for="session in _.orderBy(stats.sessions, 'reaction_2', ['desc']).slice(0, 10)" :key="session.session_id">
+                        <router-link :to="{ name: 'session',  params: { id: session.session_id }}" class="name"> {{ session.session_id }}</router-link>
                         <div class="graph rectangle">
                             <div class="bar" :style="{ width: (parseInt(session.reaction_2)/max_reaction_2) * 100 + '%' }">
+                                <span class="bar-label" v-if="session.speaker">{{ session.speakers }}</span>
                             </div>
                         </div>
                         <div class="value">
@@ -41,7 +43,7 @@
             <h2>Top Voters</h2>
             <div class="chart-wrapper">
                 <div class="speakers" v-if="stats.voters">
-                    <div class="speaker" v-for="session in stats.voters.slice(0, 3)" :key="session.session_id">
+                    <div class="speaker" v-for="session in stats.voters.slice(0, 5)" :key="session.session_id">
                         <a target="_blank" :href="'https://www.meetup.com/MauritiusSoftwareCraftsmanshipCommunity/members/'+ session.id" class="name">
                             <!-- {{ session.id }} -->
                             <img class="photo" :src="session.photo" alt="">
@@ -92,7 +94,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["fetchStats"]),
+    ...mapActions(["fetchStats", "fetchSpeakers"]),
     percent(value) {
       return value;
     }
@@ -124,6 +126,12 @@ export default {
     margin-bottom: 5px;
   }
 
+  .bar-label {
+    font-size: 20px;
+    text-align: left;
+    padding-left: 10px;
+  }
+
   .stats-wrapper {
     margin-bottom: 100px;
   }
@@ -149,6 +157,9 @@ export default {
       height: 100%;
       content: " ";
       display: block;
+      justify-content: flex-start;
+      align-items: center;
+      display: flex;
     }
   }
 
