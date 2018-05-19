@@ -11,7 +11,7 @@
                         <router-link :to="{ name: 'session',  params: { id: session.session_id }}" class="name">{{ session.session_id }}</router-link>
                         <div class="graph rectangle">
                             <div class="bar" :style="{ width: (parseInt(session.reaction_1)/max_reaction_1) * 100 + '%' }">
-                                <span class="bar-label" v-if="session.speaker"> {{ session.speakers }}</span>
+                                <span class="bar-label" v-if="session.speakers"> {{ session.speakers }}</span>
                             </div>
                         </div>
                         <div class="value">
@@ -29,7 +29,7 @@
                         <router-link :to="{ name: 'session',  params: { id: session.session_id }}" class="name"> {{ session.session_id }}</router-link>
                         <div class="graph rectangle">
                             <div class="bar" :style="{ width: (parseInt(session.reaction_2)/max_reaction_2) * 100 + '%' }">
-                                <span class="bar-label" v-if="session.speaker">{{ session.speakers }}</span>
+                                <span class="bar-label" v-if="session.speakers">{{ session.speakers }}</span>
                             </div>
                         </div>
                         <div class="value">
