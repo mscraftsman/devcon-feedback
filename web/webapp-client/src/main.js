@@ -5,6 +5,9 @@ import store from "./store/index";
 import "./registerServiceWorker";
 import "./assets/scss/main.scss";
 import VueAnalytics from "vue-analytics";
+import VueLodash from "vue-lodash";
+
+Vue.use(VueLodash); // options is optional
 
 Vue.use(VueAnalytics, {
   id: "UA-12103827-11",

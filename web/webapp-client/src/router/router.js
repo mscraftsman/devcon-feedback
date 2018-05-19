@@ -10,6 +10,7 @@ import Speakers from "../views/SpeakersPage.vue";
 import SessionSingle from "../views/SessionSingle.vue";
 import SpeakerSingle from "../views/SpeakerSingle.vue";
 import LoginError from "../views/LoginError.vue";
+import PageStats from "../views/PageStats.vue";
 
 Vue.use(Router);
 
@@ -53,6 +54,11 @@ export default new Router({
       props: true,
       name: "feedback",
       component: Feedback
+    },
+    {
+      path: "/stats",
+      name: "stats",
+      component: PageStats
     },
     {
       path: "/loginerror",

@@ -10,6 +10,7 @@ const state = {
   count: 0,
   userid: "abcs",
   votes: [],
+  stats: [],
   user: {
     status: false, // true or false
     data: {
@@ -82,6 +83,9 @@ const mutations = {
     };
     state.error.log.push(error);
   },
+  UPDATE_STATS(state, payload) {
+    state.stats = payload;
+  },
   USER_LOGIN(state, payload) {
     state.user.status = true;
     state.user.data = payload;
@@ -132,6 +136,9 @@ const getters = {
     return state.votes;
   },
   getSpeaker(state, id) {},
+  getStats(state) {
+    return state.stats;
+  },
   getErrors(state) {
     return state.error.log;
   }
@@ -206,6 +213,18 @@ const actions = {
         // thanks
         // console.log(response);
         dispatch("fetchVotes");
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+  },
+  fetchStats({ commit, dispatch }) {
+    let url = "/b/api/stats";
+
+    axios
+      .get(url)
+      .then(response => {
+        commit("UPDATE_STATS", response.data.data);
       })
       .catch(function(error) {
         console.log(error);
