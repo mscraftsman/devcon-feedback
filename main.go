@@ -13,6 +13,7 @@ import (
 	"github.com/mscraftsman/devcon-feedback/models/rating"
 	"github.com/mscraftsman/devcon-feedback/models/visitor"
 	"github.com/mscraftsman/devcon-feedback/sessionize"
+	"github.com/mscraftsman/devcon-feedback/stats"
 )
 
 //go:generate rice embed-go
@@ -47,6 +48,7 @@ func main() {
 		router.HandleFunc("/b/api/sessions", sessionize.GetSessions).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/rooms/{id}", sessionize.GetRoom).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/rooms", sessionize.GetRooms).Methods(http.MethodGet)
+		router.HandleFunc("/b/api/stats", stats.Summary).Methods(http.MethodGet)
 		router.PathPrefix("/").Handler(assetsHandler)
 		return nil
 	})
@@ -57,4 +59,5 @@ func inject(config *app.Config) {
 	feedback.Inject(config.DB)
 	rating.Inject(config.DB)
 	visitor.Inject(config.DB)
+	stats.Inject(config.DB)
 }
