@@ -135,3 +135,23 @@ func Sync() error {
 
 	return nil
 }
+
+// Get gets a specific session
+func Get(sessionID string) Session {
+	var names []string
+	s, ok := _sessions[sessionID]
+
+	if ok {
+		for _, i := range s.Speakers {
+			if speaker, ok := _speakers[i]; ok {
+				names = append(names, speaker.FirstName+" "+speaker.LastName)
+			}
+		}
+
+		s.Speakers = names
+
+		return s
+	} else {
+		return Session{}
+	}
+}
