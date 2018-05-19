@@ -8,6 +8,12 @@
       <div class="buttons-wrapper">
 
         <div class="super-menu-item">
+          <router-link :to="{ name: 'stats' }">
+            📈 Stats
+          </router-link>
+        </div>
+
+        <div class="super-menu-item">
           <router-link :to="{ name: 'sessions' }">
             Schedule
           </router-link>
@@ -23,11 +29,11 @@
             Login with meetup
           </a>
         </div>
-        <div class="super-menu-item meetup" v-else>
+        <!-- <div class="super-menu-item meetup" v-else>
           <a @click="triggerLogout">
             🔌 Logout
           </a>
-        </div>
+        </div> -->
       </div>
     </div>
 
