@@ -32,8 +32,10 @@ func main() {
 	}
 
 	go func() {
-		time.Sleep(time.Minute * 5)
-		sessionize.Sync()
+		for {
+			time.Sleep(time.Minute * 5)
+			sessionize.Sync()
+		}
 	}()
 
 	app.ServeHTTP(":"+config.HTTPPort, func(router *mux.Router) error {
