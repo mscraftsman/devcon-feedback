@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"time"
 
-	rice "github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
 	"github.com/mscraftsman/devcon-feedback/app"
 	"github.com/mscraftsman/devcon-feedback/controllers/meetup"
@@ -23,8 +22,6 @@ func main() {
 
 	inject(config)
 
-	assetsHandler := http.FileServer(rice.MustFindBox("web/webapp-client/dist").HTTPBox())
-
 	if err := sessionize.Sync(); err != nil {
 		log.Fatalf("Failed to load sessions information: %s", err)
 	} else {
@@ -39,6 +36,7 @@ func main() {
 	}()
 
 	app.ServeHTTP(":"+config.HTTPPort, func(router *mux.Router) error {
+		router.Use(corsMiddleware)
 		router.HandleFunc("/b/login", meetup.Login).Methods(http.MethodGet)
 		router.HandleFunc("/b/meetup", meetup.LoginCallback).Methods(http.MethodGet)
 		router.HandleFunc("/b/me", meetup.Me).Methods(http.MethodGet)
@@ -51,7 +49,6 @@ func main() {
 		router.HandleFunc("/b/api/rooms/{id}", sessionize.GetRoom).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/rooms", sessionize.GetRooms).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/stats", stats.Summary).Methods(http.MethodGet)
-		router.PathPrefix("/").Handler(assetsHandler)
 		return nil
 	})
 }
@@ -62,4 +59,13 @@ func inject(config *app.Config) {
 	rating.Inject(config.DB)
 	visitor.Inject(config.DB)
 	stats.Inject(config.DB)
+}
+
+func corsMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        next.ServeHTTP(w, r)
+        w.Header().Set("Access-Control-Allow-Origin", app.BaseURL)
+    	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+    	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+    })
 }
