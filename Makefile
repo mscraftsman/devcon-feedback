@@ -1,4 +1,4 @@
-.PHONY: prod
+.PHONY: build
 
 build: clean dist/devcon-feedback
 
