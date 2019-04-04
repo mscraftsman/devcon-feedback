@@ -1,0 +1,16 @@
+version: "2"
+
+services:
+    postgres:
+        container_name: devcon-postgres
+        hostname: devcon-postgres-DEV
+        image: postgres:10
+        ports:
+            - "7532:5432"
+        environment:
+            - POSTGRES_USER=devcon
+            - POSTGRES_PASSWORD=devcon
+            - POSTGRES_DB=devcon
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+            - ./schema/schema.gocipe.sql:/docker-entrypoint-initdb.d/schema.sql

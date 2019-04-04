@@ -1,6 +1,7 @@
 package meetup
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -27,7 +28,9 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	profile, err := retrieveProfile(code)
 
 	if err != nil {
-		http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)
+		//http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte(fmt.Sprintf("Login error: %s", err)))
 		return
 	}
 
@@ -38,7 +41,9 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	*visitor.Status = true
 
 	if err = visitor.Merge(nil, true); err != nil {
-		http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)
+		//http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte(fmt.Sprintf("Login error: %s", err)))
 		return
 	}
 
@@ -50,7 +55,9 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	tokenString, err := token.SignedString([]byte(_jwt))
 
 	if err != nil {
-		http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)
+		//http.Redirect(w, r, app.BaseURL+`/#/loginerror`, http.StatusFound)
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte(fmt.Sprintf("Login error: %s", err)))
 		return
 	}
 

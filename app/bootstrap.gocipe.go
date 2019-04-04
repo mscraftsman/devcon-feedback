@@ -111,10 +111,10 @@ func Bootstrap() *Config {
 		log.Fatal("Environment variable JWT_SECRET (JWT Secret Signing Token) must be defined.")
 	}
 
-	config.Now = os.Getenv("NOW")
-	if config.Now == "" {
-		log.Fatal("Environment variable NOW (If set, this will be used for session voting validation) must be defined.")
-	}
+	//config.Now = os.Getenv("NOW")
+	//if config.Now == "" {
+	//	log.Fatal("Environment variable NOW (If set, this will be used for session voting validation) must be defined.")
+	//}
 
 	BaseURL = os.Getenv("BASE_URL")
 	if BaseURL == "" {

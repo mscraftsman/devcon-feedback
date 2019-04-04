@@ -15,8 +15,6 @@ import (
 	"github.com/mscraftsman/devcon-feedback/stats"
 )
 
-//go:generate rice embed-go
-
 func main() {
 	config := app.Bootstrap()
 
@@ -39,7 +37,7 @@ func main() {
 		router.Use(corsMiddleware)
 		router.HandleFunc("/b/login", meetup.Login).Methods(http.MethodGet)
 		router.HandleFunc("/b/meetup", meetup.LoginCallback).Methods(http.MethodGet)
-		router.HandleFunc("/b/me", meetup.Me).Methods(http.MethodGet)
+		router.HandleFunc("/b/api/me", meetup.Me).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/feedbacks/me", feedback.MyFeedback).Methods(http.MethodGet)
 		router.HandleFunc("/b/api/feedbacks", feedback.RestCreate).Methods(http.MethodPost)
 		router.HandleFunc("/b/api/speakers/{id}", sessionize.GetSpeaker).Methods(http.MethodGet)
@@ -62,10 +60,10 @@ func inject(config *app.Config) {
 }
 
 func corsMiddleware(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-        next.ServeHTTP(w, r)
-        w.Header().Set("Access-Control-Allow-Origin", app.BaseURL)
-    	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-    	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-    })
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		next.ServeHTTP(w, r)
+		w.Header().Set("Access-Control-Allow-Origin", app.BaseURL)
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	})
 }
