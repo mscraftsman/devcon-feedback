@@ -1,9 +1,0 @@
-<template>
-  <div>{{ content.value }}</div>
-</template>
-
-<script>
-export default {
-  props: ["content"]
-};
-</script>
