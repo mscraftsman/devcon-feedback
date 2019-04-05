@@ -11,7 +11,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var models_pb = require('./models_pb.js');
+var models_pb = require('./models_pb.d.ts');
 goog.object.extend(proto, models_pb);
 var service_admin_pb = require('./service_admin_pb.js');
 goog.object.extend(proto, service_admin_pb);

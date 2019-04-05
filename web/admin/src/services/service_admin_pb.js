@@ -11,7 +11,7 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var models_pb = require('./models_pb.js');
+var models_pb = require('./models_pb.d.ts');
 goog.object.extend(proto, models_pb);
 goog.exportSymbol('proto.admin.CountResponse', null, global);
 goog.exportSymbol('proto.admin.CreateFeedbackRequest', null, global);
