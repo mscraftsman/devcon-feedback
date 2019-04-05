@@ -1,0 +1,243 @@
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/app/dist/.gitkeep>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/app/dist/.gitkeep>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/app/src/services/.gitkeep>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/app/src/services/.gitkeep>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/.gitkeep>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/.gitkeep>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/assets/.gitkeep>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/assets/.gitkeep>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/assets/templates/.gitkeep>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/assets/templates/.gitkeep>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/assets/web/app/.gitkeep>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/assets/web/app/.gitkeep>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/gen-service.sh>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/gen-service.sh>
+🦋 [Info] Skipping existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/Makefile>
+🦋 [Info] Skipping existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/main.go>
+🦋 [Info] Skipping existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/route.go>
+🦋 [Info] Skipping existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/core/bootstrap.gocipe.go>
+🦋 [Info] Skipping existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/.env.dist>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/proto/service_data.proto>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/proto/service_data.proto>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/data/service_data.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/data/service_data.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/schema/schema.gocipe.sql>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/schema/schema.gocipe.sql>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/proto/models.proto>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/proto/models.proto>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/models/moderrors/errors.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/models/moderrors/errors.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/models/crud.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/models/crud.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/models/models.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/models/models.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/feedback_hooks.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/feedback_hooks.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/visitor_hooks.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/visitor_hooks.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/rating_hooks.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/rating_hooks.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/admin_helpers.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/admin_helpers.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/proto/service_admin.proto>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/proto/service_admin.proto>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/service_admin_permissions.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/service_admin_permissions.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/service_admin.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/services/admin/service_admin.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/auth/auth.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/auth/auth.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/rice.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/rice.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/credentials/credentials.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/credentials/credentials.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/util.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/util.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/web/ws.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/web/ws.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/grpcx/grpc.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/grpcx/grpc.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/files/files.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/files/files.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/imagist/imagist.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/imagist/imagist.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/web/web.gocipe.go>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/util/web/web.gocipe.go>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/FeedbacksList.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/FeedbacksList.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/FeedbacksEdit.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/FeedbacksEdit.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/VisitorsList.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/VisitorsList.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/VisitorsEdit.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/VisitorsEdit.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/RatingsList.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/RatingsList.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/RatingsEdit.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/forms/RatingsEdit.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/routes.js>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/routes.js>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Toggle.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Toggle.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/list/Select.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/list/Select.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Textfield.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Textfield.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/list/Time.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/list/Time.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Imagefield.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Imagefield.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Map.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Map.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Select.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Select.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Status.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Status.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Textarea.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Textarea.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Time.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Time.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/list/Toggle.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/list/Toggle.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Icon.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/Icon.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/FileUpload.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/FileUpload.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/SelectRel.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/widgets/edit/SelectRel.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/components-registration.js>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/src/gocipe/components-registration.js>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TextBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TextBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/RelatedRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/RelatedRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/PDFViewerRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/PDFViewerRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HTMLRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HTMLRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/FileUploadBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/FileUploadBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailTextHeadingRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailTextHeadingRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailHeaderMjml.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailHeaderMjml.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/FooterBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/FooterBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/QuoteBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/QuoteBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/YoutubeRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/YoutubeRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/QuoteRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/QuoteRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailColumnBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailColumnBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/ImageBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/ImageBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/IndicatorRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/IndicatorRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/components/Information.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/components/Information.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailArticlesListingRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailArticlesListingRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TextareaRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TextareaRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/FileUploadRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/FileUploadRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailJumbotronMjml.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailJumbotronMjml.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz-config/Preview.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz-config/Preview.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/GalleryRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/GalleryRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/LegacyRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/LegacyRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TextareaBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TextareaBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailAdBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailAdBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailHeaderBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailHeaderBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TranscriptBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TranscriptBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailHeaderRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailHeaderRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailColumnMjml.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailColumnMjml.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/LegacyBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/LegacyBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HTMLEmbedRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HTMLEmbedRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailArticlesListingBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailArticlesListingBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/store/getters.js>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/store/getters.js>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/store/index.js>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/store/index.js>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/store/mutations.js>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/store/mutations.js>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/ImageRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/ImageRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/YoutubeBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/YoutubeBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HeadingBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HeadingBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/MarkdownBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/MarkdownBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/components/BlockEditor.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/components/BlockEditor.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/components/BlockPicker.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/components/BlockPicker.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailJumbotronBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailJumbotronBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailColumnRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailColumnRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/FooterRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/FooterRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/MarkdownRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/MarkdownRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/RelatedBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/RelatedBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/IndicatorBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/IndicatorBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TranscriptRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TranscriptRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/README.md>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/README.md>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TextRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/TextRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/PDFViewerBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/PDFViewerBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailImageTextMjml.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailImageTextMjml.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailImageTextBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailImageTextBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailTextHeadingBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailTextHeadingBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz-config/Renderer.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz-config/Renderer.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/store/actions.js>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/store/actions.js>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HTMLBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HTMLBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HeadingRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HeadingRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/GalleryBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/GalleryBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailJumbotronRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailJumbotronRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HTMLEmbedBlock.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/HTMLEmbedBlock.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailImageTextRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailImageTextRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailAdRender.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailAdRender.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailTextHeadingMjml.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/blocks/mail/MailTextHeadingMjml.vue>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz-config/page-components.js>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz-config/page-components.js>
+🦋 [Info] Deleting existing file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/Lardwaz.vue>
+✅ [Ok] Wrote file </home/jeshta/projects/go/github.com/mscraftsman/devcon-feedback/web/admin/modules/lardwaz/views/Lardwaz.vue>
+🦋 [Info] Executing protoc to generate go and js files...
+🦋 [Info] Generated models.pb.go from models.proto using protoc
+🦋 [Info] Generated service_admin.pb.go from service_admin.proto using protoc
+🦋 [Info] Generated service_data.pb.go from service_data.proto using protoc

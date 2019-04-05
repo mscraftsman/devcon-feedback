@@ -1,6 +1,9 @@
 {
-	"bootstrap": {
+    "import_path": "github.com/mscraftsman/devcon-feedback",
+
+    "bootstrap": {
         "generate": true,
+        "no_grpc_wire": true,
         "settings": [
             {
                 "name": "BaseURL",
@@ -28,241 +31,231 @@
                 "name": "Now",
                 "description": "If set, this will be used for session voting validation"
             }
-        ]
-    },
-    "http": {
-        "generate": true,
-        "port": "8888"
-    },
-    "schema": {
-        "create": true,
-        "drop": true,
-        "aggregate": true
+        ],
+        "assets": true
     },
     "crud": {
+        "generate": true
+    },
+    "admin": {
+        "generate": true,
         "create": true,
         "read": true,
-        "read_list": true,
+        "list": true,
         "update": true,
         "delete": true,
-        "merge": true
-    },
-    "rest": {
-        "create": false,
-        "read": false,
-        "read_list": false,
-        "update": false,
-        "delete": false
+        "hooks": {
+            "pre_create": true,
+            "post_create": true,
+            "pre_read": true,
+            "post_read": true,
+            "pre_list": true,
+            "post_list": true,
+            "pre_update": true,
+            "post_update": true,
+            "pre_delete": true,
+            "post_delete": true
+        },
+        "auth": {
+            "generate": true
+        }
     },
     "vuetify": {
-        "generate": false,
-        "module": "web"
-	},
-	"entities": [
-		{
+        "generate": true,
+        "app": "admin"
+    },
+    "entities": [
+        {
             "name": "Feedback",
-            "table": "feedbacks",
-            "table_constraints": [
-                "UNIQUE(session_id, visitor_id)"
-            ],
-            "description": "represents feedback from a visitor on a session",
-            "rest": {
-                "create": true,
-                "prefix": "b/api",
-                "hooks": {
-                    "pre_create": true,
-                    "post_create": true
-                }
+            "primary_key": "uuid",
+            "description": "A Feedback",
+            "vuetify": {
+                "icon": "work",
+                "not_in_menu": false
+            },
+            "created_at": true,
+            "default_sort": {
+                "field": "created_at",
+                "ascending": true
             },
             "fields": [
                 {
-                    "label": "Session ID",
-                    "serialized": "session_id",
-                    "property": {
-                        "name": "SessionID",
-                        "type": "string"
+                    "label": "SessionID",
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "field": "session_id",
-                        "type": "VARCHAR(255)"
-                    }
-                },
-                {
-                    "label": "Visitor ID",
-                    "serialized": "visitor_id",
-                    "property": {
-                        "name": "VisitorID",
-                        "type": "string"
+                    "list_widget": {
+                        "hide": false
                     },
-                    "schema": {
-                        "field": "visitor_id",
-                        "type": "VARCHAR(255)"
-                    }
+                    "name": "SessionID",
+                    "type": "string"
                 },
                 {
                     "label": "Reaction 1",
-                    "serialized": "reaction_1",
-                    "property": {
-                        "name": "Reaction1",
-                        "type": "string"
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "field": "reaction_1",
-                        "type": "VARCHAR(2)"
-                    }
+                    "list_widget": {
+                        "hide": false
+                    },
+                    "name": "Reaction1",
+                    "type": "string"
                 },
                 {
                     "label": "Reaction 2",
-                    "serialized": "reaction_2",
-                    "property": {
-                        "name": "Reaction2",
-                        "type": "string"
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "nullable": true,
-                        "field": "reaction_2",
-                        "type": "VARCHAR(2)"
-                    }
+                    "list_widget": {
+                        "hide": false
+                    },
+                    "name": "Reaction2",
+                    "type": "string"
                 },
                 {
                     "label": "Reaction 3",
-                    "serialized": "reaction_3",
-                    "property": {
-                        "name": "Reaction3",
-                        "type": "string"
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "nullable": true,
-                        "field": "reaction_3",
-                        "type": "VARCHAR(3)"
-                    }
+                    "list_widget": {
+                        "hide": false
+                    },
+                    "name": "Reaction3",
+                    "type": "string"
                 },
                 {
                     "label": "Reaction 4",
-                    "serialized": "reaction_4",
-                    "property": {
-                        "name": "Reaction4",
-                        "type": "string"
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "nullable": true,
-                        "field": "reaction_4",
-                        "type": "TEXT"
-                    }
-                },
+                    "list_widget": {
+                        "hide": false
+                    },
+                    "name": "Reaction4",
+                    "type": "string"
+                }
+            ],
+            "relationships": [
                 {
-                    "label": "Created At",
-                    "serialized": "created_at",
-                    "property": {
-                        "name": "CreatedAt",
-                        "type": "time.Time"
-                    },
-                    "schema": {
-                        "field": "created_at",
-                        "type": "TIMESTAMP"
-                    }
+                    "entity": "Visitor",
+                    "type": "many-one"
                 }
             ]
         },
         {
             "name": "Visitor",
-            "table": "visitors",
-            "description": "represents a conference visitor",
-            "primary_key": "string",
+            "primary_key": "uuid",
+            "description": "A visitor",
+            "vuetify": {
+                "icon": "work",
+                "not_in_menu": false
+            },
+            "created_at": true,
+            "label_field": "name",
+            "default_sort": {
+                "field": "created_at",
+                "ascending": true
+            },
             "fields": [
                 {
                     "label": "Name",
-                    "serialized": "name",
-                    "property": {
-                        "name": "Name",
-                        "type": "string"
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "field": "name",
-                        "type": "VARCHAR(255)"
-                    }
+                    "list_widget": {
+                        "hide": false
+                    },
+                    "name": "Name",
+                    "type": "string"
                 },
                 {
-                    "label": "Photo",
-                    "serialized": "photo_link",
-                    "property": {
-                        "name": "PhotoLink",
-                        "type": "string"
+                    "label": "Bookmark",
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "field": "photo_link",
-                        "type": "VARCHAR(255)",
-                        "nullable": true
-                    }
+                    "list_widget": {
+                        "hide": false
+                    },
+                    "name": "Bookmark",
+                    "type": "string"
                 },
                 {
-                    "label": "Status",
-                    "serialized": "status",
-                    "property": {
-                        "name": "Status",
-                        "type": "bool"
+                    "label": "Photo Link",
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "field": "status",
-                        "type": "BOOLEAN",
-                        "nullable": true
-                    }
+                    "list_widget": {
+                        "hide": false
+                    },
+                    "name": "PhotoLink",
+                    "type": "string"
+                }
+            ],
+            "relationships": [
+                {
+                    "entity": "Feedback",
+                    "type": "one-many"
                 }
             ]
         },
         {
             "name": "Rating",
-            "table": "ratings",
-            "primary_key": "string",
-            "description": "represents a summary of the feedback received for a session",
+            "primary_key": "uuid",
+            "description": "A rating",
+            "vuetify": {
+                "icon": "work",
+                "not_in_menu": false
+            },
+            "created_at": true,
+            "updated_at": true,
+            "default_sort": {
+                "field": "updated_at",
+                "ascending": true
+            },
             "fields": [
                 {
-                    "label": "Ratings",
-                    "serialized": "ratings_count",
-                    "property": {
-                        "name": "RatingsCount",
-                        "type": "int"
+                    "label": "Rating Count",
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "field": "ratings_count",
-                        "type": "INT"
-                    }
+                    "list_widget": {
+                        "hide": false
+                    },
+                    "name": "RatingCount",
+                    "type": "string"
                 },
                 {
                     "label": "Score",
-                    "serialized": "score",
-                    "property": {
-                        "name": "Score",
-                        "type": "int"
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textfield"
                     },
-                    "schema": {
-                        "field": "score",
-                        "type": "INT"
-                    }
+                    "list_widget": {
+                        "hide": false
+                    },
+                    "name": "Score",
+                    "type": "int64"
                 },
                 {
-                    "label": "Reaction",
-                    "serialized": "reaction_summary",
-                    "property": {
-                        "name": "ReactionSummary",
-                        "type": "string"
+                    "label": "Reaction Summary",
+                    "edit_widget": {
+                        "hide": false,
+                        "type": "textarea"
                     },
-                    "schema": {
-                        "field": "reaction_summary",
-                        "type": "JSONB"
-                    }
-                },
-                {
-                    "label": "Updated At",
-                    "serialized": "updated_at",
-                    "property": {
-                        "name": "UpdatedAt",
-                        "type": "time.Time"
+                    "list_widget": {
+                        "hide": false
                     },
-                    "schema": {
-                        "field": "updated_at",
-                        "type": "TIMESTAMP"
-                    }
+                    "name": "ReactionSummary",
+                    "type": "string"
                 }
             ]
         }

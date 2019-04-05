@@ -1,12 +1,22 @@
+VERSION     := 1.0.0
+COMMIT      := `git rev-parse HEAD`
+DATE        := `date +%FT%T%z`
+BUILD_FLAGS := "-X=main.appVersion=$(VERSION) -X=main.appCommit=$(COMMIT) -X=main.appBuilt=$(DATE)"
+BUILD_DIR	:= "build"
+APPNAME		:= "devcon-feedback"
+
 .PHONY: build
 
-build: clean dist/devcon-feedback
+build:
+	@echo "Compiling for DEV..."
+	@go clean && go build -ldflags ${BUILD_FLAGS} -o ${BUILD_DIR}/${APPNAME}
+	@echo "Build done!"
+	@cd ${BUILD_DIR} && ./${APPNAME}
 
-dist/devcon-feedback:
-	go clean
-	if [ ! -d dist ]; then mkdir dist; fi;
-	go build -o dist/devcon-feedback
-
-clean:
-	go clean
-	if [ -a dist/devcon-feedback ]; then rm dist/devcon-feedback; fi;
+prod:
+	@echo "Compiling for PROD..."
+	@cd web/app && npm ci && npm run build && cd ../..
+	@cd web/admin && npm ci && npm run build && cd ../..
+	@rm -rf assets/web && mkdir assets/web && mv web/app/dist assets/web/app && mv web/admin/dist assets/web/admin
+	@go clean && go generate && env GOOS=linux GOARCH=amd64 go build -ldflags ${BUILD_FLAGS} -o ${BUILD_DIR}/${APPNAME}
+	@echo "Build done!"
