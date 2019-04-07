@@ -1,7 +1,10 @@
 package store
 
 import (
+	"encoding/json"
 	"strings"
+
+	bolt "go.etcd.io/bbolt"
 )
 
 //Attendee represents a devcon attendee
@@ -60,4 +63,34 @@ func (a Attendee) AddFeedback(id string) Attendee {
 //ListFeedbacks returns feedback ids for an attendee
 func (a Attendee) ListFeedbacks() []string {
 	return strings.Split(a.Feedbacks, ";")
+}
+
+//GetAttendee retrieves an attendee from the store
+func (s Store) GetAttendee(id string) (Attendee, error) {
+	var a Attendee
+	err := s.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(bucketAttendees)
+		j := b.Get([]byte(id))
+
+		if j == nil {
+			return ErrorAttendeeNotFound
+		}
+
+		return json.Unmarshal(j, &a)
+	})
+
+	return a, err
+}
+
+//SetAttendee sets an attendee entity in the store
+func (s Store) SetAttendee(a Attendee) error {
+	j, err := json.Marshal(a)
+	if err != nil {
+		return err
+	}
+
+	return s.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(bucketAttendees)
+		return b.Put([]byte(a.ID), j)
+	})
 }
