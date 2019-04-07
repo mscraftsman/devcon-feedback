@@ -28,6 +28,8 @@ func (s Store) AddFeedback(f Feedback) error {
 	}
 
 	id := uuid.NewV4().String()
+	f.ID = id
+	f.CreatedAt = time.Now()
 
 	attn, err := s.GetAttendee(f.AttendeeID)
 	if err != nil {

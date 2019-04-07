@@ -165,5 +165,6 @@ func DecodeToken(r *http.Request) (*store.Attendee, error) {
 		return nil, ErrorInvalidToken
 	}
 
-	return attendee, nil
+	attn, err := store.DB.GetAttendee(attendee.ID)
+	return &attn, err
 }
