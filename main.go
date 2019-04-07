@@ -5,6 +5,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -41,13 +42,13 @@ func main() {
 	router.Path("login").Methods(http.MethodGet).HandlerFunc(meetup.Login)
 	router.Path("meetup").Methods(http.MethodGet).HandlerFunc(meetup.LoginCallback)
 
-	apiSubRoute := router.PathPrefix("/api").Subrouter()
-	apiSubRoute.Path("/me").Methods(http.MethodGet).HandlerFunc(controllers.Me)
-	apiSubRoute.Path("/bookmarks").Methods(http.MethodPost).HandlerFunc(controllers.AddBookmark)
-	apiSubRoute.Path("/bookmarks").Methods(http.MethodGet).HandlerFunc(controllers.ListBookmarks)
-	apiSubRoute.Path("/bookmarks/{id}").Methods(http.MethodDelete).HandlerFunc(controllers.RemoveBookmark)
-	apiSubRoute.Path("/feedbacks").Methods(http.MethodPost).HandlerFunc(controllers.AddFeedback)
-	apiSubRoute.Path("/feedbacks/me").Methods(http.MethodGet).HandlerFunc(controllers.ListOwnFeedback)
+	router.Path("/api/me").Methods(http.MethodGet).HandlerFunc(controllers.Me)
+	router.Path("/api/bookmarks").Methods(http.MethodPost).HandlerFunc(controllers.AddBookmark)
+	router.Path("/api/bookmarks").Methods(http.MethodGet).HandlerFunc(controllers.ListBookmarks)
+	router.Path("/api/bookmarks/{id}").Methods(http.MethodDelete).HandlerFunc(controllers.RemoveBookmark)
+	router.Path("/api/feedbacks").Methods(http.MethodPost).HandlerFunc(controllers.AddFeedback)
+	router.Path("/api/feedbacks/me").Methods(http.MethodGet).HandlerFunc(controllers.ListOwnFeedback)
 
+	log.Println("Listening on :" + config.HTTPPort)
 	http.ListenAndServe(":"+config.HTTPPort, handlers.CORS()(router))
 }

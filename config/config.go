@@ -6,7 +6,18 @@ import (
 	"os"
 )
 
+const (
+	//EnvironmentProd indicates Prod mode
+	EnvironmentProd = "prod"
+
+	//EnvironmentDev indicates Dev mode
+	EnvironmentDev = "dev"
+)
+
 var (
+	//Env is either prod (default) or dev
+	Env string
+
 	//BaseURL is the application base url including the protocol, excluding trailing slash
 	BaseURL string
 
@@ -44,6 +55,7 @@ func (l loader) load(name string, variable *string, def ...string) {
 //Load sets up configuration for the application
 func Load() {
 	var l loader
+	l.load("ENV", &Env, EnvironmentProd)
 	l.load("BASE_URL", &BaseURL)
 	l.load("BOLT_DB_PATH", &BoltDBPath)
 	l.load("MEETUP_KEY", &MeetupKey)

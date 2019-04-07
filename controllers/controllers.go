@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
+
+	"github.com/mscraftsman/devcon-feedback/config"
 
 	"github.com/fluxynet/sequitur"
 
@@ -24,5 +27,9 @@ func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusForbidden)
 		w.Write([]byte(`{"error":"` + msg + `"}`))
+
+		if config.Env == config.EnvironmentDev {
+			log.Printf("[%s] %v\n", name, err)
+		}
 	}
 }

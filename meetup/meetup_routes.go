@@ -18,7 +18,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, `https://secure.meetup.com/oauth2/authorize?`+url.Values{
 		"client_id":     {config.MeetupKey},
 		"response_type": {"code"},
-		"redirect_uri":  {config.BaseURL + "/b/meetup"},
+		"redirect_uri":  {config.BaseURL + "/meetup"},
 	}.Encode(), http.StatusFound)
 }
 

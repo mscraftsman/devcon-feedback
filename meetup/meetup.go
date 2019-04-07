@@ -61,7 +61,7 @@ func retrieveProfile(code string) (*Profile, error) {
 				"client_id":     {config.MeetupKey},
 				"client_secret": {config.MeetupSecret},
 				"grant_type":    {"authorization_code"},
-				"redirect_uri":  {config.BaseURL + "/b/meetup"},
+				"redirect_uri":  {config.BaseURL + "/meetup"},
 				"code":          {code},
 			},
 		)
