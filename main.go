@@ -43,8 +43,8 @@ func main() {
     allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
 
 	router := mux.NewRouter()
-	router.Path("login").Methods(http.MethodGet).HandlerFunc(meetup.Login)
-	router.Path("meetup").Methods(http.MethodGet).HandlerFunc(meetup.LoginCallback)
+	router.Path("/login").Methods(http.MethodGet).HandlerFunc(meetup.Login)
+	router.Path("/meetup").Methods(http.MethodGet).HandlerFunc(meetup.LoginCallback)
 
 	router.Path("/api/me").Methods(http.MethodGet).HandlerFunc(controllers.Me)
 	router.Path("/api/bookmarks").Methods(http.MethodPost).HandlerFunc(controllers.AddBookmark)
