@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -21,9 +20,8 @@ func AddBookmark(w http.ResponseWriter, r *http.Request) {
 		attendee *store.Attendee
 		err      error
 		sequence sequitur.Sequence
-		request  struct {
-			ID string `json:"id"`
-		}
+		bookmarkID string
+		vars     = mux.Vars(r)
 	)
 
 	defer sequence.Catch(catchError(w, r))
@@ -33,27 +31,30 @@ func AddBookmark(w http.ResponseWriter, r *http.Request) {
 		return err
 	})
 
-	var resp []byte
-	sequence.Do("reading request body", func() error {
-		resp, err = ioutil.ReadAll(r.Body)
-		return err
-	})
-
-	sequence.Do("decoding request body", func() error {
-		return json.Unmarshal(resp, &request)
-	})
-
 	sequence.Do("validating bookmark information", func() error {
-		if _, ok := sessionize.Sessions[request.ID]; !ok {
+		var ok bool
+		if bookmarkID, ok = vars["id"]; !ok {
+			return errors.New("invalid session")
+		}
+
+		if _, ok = sessionize.Sessions[bookmarkID]; !ok {
 			return errors.New("invalid session")
 		}
 		return nil
 	})
 
+	sequence.Do("adding bookmark", func() error {
+		attn, err := store.DB.GetAttendee(attendee.ID)
+		if err == nil {
+			return store.DB.SetAttendee(attn.AddBookmark(bookmarkID))
+		}
+		return err
+	})
+
 	sequence.Do("saving bookmark", func() error {
 		attn, err := store.DB.GetAttendee(attendee.ID)
 		if err == nil {
-			return store.DB.SetAttendee(attn.AddBookmark(request.ID))
+			return store.DB.SetAttendee(attn.AddBookmark(bookmarkID))
 		}
 		return err
 	})

@@ -23,7 +23,7 @@ var routes = []route{
 	{"/login", http.MethodGet, meetup.Login, nil},
 	{"/meetup", http.MethodGet, meetup.LoginCallback, nil},
 	{"/api/me", http.MethodGet, controllers.Me, nil},
-	{"/api/bookmarks", http.MethodPost, controllers.AddBookmark, nil},
+	{"/api/bookmarks/{id}", http.MethodPut, controllers.AddBookmark, nil},
 	{"/api/bookmarks", http.MethodGet, controllers.ListBookmarks, nil},
 	{"/api/bookmarks/{id}", http.MethodDelete, controllers.RemoveBookmark, nil},
 	{"/api/feedbacks", http.MethodPost, controllers.AddFeedback, nil},

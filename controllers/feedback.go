@@ -90,6 +90,12 @@ func ListOwnFeedback(w http.ResponseWriter, r *http.Request) {
 		j, err = json.Marshal(response)
 		return err
 	})
+
+	sequence.Then(func() {
+		w.Header().Set("Content-type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(j)
+	})
 }
 
 func areResponsesInvalid(f store.Feedback) bool {
