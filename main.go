@@ -28,19 +28,21 @@ var (
 
 func main() {
 	version := flag.Bool("v", false, "prints current app version")
+	envfile := flag.String("c", ".env", "-c /path/to/my/env.file [defaults to .env]")
+
 	flag.Parse()
 	if *version {
 		fmt.Printf("Version: %s \nCommit: %s \nBuilt: %s", appVersion, appCommit, appBuilt)
 		os.Exit(0)
 	}
 
-	config.Load()
+	config.Load(*envfile)
 	sessionize.LoadSessions()
 	store.Init()
 
 	allowedHeaders := handlers.AllowedHeaders([]string{"X-Requested-With"})
-    allowedOrigins := handlers.AllowedOrigins([]string{"*"})
-    allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
+	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
+	allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
 
 	router := mux.NewRouter()
 	router.Path("/login").Methods(http.MethodGet).HandlerFunc(meetup.Login)
@@ -54,7 +56,7 @@ func main() {
 	router.Path("/api/feedbacks/me").Methods(http.MethodGet).HandlerFunc(controllers.ListOwnFeedback)
 
 	log.Println("Listening on :" + config.HTTPPort)
-	http.ListenAndServe(":"+config.HTTPPort, 
-		handlers.CORS(allowedHeaders,allowedOrigins,allowedMethods)(router),
+	http.ListenAndServe(":"+config.HTTPPort,
+		handlers.CORS(allowedHeaders, allowedOrigins, allowedMethods)(router),
 	)
 }

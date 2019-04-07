@@ -60,10 +60,14 @@ func (l *loader) load(name string, def ...string) string {
 }
 
 //Load sets up configuration for the application
-func Load() {
+func Load(filename string) {
 	var l loader
 
-	if err := godotenv.Load(); err != nil {
+	if filename == "" {
+		filename = ".env"
+	}
+
+	if err := godotenv.Load(filename); err != nil {
 		log.Fatalf("Error loading env: %v", err)
 	}
 
