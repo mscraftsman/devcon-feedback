@@ -41,7 +41,7 @@ func main() {
 	store.Init()
 
 	allowedHeaders := handlers.AllowedHeaders([]string{"X-Requested-With", "Cookie"})
-	allowedOrigins := handlers.AllowedOrigins([]string{"*"})
+	allowedOrigins := handlers.AllowedOrigins([]string{config.FrontURL})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
 
 	router := mux.NewRouter()
@@ -57,6 +57,6 @@ func main() {
 
 	log.Println("Listening on :" + config.HTTPPort)
 	http.ListenAndServe(":"+config.HTTPPort,
-		handlers.CORS(allowedHeaders, allowedOrigins, allowedMethods)(router),
+		handlers.CORS(allowedHeaders, allowedOrigins, allowedMethods, handlers.AllowCredentials())(router),
 	)
 }
