@@ -13,4 +13,4 @@ dist/devcon-feedback:
 
 clean:
 	go clean
-	rm dist/devcon-feedback
+	-rm dist/devcon-feedback

@@ -38,6 +38,10 @@ func main() {
 	sessionize.LoadSessions()
 	store.Init()
 
+	allowedHeaders := handlers.AllowedHeaders([]string{"X-Requested-With"})
+    allowedOrigins := handlers.AllowedOrigins([]string{"*"})
+    allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
+
 	router := mux.NewRouter()
 	router.Path("login").Methods(http.MethodGet).HandlerFunc(meetup.Login)
 	router.Path("meetup").Methods(http.MethodGet).HandlerFunc(meetup.LoginCallback)
@@ -50,5 +54,7 @@ func main() {
 	router.Path("/api/feedbacks/me").Methods(http.MethodGet).HandlerFunc(controllers.ListOwnFeedback)
 
 	log.Println("Listening on :" + config.HTTPPort)
-	http.ListenAndServe(":"+config.HTTPPort, handlers.CORS()(router))
+	http.ListenAndServe(":"+config.HTTPPort, 
+		handlers.CORS(allowedHeaders,allowedOrigins,allowedMethods)(router),
+	)
 }
