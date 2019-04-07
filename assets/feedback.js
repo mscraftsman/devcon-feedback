@@ -1,6 +1,7 @@
 function Paths(baseURL) {
 	return {
 		Login: baseURL + "/login",
+		Logout: baseURL + "/logout",
 		Me: baseURL + "/api/me",
 		Bookmarks: baseURL + "/api/bookmarks",
 		Feedbacks: baseURL + "/api/feedbacks",
@@ -8,21 +9,34 @@ function Paths(baseURL) {
 	};
 }
 
-function Status(response) {
-	if (response.status >= 200 && response.status < 300) {
-		return Promise.resolve(response);
-	} else {
-		return Promise.reject(new Error(response.statusText));
-	}
+function status({ response, data }) {
+	return new Promise((resolve, reject) => {
+		if (response.status >= 200 && response.status < 300) {
+			resolve(data);
+		} else {
+			reject(data);
+		}
+	});
 }
 
-function JSON(response) {
-	return response.json();
+function rajni(response) {
+	return new Promise((resolve, reject) => {
+		response
+			.json()
+			.then(data => resolve({ response, data }))
+			.catch(reject);
+	});
+}
+
+function FetchWithCreds(url, opts) {
+	opts = Object.assign({ credentials: "include" }, opts);
+	return fetch(url, opts);
 }
 
 class Feedback {
 	constructor(baseURL) {
 		this.paths = Paths(baseURL);
+		window.Feedback = this;
 	}
 
 	/**
@@ -35,15 +49,17 @@ class Feedback {
 	/**
 	 * Log the user out
 	 */
-	Logout() {}
+	Logout() {
+		window.location = this.paths.Logout;
+	}
 
 	/**
 	 * Returns information about currently logged in attendee
 	 */
 	Me() {
-		return fetch(this.paths.Me)
-			.then(JSON)
-			.then(Status);
+		return FetchWithCreds(this.paths.Me, { credentials: "include" })
+			.then(rajni)
+			.then(status);
 	}
 
 	/**
@@ -51,24 +67,18 @@ class Feedback {
 	 * @param {string} id
 	 */
 	AddBookmark(id) {
-		return fetch(this.paths.Bookmarks, {
-			method: "POST",
-			headers: {
-				"Content-type": "application/json"
-			},
-			body: `{"id": ${id}}`
-		})
-			.then(JSON)
-			.then(Status);
+		return FetchWithCreds(this.paths.Bookmarks + "/" + id, {
+			method: "PUT"
+		}).then(status);
 	}
 
 	/**
 	 * Get a list of currently logged in attendee's bookmarks
 	 */
 	ListOwnBookmarks() {
-		return fetch(this.paths.Bookmarks)
-			.then(JSON)
-			.then(Status);
+		return FetchWithCreds(this.paths.Bookmarks)
+			.then(rajni)
+			.then(status);
 	}
 
 	/**
@@ -76,9 +86,9 @@ class Feedback {
 	 * @param {string} id
 	 */
 	RemoveBookmark(id) {
-		return fetch(this.paths.Bookmarks + "/" + id, {
+		return FetchWithCreds(this.paths.Bookmarks + "/" + id, {
 			method: "DELETE"
-		}).then(Status);
+		}).then(status);
 	}
 
 	/**
@@ -86,22 +96,22 @@ class Feedback {
 	 * @param {object} feedback
 	 */
 	AddFeedback(feedback) {
-		return fetch(this.paths.Feedbacks, {
+		return FetchWithCreds(this.paths.Feedbacks, {
 			method: "POST",
 			headers: {
 				"Content-type": "application/json"
 			},
 			body: JSON.stringify(feedback)
-		}).then(Status);
+		}).then(status);
 	}
 
 	/**
 	 * List feedbacks added by currently logged in user
 	 */
 	ListOwnFeedbacks() {
-		return fetch(this.paths.OwnFeedbacks)
-			.then(JSON)
-			.then(Status);
+		return FetchWithCreds(this.paths.OwnFeedbacks)
+			.then(rajni)
+			.then(status);
 	}
 }
 

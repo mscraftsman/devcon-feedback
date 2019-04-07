@@ -60,7 +60,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	})
 
 	sequence.Then(func() {
-		cookie := http.Cookie{Name: cookieName, Value: tokenString, Expires: time.Now().Add(72 * time.Hour), HttpOnly: false, Path: "/"}
+		cookie := http.Cookie{Name: cookieName, Value: tokenString, Expires: time.Now().Add(168 * time.Hour), HttpOnly: true, Path: "/"}
 		http.SetCookie(w, &cookie)
 		http.Redirect(w, r, config.FrontURL+"/", http.StatusFound)
 	})
@@ -70,4 +70,11 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"error": "` + act + `"}`))
 	})
+}
+
+//Logout sends a stale cookie to clear the log in cookie
+func Logout(w http.ResponseWriter, r *http.Request) {
+	cookie := http.Cookie{Name: cookieName, Value: "", Expires: time.Unix(0, 0), HttpOnly: true, Path: "/"}
+	http.SetCookie(w, &cookie)
+	http.Redirect(w, r, config.FrontURL+"/", http.StatusFound)
 }

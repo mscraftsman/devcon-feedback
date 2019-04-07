@@ -7,8 +7,8 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
-	"github.com/mscraftsman/devcon-feedback/controllers"
 	"github.com/mscraftsman/devcon-feedback/config"
+	"github.com/mscraftsman/devcon-feedback/controllers"
 	"github.com/mscraftsman/devcon-feedback/meetup"
 )
 
@@ -21,6 +21,7 @@ type route struct {
 
 var routes = []route{
 	{"/login", http.MethodGet, meetup.Login, nil},
+	{"/logout", http.MethodGet, meetup.Logout, nil},
 	{"/meetup", http.MethodGet, meetup.LoginCallback, nil},
 	{"/api/me", http.MethodGet, controllers.Me, nil},
 	{"/api/bookmarks/{id}", http.MethodPut, controllers.AddBookmark, nil},
@@ -28,6 +29,7 @@ var routes = []route{
 	{"/api/bookmarks/{id}", http.MethodDelete, controllers.RemoveBookmark, nil},
 	{"/api/feedbacks", http.MethodPost, controllers.AddFeedback, nil},
 	{"/api/feedbacks/me", http.MethodGet, controllers.ListOwnFeedback, nil},
+	{"/api/sessions", http.MethodGet, controllers.ListSessions, nil},
 }
 
 func initRouter() http.Handler {
@@ -44,7 +46,7 @@ func initRouter() http.Handler {
 	allowedHeaders := handlers.AllowedHeaders([]string{"X-Requested-With", "Cookie", "Origin", "Content-type"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
 	allowCredentials := handlers.AllowCredentials()
-	allowedOrigins := handlers.AllowedOriginValidator(func(orig string) bool{
+	allowedOrigins := handlers.AllowedOriginValidator(func(orig string) bool {
 		return strings.HasPrefix(orig, config.FrontURL)
 	})
 
