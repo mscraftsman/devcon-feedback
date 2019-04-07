@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 const (
@@ -41,27 +43,34 @@ type loader struct {
 	errors []error
 }
 
-func (l loader) load(name string, variable *string, def ...string) {
-	*variable = os.Getenv(name)
-	if *variable == "" {
-		if len(def) == 0 {
-			l.errors = append(l.errors, fmt.Errorf("[env] environment variable not set: %s", name))
-		} else {
-			*variable = def[0]
-		}
+func (l *loader) load(name string, def ...string) string {
+	val := os.Getenv(name)
+	if val != "" {
+		return val
+	} else if len(def) == 0 {
+		l.errors = append(l.errors, fmt.Errorf("[env] environment variable not set: %s", name))
+	} else {
+		return def[0]
 	}
+
+	return ""
 }
 
 //Load sets up configuration for the application
 func Load() {
 	var l loader
-	l.load("ENV", &Env, EnvironmentProd)
-	l.load("BASE_URL", &BaseURL)
-	l.load("BOLT_DB_PATH", &BoltDBPath)
-	l.load("MEETUP_KEY", &MeetupKey)
-	l.load("MEETUP_SECRET", &MeetupSecret)
-	l.load("JWT_SECRET", &JWTSecret)
-	l.load("HTTP_PORT", &HTTPPort, "1337")
+
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("Error loading env: %v", err)
+	}
+
+	Env = l.load("ENV", EnvironmentProd)
+	BaseURL = l.load("BASE_URL")
+	BoltDBPath = l.load("BOLT_DB_PATH")
+	MeetupKey = l.load("MEETUP_KEY")
+	MeetupSecret = l.load("MEETUP_SECRET")
+	JWTSecret = l.load("JWT_SECRET")
+	HTTPPort = l.load("HTTP_PORT", "1337")
 
 	if len(l.errors) != 0 {
 		for i := range l.errors {

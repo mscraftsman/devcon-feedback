@@ -6,3 +6,4 @@ bla.http
 .vscode
 rice-box.go
 build/
+*.db
