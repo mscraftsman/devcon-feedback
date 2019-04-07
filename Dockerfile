@@ -7,6 +7,7 @@ ARG meetup_secret=""
 ARG jwt_secret="ThisIsNotRandomPleaseChangeIt"
 ARG http_port="1337"
 ARG bolt_db_path="/var/devcon.db"
+ARG front_url="https://conference.mscc.mu"
 
 ENV ENV=$environment
 ENV BASE_URL=$base_url
@@ -15,6 +16,7 @@ ENV MEETUP_SECRET=$meetup_secret
 ENV JWT_SECRET=$jwt_secret
 ENV HTTP_PORT=$http_port
 ENV BOLT_DB_PATH=$bolt_db_path
+ENV FRONT_URL=$front_url
 
 RUN apk update && apk add --virtual git && rm -rf /var/cache/apk/*
 

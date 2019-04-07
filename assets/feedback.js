@@ -21,7 +21,7 @@ function JSON(response) {
 }
 
 class Feedback {
-	constructor() {
+	constructor(baseURL) {
 		this.paths = Paths(baseURL);
 	}
 

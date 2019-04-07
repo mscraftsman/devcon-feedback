@@ -62,7 +62,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	sequence.Then(func() {
 		cookie := http.Cookie{Name: cookieName, Value: tokenString, Expires: time.Now().Add(72 * time.Hour), HttpOnly: false, Path: "/"}
 		http.SetCookie(w, &cookie)
-		http.Redirect(w, r, config.BaseURL+"/", http.StatusFound)
+		http.Redirect(w, r, config.FrontURL+"/", http.StatusFound)
 	})
 
 	sequence.Catch(func(act string, err error) {

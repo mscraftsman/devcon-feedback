@@ -37,6 +37,9 @@ var (
 
 	//HTTPPort is the http port to listen to, defaults to 1337
 	HTTPPort string
+
+	//FrontURL is the url of the front web app
+	FrontURL string
 )
 
 type loader struct {
@@ -71,6 +74,7 @@ func Load() {
 	MeetupSecret = l.load("MEETUP_SECRET")
 	JWTSecret = l.load("JWT_SECRET")
 	HTTPPort = l.load("HTTP_PORT", "1337")
+	FrontURL = l.load("FRONT_URL")
 
 	if len(l.errors) != 0 {
 		for i := range l.errors {
