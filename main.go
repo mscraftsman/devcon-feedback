@@ -5,23 +5,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/gorilla/mux"
 	"net/http"
 	"os"
-	"time"
-
-	rice "github.com/GeertJohan/go.rice"
-	"github.com/gorilla/mux"
-	"github.com/mscraftsman/devcon-feedback/core"
-	"github.com/mscraftsman/devcon-feedback/models"
-	"github.com/mscraftsman/devcon-feedback/services/admin"
-	"github.com/mscraftsman/devcon-feedback/util/grpcx"
-	log "github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
 )
 
-//go:generate rice embed-go
-
-// Versioning info
+// Version info
 var (
 	appVersion = "n/a"
 	appCommit  = "n/a"
@@ -32,39 +21,14 @@ func main() {
 	version := flag.Bool("v", false, "prints current app version")
 	flag.Parse()
 	if *version {
-		fmt.Printf("Version : %v \nCommit : %v\nBuilt: %v\n", appVersion, appCommit, appBuilt)
+		fmt.Printf("Version: %s \nCommit: %s \nBuilt: %s", appVersion, appCommit, appBuilt)
 		os.Exit(0)
 	}
 
-	config := core.Bootstrap()
-	models.Init(config.DB)
+	router := mux.NewRouter()
+	apiSubRoute := router.PathPrefix("/api").Subrouter()
 
-	core.Assets = rice.MustFindBox("assets")
+	apiSubRoute.Path("/bookmarks").Methods(http.MethodPost).HandlerFunc(nil)
+	apiSubRoute.Path("/bookmarks").Methods(http.MethodGet).HandlerFunc(nil)
 
-	g := grpc.NewServer(
-		grpc.MaxRecvMsgSize(1024*1024*20),
-		grpc.MaxSendMsgSize(1024*1024*20),
-		grpc.UnaryInterceptor(grpcx.UnaryLoggerInteceptor),
-	)
-	admin.RegisterAdminServer(g, &admin.Service{})
-
-	var router *mux.Router
-	if core.Env == core.EnvironmentDev {
-		router = newDevRouter(g)
-	} else {
-		router = newProdRouter(g)
-	}
-
-	srv := &http.Server{
-		Handler:      router,
-		Addr:         ":" + config.HTTPPort,
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		IdleTimeout:  15 * time.Second,
-	}
-
-	log.Println("Listening on http://127.0.0.1:" + config.HTTPPort)
-	if err := srv.ListenAndServe(); err != nil {
-		log.Fatalf("error starting http server: %v", err)
-	}
 }
