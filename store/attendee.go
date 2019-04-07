@@ -25,7 +25,13 @@ func (a Attendee) AddBookmark(id string) Attendee {
 			return a
 		}
 	}
-	a.Bookmarks = a.Bookmarks + ";" + id
+
+	if a.Bookmarks == "" {
+		a.Bookmarks = id
+	} else {
+		a.Bookmarks = a.Bookmarks + ";" + id
+	}
+
 	return a
 }
 
@@ -45,6 +51,9 @@ func (a Attendee) RemoveBookmark(id string) Attendee {
 
 //ListBookmarks returns list of bookmarks
 func (a Attendee) ListBookmarks() []string {
+	if a.Bookmarks == "" {
+		return []string{}
+	}
 	return strings.Split(a.Bookmarks, ";")
 }
 
@@ -56,12 +65,21 @@ func (a Attendee) AddFeedback(id string) Attendee {
 			return a
 		}
 	}
-	a.Feedbacks = a.Feedbacks + ";" + id
+
+	if a.Feedbacks == "" {
+		a.Feedbacks = id
+	} else {
+		a.Feedbacks = a.Feedbacks + ";" + id
+	}
+
 	return a
 }
 
 //ListFeedbacks returns feedback ids for an attendee
 func (a Attendee) ListFeedbacks() []string {
+	if a.Feedbacks == "" {
+		return []string{}
+	}
 	return strings.Split(a.Feedbacks, ";")
 }
 

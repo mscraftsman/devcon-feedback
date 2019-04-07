@@ -86,7 +86,7 @@ func (s Store) GetFeedback(id string) (Feedback, error) {
 
 //ListFeedbacks for an attendee ID
 func (s Store) ListFeedbacks(attnID string) ([]Feedback, error) {
-	var feedbacks [][]byte
+	var feedbacks []Feedback
 
 	attn, err := s.GetAttendee(attnID)
 	if err != nil {
@@ -98,30 +98,17 @@ func (s Store) ListFeedbacks(attnID string) ([]Feedback, error) {
 	s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
 		for i := range fIDs {
-			if f := b.Get([]byte(fIDs[i])); f != nil {
-				feedbacks = append(feedbacks, f)
+			var f Feedback
+			if j := b.Get([]byte(fIDs[i])); j != nil {
+				if err := json.Unmarshal(j, &f); err == nil {
+					feedbacks = append(feedbacks, f)
+				}
 			}
 		}
 
 		return nil
 	})
 
-	f := func(j [][]byte) []Feedback {
-		var (
-			out []Feedback
-			f   Feedback
-		)
-		for i := range j {
-			if j[i] != nil {
-				if err := json.Unmarshal(j[i], &f); err == nil {
-					out = append(out, f)
-				}
-			}
-		}
-
-		return out
-	}(feedbacks)
-
-	return f, nil
+	return feedbacks, nil
 }
 
