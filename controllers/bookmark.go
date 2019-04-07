@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/gorilla/mux"
+
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 
 	"github.com/fluxynet/sequitur"
@@ -64,12 +66,11 @@ func AddBookmark(w http.ResponseWriter, r *http.Request) {
 //RemoveBookmark allows a user to remove a bookmark
 func RemoveBookmark(w http.ResponseWriter, r *http.Request) {
 	var (
-		attendee *store.Attendee
-		err      error
-		sequence sequitur.Sequence
-		request  struct {
-			ID string `json:"id"`
-		}
+		attendee   *store.Attendee
+		err        error
+		sequence   sequitur.Sequence
+		vars       = mux.Vars(r)
+		bookmarkID string
 	)
 
 	defer sequence.Catch(catchError(w, r))
@@ -79,18 +80,13 @@ func RemoveBookmark(w http.ResponseWriter, r *http.Request) {
 		return err
 	})
 
-	var resp []byte
-	sequence.Do("reading request body", func() error {
-		resp, err = ioutil.ReadAll(r.Body)
-		return err
-	})
-
-	sequence.Do("decoding request body", func() error {
-		return json.Unmarshal(resp, &request)
-	})
-
 	sequence.Do("validating bookmark information", func() error {
-		if _, ok := sessionize.Sessions[request.ID]; !ok {
+		var ok bool
+		if bookmarkID, ok = vars["id"]; !ok {
+			return errors.New("invalid session")
+		}
+
+		if _, ok = sessionize.Sessions[bookmarkID]; !ok {
 			return errors.New("invalid session")
 		}
 		return nil
@@ -99,7 +95,7 @@ func RemoveBookmark(w http.ResponseWriter, r *http.Request) {
 	sequence.Do("removing bookmark", func() error {
 		attn, err := store.DB.GetAttendee(attendee.ID)
 		if err == nil {
-			return store.DB.SetAttendee(attn.RemoveBookmark(request.ID))
+			return store.DB.SetAttendee(attn.RemoveBookmark(bookmarkID))
 		}
 		return err
 	})

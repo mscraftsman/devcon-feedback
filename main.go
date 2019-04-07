@@ -5,9 +5,17 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
 	"os"
+
+	"github.com/mscraftsman/devcon-feedback/config"
+	"github.com/mscraftsman/devcon-feedback/sessionize"
+	"github.com/mscraftsman/devcon-feedback/store"
+
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	"github.com/mscraftsman/devcon-feedback/controllers"
+	"github.com/mscraftsman/devcon-feedback/meetup"
 )
 
 // Version info
@@ -25,10 +33,21 @@ func main() {
 		os.Exit(0)
 	}
 
+	config.Load()
+	sessionize.LoadSessions()
+	store.Init()
+
 	router := mux.NewRouter()
+	router.Path("login").Methods(http.MethodGet).HandlerFunc(meetup.Login)
+	router.Path("meetup").Methods(http.MethodGet).HandlerFunc(meetup.LoginCallback)
+
 	apiSubRoute := router.PathPrefix("/api").Subrouter()
+	apiSubRoute.Path("/me").Methods(http.MethodGet).HandlerFunc(controllers.Me)
+	apiSubRoute.Path("/bookmarks").Methods(http.MethodPost).HandlerFunc(controllers.AddBookmark)
+	apiSubRoute.Path("/bookmarks").Methods(http.MethodGet).HandlerFunc(controllers.ListBookmarks)
+	apiSubRoute.Path("/bookmarks/{id}").Methods(http.MethodDelete).HandlerFunc(controllers.RemoveBookmark)
+	apiSubRoute.Path("/feedbacks").Methods(http.MethodPost).HandlerFunc(controllers.AddFeedback)
+	apiSubRoute.Path("/feedbacks/me").Methods(http.MethodGet).HandlerFunc(controllers.ListOwnFeedback)
 
-	apiSubRoute.Path("/bookmarks").Methods(http.MethodPost).HandlerFunc(nil)
-	apiSubRoute.Path("/bookmarks").Methods(http.MethodGet).HandlerFunc(nil)
-
+	http.ListenAndServe(":"+config.HTTPPort, handlers.CORS()(router))
 }

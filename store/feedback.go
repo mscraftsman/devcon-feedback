@@ -8,7 +8,7 @@ import (
 type Feedback struct {
 	ID         string    `json:"id"`
 	SessionID  string    `json:"session_id"`
-	AttendeeID string    `json:"visitor_id"`
+	AttendeeID string    `json:"attendee_id"`
 	Reaction1  string    `json:"reaction_1"`
 	Reaction2  string    `json:"reaction_2"`
 	Reaction3  string    `json:"reaction_3"`

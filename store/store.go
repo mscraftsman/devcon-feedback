@@ -35,11 +35,11 @@ type Store struct {
 }
 
 //Init initialises the data store
-func Init() (*Store, error) {
+func Init() error {
 	var store Store
 	db, err := bolt.Open(config.BoltDBPath, 0600, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = db.Update(func(tx *bolt.Tx) error {
@@ -59,7 +59,8 @@ func Init() (*Store, error) {
 	})
 
 	store.DB = db
-	return &store, err
+	DB = &store
+	return err
 }
 
 //GetAttendee retrieves an attendee from the store
