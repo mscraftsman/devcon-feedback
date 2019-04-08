@@ -32,6 +32,9 @@ var (
 	//MeetupSecret is used to authenticate via meetup.com
 	MeetupSecret string
 
+	//SessionizeURL is used to get list of sessions
+	SessionizeURL string
+
 	//JWTSecret is used to encrypt the jwt token for cookies
 	JWTSecret string
 
@@ -79,6 +82,7 @@ func Load(filename string) {
 	JWTSecret = l.load("JWT_SECRET")
 	HTTPPort = l.load("HTTP_PORT", "1337")
 	FrontURL = l.load("FRONT_URL")
+	SessionizeURL = l.load("SESSIONIZE_URL")
 
 	if len(l.errors) != 0 {
 		for i := range l.errors {

@@ -102,6 +102,13 @@ func (s Store) GetAttendee(id string) (Attendee, error) {
 
 //SetAttendee sets an attendee entity in the store
 func (s Store) SetAttendee(a Attendee) error {
+	//if already exists, we preserve existing and update only name and photo
+	if e, err := s.GetAttendee(a.ID); err != nil {
+		e.Name = a.Name
+		e.PhotoLink = a.PhotoLink
+		a = e
+	}
+
 	j, err := json.Marshal(a)
 	if err != nil {
 		return err
@@ -111,4 +118,27 @@ func (s Store) SetAttendee(a Attendee) error {
 		b := tx.Bucket(bucketAttendees)
 		return b.Put([]byte(a.ID), j)
 	})
+}
+
+//ListAttendees returns a list of all attendees
+func (s Store) ListAttendees() []Attendee {
+	var attendees []Attendee
+
+	s.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(bucketAttendees)
+
+		b.ForEach(func(k, v []byte) error {
+			var a Attendee
+
+			if err := json.Unmarshal(v, &a); err == nil {
+				attendees = append(attendees, a)
+			}
+
+			return nil
+		})
+
+		return nil
+	})
+
+	return attendees
 }

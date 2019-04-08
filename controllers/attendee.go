@@ -27,6 +27,8 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	var response []byte
 
 	sequence.Do("Writing response", func() error {
+		attendee.Bookmarks = ""
+		attendee.Feedbacks = ""
 		response, err = json.Marshal(attendee)
 		return err
 	})

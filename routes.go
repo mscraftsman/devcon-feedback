@@ -29,6 +29,7 @@ var routes = []route{
 	{"/api/bookmarks/{id}", http.MethodDelete, controllers.RemoveBookmark, nil},
 	{"/api/feedbacks", http.MethodPost, controllers.AddFeedback, nil},
 	{"/api/feedbacks/me", http.MethodGet, controllers.ListOwnFeedback, nil},
+	{"/api/ratings", http.MethodGet, controllers.ListRatings, nil},
 	{"/api/sessions", http.MethodGet, controllers.ListSessions, nil},
 }
 

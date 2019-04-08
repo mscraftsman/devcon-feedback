@@ -80,10 +80,7 @@ func ListOwnFeedback(w http.ResponseWriter, r *http.Request) {
 		return err
 	})
 
-	sequence.Do("loading feedback information", func() error {
-		response.Feedbacks, err = store.DB.ListFeedbacks(attendee.ID)
-		return err
-	})
+	response.Feedbacks = store.DB.ListAttendeeFeedbacks(attendee.ID)
 
 	var j []byte
 	sequence.Do("writing response", func() error {

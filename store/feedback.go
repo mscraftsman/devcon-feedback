@@ -28,8 +28,6 @@ func (s Store) AddFeedback(f Feedback) error {
 	}
 
 	id := uuid.NewV4().String()
-	f.ID = id
-	f.CreatedAt = time.Now()
 
 	attn, err := s.GetAttendee(f.AttendeeID)
 	if err != nil {
@@ -37,6 +35,8 @@ func (s Store) AddFeedback(f Feedback) error {
 	}
 
 	id += ":" + f.AttendeeID
+	f.ID = id
+	f.CreatedAt = time.Now()
 
 	err = s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
@@ -57,7 +57,7 @@ func (s Store) AddFeedback(f Feedback) error {
 		return err
 	}
 
-	return s.Update(func(tx *bolt.Tx) error {
+	err = s.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
 
 		if err := b.Put([]byte(id), j); err != nil {
@@ -67,6 +67,10 @@ func (s Store) AddFeedback(f Feedback) error {
 		b = tx.Bucket(bucketAttendees)
 		return b.Put([]byte(attn.ID), a)
 	})
+
+	go s.UpdateRatings()
+
+	return err
 }
 
 //GetFeedback retrieves a feedback from the store
@@ -86,13 +90,13 @@ func (s Store) GetFeedback(id string) (Feedback, error) {
 	return f, err
 }
 
-//ListFeedbacks for an attendee ID
-func (s Store) ListFeedbacks(attnID string) ([]Feedback, error) {
+//ListAttendeeFeedbacks for an attendee ID
+func (s Store) ListAttendeeFeedbacks(attnID string) []Feedback {
 	var feedbacks []Feedback
 
 	attn, err := s.GetAttendee(attnID)
 	if err != nil {
-		return nil, nil
+		return nil
 	}
 
 	fIDs := attn.ListFeedbacks()
@@ -111,6 +115,24 @@ func (s Store) ListFeedbacks(attnID string) ([]Feedback, error) {
 		return nil
 	})
 
-	return feedbacks, nil
+	return feedbacks
 }
 
+//ListFeedbacks for all attendees
+func (s Store) ListFeedbacks() []Feedback {
+	var feedbacks []Feedback
+
+	s.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket(bucketFeedbacks)
+		b.ForEach(func(k, v []byte) error {
+			var f Feedback
+			if err := json.Unmarshal(v, &f); err == nil {
+				feedbacks = append(feedbacks, f)
+			}
+			return nil
+		})
+		return nil
+	})
+
+	return feedbacks
+}

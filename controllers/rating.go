@@ -1,0 +1,37 @@
+package controllers
+
+import (
+	"encoding/json"
+	"net/http"
+
+	"github.com/fluxynet/sequitur"
+	"github.com/mscraftsman/devcon-feedback/store"
+)
+
+//ListRatings returns all ratings
+func ListRatings(w http.ResponseWriter, r *http.Request) {
+	var (
+		j        []byte
+		err      error
+		sequence sequitur.Sequence
+		ratings  []store.Rating
+	)
+
+	sequence.Catch(catchError(w, r))
+
+	sequence.Do("loading ratings data", func() error {
+		ratings = store.DB.ListRatings()
+		return nil
+	})
+
+	sequence.Do("encoding response", func() error {
+		j, err = json.Marshal(ratings)
+		return err
+	})
+
+	sequence.Then(func() {
+		w.Header().Set("Content-type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(j)
+	})
+}

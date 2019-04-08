@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/mscraftsman/devcon-feedback/config"
+
 	"github.com/fluxynet/sequitur"
 )
 
@@ -31,7 +33,13 @@ func LoadSessions() {
 
 	sequence.Do("Loading sessions from sessionize", func() error {
 		client := &http.Client{Timeout: time.Second * 30}
-		rs, err = client.Get("https://sessionize.com/api/v2/i2m69kbq/view/All")
+		req, err := http.NewRequest(http.MethodGet, config.SessionizeURL, nil)
+		if err != nil {
+			return err
+		}
+
+		req.Header.Set("Content-type", "application/json")
+		rs, err = client.Do(req)
 
 		return err
 	})
