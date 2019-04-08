@@ -28,7 +28,7 @@ func (a Attendee) AddBookmark(id string) Attendee {
 
 	if a.Bookmarks == "" {
 		a.Bookmarks = id
-	} else {
+	} else if !strings.Contains(a.Bookmarks, id) {
 		a.Bookmarks = a.Bookmarks + ";" + id
 	}
 
@@ -68,7 +68,7 @@ func (a Attendee) AddFeedback(id string) Attendee {
 
 	if a.Feedbacks == "" {
 		a.Feedbacks = id
-	} else {
+	} else if !strings.Contains(a.Feedbacks, id) {
 		a.Feedbacks = a.Feedbacks + ";" + id
 	}
 
