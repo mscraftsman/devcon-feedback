@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"strings"
 
+	log "github.com/sirupsen/logrus"
 	bolt "go.etcd.io/bbolt"
 )
 
@@ -134,4 +135,22 @@ func (s Store) ListAttendees() []Attendee {
 	})
 
 	return attendees
+}
+
+//IsAttendeeBanned returns a func to check if attendee is banned by id
+func (s Store) IsAttendeeBanned() func(string) bool {
+	a := s.ListAttendees()
+	b := make(map[string]interface{})
+
+	for i := range a {
+		if !a[i].Status {
+			b[a[i].ID] = nil
+		}
+	}
+	log.WithField("banned", b).Debug("store:IsAttendeeBanned")
+
+	return func(id string) bool {
+		_, ok := b[id]
+		return ok
+	}
 }

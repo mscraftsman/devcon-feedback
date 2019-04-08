@@ -12,13 +12,16 @@ import (
 )
 
 //Sessions contains sessionID -> endsAt from sessionize; must only be read
-var Sessions map[string]string
+var Sessions map[string]Session
+
+//Session represents a session from sessionize
+type Session struct {
+	ID     string `json:"id"`
+	EndsAt string `json:"endsAt"`
+}
 
 type sessionize struct {
-	Sessions []struct {
-		ID     string `json:"id"`
-		EndsAt string `json:"endsAt"`
-	}
+	Sessions []Session
 }
 
 //LoadSessions from sessionize
@@ -30,6 +33,12 @@ func LoadSessions() {
 		resp     []byte
 		sess     sessionize
 	)
+
+	defer func() {
+		if Sessions == nil {
+			Sessions = make(map[string]Session)
+		}
+	}()
 
 	sequence.Do("Loading sessions from sessionize", func() error {
 		client := &http.Client{Timeout: time.Second * 30}
@@ -54,10 +63,9 @@ func LoadSessions() {
 	})
 
 	sequence.Then(func() {
-		m := make(map[string]string)
+		m := make(map[string]Session)
 		for i := range sess.Sessions {
-			m[sess.Sessions[i].ID] = sess.Sessions[i].EndsAt
+			m[sess.Sessions[i].ID] = sess.Sessions[i]
 		}
-		Sessions = m
 	})
 }
