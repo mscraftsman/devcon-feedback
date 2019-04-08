@@ -3,6 +3,7 @@ package store
 import (
 	"encoding/json"
 	"strconv"
+	"strings"
 
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 	log "github.com/sirupsen/logrus"
@@ -12,6 +13,7 @@ import (
 //Rating for each session; id is same as sessionid
 type Rating struct {
 	ID        string                     `json:"id"`
+	Speakers  string                     `json:"speakers"`
 	Score     int                        `json:"score"`
 	Count     int                        `json:"count"`
 	Reaction1 map[string]ReactionSummary `json:"reaction1"`
@@ -33,12 +35,13 @@ func (s *Store) UpdateRatings() {
 		}
 	}()
 
-	ratings := make(map[string]Rating)
+	mratings := make(map[string]Rating)
 	isBanned := s.IsAttendeeBanned()
 
 	for sid := range sessionize.Sessions {
-		ratings[sid] = Rating{
+		mratings[sid] = Rating{
 			ID:        sid,
+			Speakers:  strings.Join(sessionize.Sessions[sid].Speakers, ";"),
 			Reaction1: make(map[string]ReactionSummary),
 			Reaction2: make(map[string]ReactionSummary),
 			Reaction3: make(map[string]ReactionSummary),
@@ -48,10 +51,11 @@ func (s *Store) UpdateRatings() {
 	f := s.ListFeedbacks()
 	for i := range f {
 		if !isBanned(f[i].AttendeeID) {
-			ratings[f[i].SessionID] = computeRating(ratings[f[i].SessionID], f[i])
+			mratings[f[i].SessionID] = computeRating(mratings[f[i].SessionID], f[i])
 		}
 	}
 
+	var ratings []Rating
 	s.Update(func(tx *bolt.Tx) error {
 		var (
 			err error
@@ -59,17 +63,20 @@ func (s *Store) UpdateRatings() {
 		)
 		b := tx.Bucket(bucketRatings)
 
-		for i := range ratings {
-			if j, err = json.Marshal(ratings[i]); err == nil {
-				e := b.Put([]byte(ratings[i].ID), j)
+		for i := range mratings {
+			if j, err = json.Marshal(mratings[i]); err == nil {
+				e := b.Put([]byte(mratings[i].ID), j)
 				if e != nil {
 					log.WithField("error", e).Error("ratings:update:save")
 				}
+				ratings = append(ratings, mratings[i])
 			}
 		}
 
 		return nil
 	})
+
+	Leaderboard = leaderboardFromRatings(ratings)
 }
 
 //ListRatings returns all ratings
@@ -138,6 +145,6 @@ func computeRating(rating Rating, feedback Feedback) Rating {
 
 	rating.Count++
 	rating.Score += v1 + v2 + v3
-	log.WithField("rating", rating).Debug("ratings:update")
+	log.WithField("rating", rating).Debug("ratings:compute")
 	return rating
 }

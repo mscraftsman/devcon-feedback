@@ -37,3 +37,25 @@ func ListRatings(w http.ResponseWriter, r *http.Request) {
 		w.Write(j)
 	})
 }
+
+//Leaderboards returns leaderboard
+func Leaderboards(w http.ResponseWriter, r *http.Request) {
+	var (
+		sequence sequitur.Sequence
+		j        []byte
+		err      error
+	)
+
+	defer sequence.Catch(catchError(w, r))
+
+	sequence.Do("encoding response", func() error {
+		j, err = json.Marshal(store.Leaderboard)
+		return err
+	})
+
+	sequence.Then(func() {
+		w.Header().Set("Content-type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(j)
+	})
+}

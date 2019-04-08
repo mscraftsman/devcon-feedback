@@ -34,6 +34,7 @@ var routes = []route{
 	{"/api/ratings", http.MethodGet, controllers.ListRatings, nil},
 	// {"/api/sessions", http.MethodGet, controllers.ListSessions, nil},
 	{"/api/sessions", http.MethodGet, sessionize.SessionsCache, nil},
+	{"/api/leaderboards", http.MethodGet, controllers.Leaderboards, nil},
 }
 
 func initRouter() http.Handler {

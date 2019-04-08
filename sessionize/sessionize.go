@@ -19,8 +19,9 @@ var (
 
 //Session represents a session from sessionize
 type Session struct {
-	ID     string `json:"id"`
-	EndsAt string `json:"endsAt"`
+	ID       string   `json:"id"`
+	EndsAt   string   `json:"endsAt"`
+	Speakers []string `json:"speakers"`
 }
 
 type sessionize struct {
