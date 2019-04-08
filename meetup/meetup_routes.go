@@ -45,6 +45,12 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	})
 
 	sequence.Do("Saving attendee details", func() error {
+		//if already exists, we preserve existing and update only name and photo
+		if e, err := store.DB.GetAttendee(attendee.ID); err == nil {
+			e.Name = attendee.Name
+			e.PhotoLink = attendee.PhotoLink
+			attendee = e
+		}
 		return store.DB.SetAttendee(attendee)
 	})
 

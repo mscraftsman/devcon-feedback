@@ -2,10 +2,10 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/joho/godotenv"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -83,11 +83,33 @@ func Load(filename string) {
 	HTTPPort = l.load("HTTP_PORT", "1337")
 	FrontURL = l.load("FRONT_URL")
 	SessionizeURL = l.load("SESSIONIZE_URL")
+	logLevel := l.load("LOG_LEVEL", "ERROR")
 
 	if len(l.errors) != 0 {
 		for i := range l.errors {
 			log.Println(l.errors[i])
 		}
 		os.Exit(1)
+	}
+
+	switch logLevel {
+	case "PANIC":
+		log.SetLevel(log.PanicLevel)
+	case "FATAL":
+		log.SetLevel(log.FatalLevel)
+	case "ERROR":
+		log.SetLevel(log.ErrorLevel)
+	case "WARN":
+		log.SetLevel(log.WarnLevel)
+	case "INFO":
+		log.SetLevel(log.InfoLevel)
+	case "DEBUG":
+		log.SetLevel(log.DebugLevel)
+	default:
+		if Env == EnvironmentProd {
+			log.SetLevel(log.ErrorLevel)
+		} else {
+			log.SetLevel(log.DebugLevel)
+		}
 	}
 }

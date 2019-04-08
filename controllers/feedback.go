@@ -10,6 +10,7 @@ import (
 	"github.com/mscraftsman/devcon-feedback/meetup"
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 	"github.com/mscraftsman/devcon-feedback/store"
+	log "github.com/sirupsen/logrus"
 )
 
 //AddFeedback allows a user to add feedback for a session
@@ -48,6 +49,7 @@ func AddFeedback(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if areResponsesInvalid(feedback) {
+			log.WithField("feedback", feedback).Debug("feedback:add")
 			return errors.New("invalid feedback")
 		}
 		return nil
@@ -80,7 +82,10 @@ func ListOwnFeedback(w http.ResponseWriter, r *http.Request) {
 		return err
 	})
 
-	response.Feedbacks = store.DB.ListAttendeeFeedbacks(attendee.ID)
+	sequence.Do("loading feedback information", func() error {
+		response.Feedbacks, err = store.DB.ListAttendeeFeedbacks(attendee.ID)
+		return err
+	})
 
 	var j []byte
 	sequence.Do("writing response", func() error {
@@ -99,8 +104,7 @@ func areResponsesInvalid(f store.Feedback) bool {
 	switch "" {
 	case f.Reaction1,
 		f.Reaction2,
-		f.Reaction3,
-		f.Reaction4:
+		f.Reaction3:
 		return true
 	}
 

@@ -6,6 +6,7 @@ import (
 
 	"github.com/fluxynet/sequitur"
 	"github.com/mscraftsman/devcon-feedback/store"
+	log "github.com/sirupsen/logrus"
 )
 
 //ListRatings returns all ratings
@@ -21,6 +22,7 @@ func ListRatings(w http.ResponseWriter, r *http.Request) {
 
 	sequence.Do("loading ratings data", func() error {
 		ratings = store.DB.ListRatings()
+		log.WithField("ratings", ratings).Debug("ratings:list")
 		return nil
 	})
 

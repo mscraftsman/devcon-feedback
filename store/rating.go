@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/mscraftsman/devcon-feedback/sessionize"
+	log "github.com/sirupsen/logrus"
 	bolt "go.etcd.io/bbolt"
 )
 
@@ -26,6 +27,12 @@ type ReactionSummary struct {
 
 //UpdateRatings recalculate all ratings
 func (s *Store) UpdateRatings() {
+	defer func() {
+		if r := recover(); r != nil {
+			log.WithField("recovered", r).Error("update:ratings:panic")
+		}
+	}()
+
 	ratings := make(map[string]Rating)
 	banned := func() map[string]interface{} {
 		a := s.ListAttendees()
@@ -41,6 +48,7 @@ func (s *Store) UpdateRatings() {
 	}()
 
 	feedbacks := s.ListFeedbacks()
+	log.WithField("banned", banned).WithField("feedbacks", feedbacks).Debug("ratings:update")
 
 	for sid := range sessionize.Sessions {
 		ratings[sid] = Rating{
@@ -55,6 +63,7 @@ func (s *Store) UpdateRatings() {
 		if _, ok := banned[feedbacks[i].AttendeeID]; ok {
 			continue
 		}
+
 		rating := ratings[feedbacks[i].SessionID]
 
 		r1 := feedbacks[i].Reaction1
@@ -64,8 +73,8 @@ func (s *Store) UpdateRatings() {
 			r.Count++
 			rating.Reaction1[r1] = r
 		} else {
-			ratings[feedbacks[i].SessionID].Reaction1[feedbacks[i].Reaction1] = ReactionSummary{
-				Reaction: feedbacks[i].Reaction1,
+			rating.Reaction1[r1] = ReactionSummary{
+				Reaction: r1,
 				Count:    1,
 			}
 		}
@@ -77,8 +86,8 @@ func (s *Store) UpdateRatings() {
 			r.Count++
 			rating.Reaction2[r2] = r
 		} else {
-			ratings[feedbacks[i].SessionID].Reaction2[feedbacks[i].Reaction2] = ReactionSummary{
-				Reaction: feedbacks[i].Reaction2,
+			rating.Reaction2[r2] = ReactionSummary{
+				Reaction: r2,
 				Count:    1,
 			}
 		}
@@ -90,8 +99,8 @@ func (s *Store) UpdateRatings() {
 			r.Count++
 			rating.Reaction3[r3] = r
 		} else {
-			ratings[feedbacks[i].SessionID].Reaction3[feedbacks[i].Reaction3] = ReactionSummary{
-				Reaction: feedbacks[i].Reaction3,
+			rating.Reaction3[r3] = ReactionSummary{
+				Reaction: r3,
 				Count:    1,
 			}
 		}
@@ -99,38 +108,43 @@ func (s *Store) UpdateRatings() {
 		rating.Count++
 		rating.Score += v1 + v2 + v3
 		ratings[feedbacks[i].SessionID] = rating
+		log.WithField("rating", rating).Debug("ratings:update")
+	}
 
-		s.Update(func(tx *bolt.Tx) error {
-			var (
-				err error
-				j   []byte
-			)
-			b := tx.Bucket(bucketRatings)
+	s.Update(func(tx *bolt.Tx) error {
+		var (
+			err error
+			j   []byte
+		)
+		b := tx.Bucket(bucketRatings)
 
-			for i := range ratings {
-				if j, err = json.Marshal(ratings[i]); err != nil {
-					b.Put([]byte(ratings[i].ID), j)
+		for i := range ratings {
+			if j, err = json.Marshal(ratings[i]); err == nil {
+				e := b.Put([]byte(ratings[i].ID), j)
+				if e != nil {
+					log.WithField("error", e).Error("ratings:update:save")
 				}
 			}
+		}
 
-			return nil
-		})
-	}
+		return nil
+	})
 }
 
 //ListRatings returns all ratings
 func (s *Store) ListRatings() []Rating {
 	var (
 		ratings []Rating
-		r       Rating
 		err     error
 	)
 
 	s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketRatings)
 		b.ForEach(func(k, v []byte) error {
+			var r Rating
 			if err = json.Unmarshal(v, &r); err == nil {
 				ratings = append(ratings, r)
+				log.WithField("rating", r).Debug("ratings:list")
 			}
 			return nil
 		})

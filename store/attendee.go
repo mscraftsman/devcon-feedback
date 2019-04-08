@@ -102,13 +102,6 @@ func (s Store) GetAttendee(id string) (Attendee, error) {
 
 //SetAttendee sets an attendee entity in the store
 func (s Store) SetAttendee(a Attendee) error {
-	//if already exists, we preserve existing and update only name and photo
-	if e, err := s.GetAttendee(a.ID); err != nil {
-		e.Name = a.Name
-		e.PhotoLink = a.PhotoLink
-		a = e
-	}
-
 	j, err := json.Marshal(a)
 	if err != nil {
 		return err

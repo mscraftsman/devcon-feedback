@@ -57,6 +57,8 @@ func Init() error {
 	})
 
 	store.DB = db
+	store.UpdateRatings()
+
 	DB = &store
 	return err
 }

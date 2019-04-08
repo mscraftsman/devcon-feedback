@@ -91,12 +91,12 @@ func (s Store) GetFeedback(id string) (Feedback, error) {
 }
 
 //ListAttendeeFeedbacks for an attendee ID
-func (s Store) ListAttendeeFeedbacks(attnID string) []Feedback {
+func (s Store) ListAttendeeFeedbacks(attnID string) ([]Feedback, error) {
 	var feedbacks []Feedback
 
 	attn, err := s.GetAttendee(attnID)
 	if err != nil {
-		return nil
+		return feedbacks, err
 	}
 
 	fIDs := attn.ListFeedbacks()
@@ -115,7 +115,7 @@ func (s Store) ListAttendeeFeedbacks(attnID string) []Feedback {
 		return nil
 	})
 
-	return feedbacks
+	return feedbacks, nil
 }
 
 //ListFeedbacks for all attendees

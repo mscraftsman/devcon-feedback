@@ -1,15 +1,12 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
 	"strings"
 
-	"github.com/mscraftsman/devcon-feedback/config"
-
 	"github.com/fluxynet/sequitur"
-
 	"github.com/mscraftsman/devcon-feedback/meetup"
+	log "github.com/sirupsen/logrus"
 )
 
 func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
@@ -39,8 +36,6 @@ func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
 		w.WriteHeader(status)
 		w.Write([]byte(`{"error":"` + msg + `"}`))
 
-		if config.Env == config.EnvironmentDev {
-			log.Printf("[%s] %v\n", name, err)
-		}
+		log.WithField("name", name).WithField("error", err).Debug("controller:catchError")
 	}
 }
