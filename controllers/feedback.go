@@ -100,6 +100,32 @@ func ListOwnFeedback(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+//ListAllFeedback allows listing of all feedback
+func ListAllFeedback(w http.ResponseWriter, r *http.Request) {
+	var (
+		err      error
+		sequence sequitur.Sequence
+		response struct {
+			Feedbacks []store.Feedback `json:"feedbacks"`
+		}
+	)
+
+	defer sequence.Catch(catchError(w, r))
+
+	response.Feedbacks = store.DB.ListFeedbacks()
+	var j []byte
+	sequence.Do("writing response", func() error {
+		j, err = json.Marshal(response)
+		return err
+	})
+
+	sequence.Then(func() {
+		w.Header().Set("Content-type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(j)
+	})
+}
+
 func areResponsesInvalid(f store.Feedback) bool {
 	switch "" {
 	case f.Reaction1,
@@ -109,13 +135,13 @@ func areResponsesInvalid(f store.Feedback) bool {
 	}
 
 	switch f.Reaction1 {
-	case "-2", "-1", "1", "2", "3":
+	case "1", "2", "3", "4", "5":
 	default:
 		return true
 	}
 
 	switch f.Reaction2 {
-	case "-2", "-1", "1", "2", "3":
+	case "1", "2", "3", "4", "5":
 	default:
 		return true
 	}
