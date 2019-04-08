@@ -10,6 +10,7 @@ import (
 	"github.com/mscraftsman/devcon-feedback/config"
 	"github.com/mscraftsman/devcon-feedback/controllers"
 	"github.com/mscraftsman/devcon-feedback/meetup"
+	"github.com/mscraftsman/devcon-feedback/sessionize"
 )
 
 type route struct {
@@ -31,7 +32,8 @@ var routes = []route{
 	{"/api/feedbacks", http.MethodGet, controllers.ListAllFeedback, nil},
 	{"/api/feedbacks/me", http.MethodGet, controllers.ListOwnFeedback, nil},
 	{"/api/ratings", http.MethodGet, controllers.ListRatings, nil},
-	{"/api/sessions", http.MethodGet, controllers.ListSessions, nil},
+	// {"/api/sessions", http.MethodGet, controllers.ListSessions, nil},
+	{"/api/sessions", http.MethodGet, sessionize.SessionsCache, nil},
 }
 
 func initRouter() http.Handler {

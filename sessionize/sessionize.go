@@ -11,8 +11,11 @@ import (
 	"github.com/fluxynet/sequitur"
 )
 
-//Sessions contains sessionID -> endsAt from sessionize; must only be read
-var Sessions map[string]Session
+var (
+	//Sessions contains sessionID -> endsAt from sessionize; must only be read
+	Sessions    map[string]Session
+	rawSessions []byte
+)
 
 //Session represents a session from sessionize
 type Session struct {
@@ -67,5 +70,7 @@ func LoadSessions() {
 		for i := range sess.Sessions {
 			m[sess.Sessions[i].ID] = sess.Sessions[i]
 		}
+		Sessions = m
+		rawSessions = resp
 	})
 }
