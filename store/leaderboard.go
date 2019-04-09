@@ -89,11 +89,11 @@ func top(scores Scores, num int) Scores {
 func leaderboardFromRatings(ratings []Rating) leaderboard {
 	speakers := top(ratingsToScores(ratings, func(r Rating) (string, int) {
 		return r.Speakers, reactionScore(r.Reaction1)
-	}), 3)
+	}), 10)
 
 	sessions := top(ratingsToScores(ratings, func(r Rating) (string, int) {
 		return r.ID, reactionScore(r.Reaction2)
-	}), 3)
+	}), 10)
 
 	return leaderboard{Speakers: speakers, Sessions: sessions}
 }
