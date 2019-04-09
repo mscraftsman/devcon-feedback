@@ -26,7 +26,7 @@ func AddBookmark(w http.ResponseWriter, r *http.Request) {
 
 	defer sequence.Catch(catchError(w, r))
 
-	sequence.Do("loading attendee informaton", func() error {
+	sequence.Do("Loading attendee information", func() error {
 		attendee, err = meetup.DecodeToken(r)
 		return err
 	})
@@ -76,7 +76,7 @@ func RemoveBookmark(w http.ResponseWriter, r *http.Request) {
 
 	defer sequence.Catch(catchError(w, r))
 
-	sequence.Do("loading attendee informaton", func() error {
+	sequence.Do("Loading attendee information", func() error {
 		attendee, err = meetup.DecodeToken(r)
 		return err
 	})
@@ -118,7 +118,7 @@ func ListBookmarks(w http.ResponseWriter, r *http.Request) {
 	)
 
 	defer sequence.Catch(catchError(w, r))
-	sequence.Do("loading attendee informaton", func() error {
+	sequence.Do("Loading attendee information", func() error {
 		attendee, err = meetup.DecodeToken(r)
 		return err
 	})

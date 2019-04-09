@@ -24,7 +24,7 @@ func AddFeedback(w http.ResponseWriter, r *http.Request) {
 
 	defer sequence.Catch(catchError(w, r))
 
-	sequence.Do("loading attendee informaton", func() error {
+	sequence.Do("Loading attendee information", func() error {
 		attendee, err = meetup.DecodeToken(r)
 		return err
 	})
@@ -89,7 +89,7 @@ func ListOwnFeedback(w http.ResponseWriter, r *http.Request) {
 
 	defer sequence.Catch(catchError(w, r))
 
-	sequence.Do("loading attendee informaton", func() error {
+	sequence.Do("Loading attendee information", func() error {
 		attendee, err = meetup.DecodeToken(r)
 		return err
 	})
@@ -139,13 +139,6 @@ func ListAllFeedback(w http.ResponseWriter, r *http.Request) {
 }
 
 func areResponsesInvalid(f store.Feedback) bool {
-	switch "" {
-	case f.Reaction1,
-		f.Reaction2,
-		f.Reaction3:
-		return true
-	}
-
 	switch f.Reaction1 {
 	case "1", "2", "3", "4", "5":
 	default:

@@ -35,13 +35,12 @@ func (s *Store) UpdateRatings() {
 	}()
 
 	mratings := make(map[string]Rating)
-	isBanned := s.IsAttendeeBanned()
 
-	for sid := range sessionize.Sessions {
-		if len(sessionize.Sessions[sid].Speakers) != 0 {
-			mratings[sid] = Rating{
-				ID:        sid,
-				Speakers:  sessionize.Sessions[sid].Speakers[0],
+	for _, session := range sessionize.Sessions {
+		if len(session.Speakers) != 0 {
+			mratings[session.ID] = Rating{
+				ID:        session.ID,
+				Speakers:  session.Speakers[0],
 				Reaction1: make(map[string]ReactionSummary),
 				Reaction2: make(map[string]ReactionSummary),
 				Reaction3: make(map[string]ReactionSummary),
@@ -49,28 +48,24 @@ func (s *Store) UpdateRatings() {
 		}
 	}
 
-	f := s.ListFeedbacks()
-	for i := range f {
-		if !isBanned(f[i].AttendeeID) {
-			mratings[f[i].SessionID] = computeRating(mratings[f[i].SessionID], f[i])
+	isBanned := s.IsAttendeeBanned()
+	for _, feedback := range s.ListFeedbacks() {
+		if !isBanned(feedback.AttendeeID) {
+			mratings[feedback.SessionID] = computeRating(mratings[feedback.SessionID], feedback)
 		}
 	}
 
 	var ratings []Rating
 	_ = s.Update(func(tx *bolt.Tx) error {
-		var (
-			err error
-			j   []byte
-		)
 		b := tx.Bucket(bucketRatings)
 
-		for i := range mratings {
-			if j, err = json.Marshal(mratings[i]); err == nil {
-				e := b.Put([]byte(mratings[i].ID), j)
-				if e != nil {
-					log.WithField("error", e).Error("ratings:update:save")
+		for _, mrating := range mratings {
+			if mratingJSON, err := json.Marshal(mrating); err == nil {
+				if err := b.Put([]byte(mrating.ID), mratingJSON); err != nil {
+					log.WithField("error", err).Error("ratings:update:save")
+					continue
 				}
-				ratings = append(ratings, mratings[i])
+				ratings = append(ratings, mrating)
 			}
 		}
 
@@ -107,10 +102,9 @@ func (s *Store) ListRatings() []Rating {
 func computeRating(rating Rating, feedback Feedback) Rating {
 	r1 := feedback.Reaction1
 	v1, _ := strconv.Atoi(r1)
-	if _, ok := rating.Reaction1[r1]; ok {
-		r := rating.Reaction1[r1]
-		r.Count++
-		rating.Reaction1[r1] = r
+	if reaction1, ok := rating.Reaction1[r1]; ok {
+		reaction1.Count++
+		rating.Reaction1[r1] = reaction1
 	} else {
 		rating.Reaction1[r1] = ReactionSummary{
 			Reaction: r1,
@@ -120,10 +114,9 @@ func computeRating(rating Rating, feedback Feedback) Rating {
 
 	r2 := feedback.Reaction2
 	v2, _ := strconv.Atoi(r2)
-	if _, ok := rating.Reaction2[r2]; ok {
-		r := rating.Reaction2[r2]
-		r.Count++
-		rating.Reaction2[r2] = r
+	if reaction2, ok := rating.Reaction2[r2]; ok {
+		reaction2.Count++
+		rating.Reaction2[r2] = reaction2
 	} else {
 		rating.Reaction2[r2] = ReactionSummary{
 			Reaction: r2,
@@ -133,10 +126,9 @@ func computeRating(rating Rating, feedback Feedback) Rating {
 
 	r3 := feedback.Reaction3
 	v3, _ := strconv.Atoi(r3)
-	if _, ok := rating.Reaction3[r3]; ok {
-		r := rating.Reaction3[r3]
-		r.Count++
-		rating.Reaction3[r3] = r
+	if reaction3, ok := rating.Reaction3[r3]; ok {
+		reaction3.Count++
+		rating.Reaction3[r3] = reaction3
 	} else {
 		rating.Reaction3[r3] = ReactionSummary{
 			Reaction: r3,
