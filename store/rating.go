@@ -33,11 +33,10 @@ func (s *Store) UpdateRatings() {
 		}
 	}()
 
-	mratings := make(map[string]Rating)
-
+	mRatings := make(map[string]Rating)
 	for _, session := range sessionize.Sessions {
 		if len(session.Speakers) != 0 {
-			mratings[session.ID] = Rating{
+			mRatings[session.ID] = Rating{
 				ID:        session.ID,
 				Reaction1: make(map[string]ReactionSummary),
 				Reaction2: make(map[string]ReactionSummary),
@@ -49,7 +48,7 @@ func (s *Store) UpdateRatings() {
 	isBanned := s.IsAttendeeBanned()
 	for _, feedback := range s.ListFeedbacks() {
 		if !isBanned(feedback.AttendeeID) {
-			mratings[feedback.SessionID] = computeRating(mratings[feedback.SessionID], feedback)
+			mRatings[feedback.SessionID] = computeRating(mRatings[feedback.SessionID], feedback)
 		}
 	}
 
@@ -57,12 +56,12 @@ func (s *Store) UpdateRatings() {
 	_ = s.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketRatings)
 
-		for _, mrating := range mratings {
-			if mratingJSON, err := json.Marshal(mrating); err == nil {
-				if err := b.Put([]byte(mrating.ID), mratingJSON); err != nil {
+		for _, mRating := range mRatings {
+			if mRatingJSON, err := json.Marshal(mRating); err == nil {
+				if err := b.Put([]byte(mRating.ID), mRatingJSON); err != nil {
 					log.WithField("error", err).Error("ratings:update:save")
 				} else {
-					ratings = append(ratings, mrating)
+					ratings = append(ratings, mRating)
 				}
 			}
 		}
@@ -122,20 +121,8 @@ func computeRating(rating Rating, feedback Feedback) Rating {
 		}
 	}
 
-	r3 := feedback.Reaction3
-	v3, _ := strconv.Atoi(r3)
-	if reaction3, ok := rating.Reaction3[r3]; ok {
-		reaction3.Count++
-		rating.Reaction3[r3] = reaction3
-	} else {
-		rating.Reaction3[r3] = ReactionSummary{
-			Reaction: r3,
-			Count:    1,
-		}
-	}
-
 	rating.Count++
-	rating.Score += v1 + v2 + v3
+	rating.Score += v1 + v2
 	log.WithField("rating", rating).Debug("ratings:compute")
 	return rating
 }
