@@ -53,7 +53,7 @@ func AddFeedback(w http.ResponseWriter, r *http.Request) {
 	})
 
 	sequence.Do("checking if session has effectively started", func() error {
-		if IsBeforeNow(session.StartsAt) {
+		if IsAfterNow(session.StartsAt) {
 			return errors.New("invalid feedback attempt for unstarted session")
 		}
 		return nil

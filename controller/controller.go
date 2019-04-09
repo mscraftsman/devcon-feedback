@@ -42,8 +42,8 @@ func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
 	}
 }
 
-//IsBeforeNow checks if a t
-func IsBeforeNow(t string) bool {
+//IsAfterNow checks if a t
+func IsAfterNow(t string) bool {
 	var now string
 
 	if config.Now == "_" {
@@ -52,5 +52,5 @@ func IsBeforeNow(t string) bool {
 		now = config.Now
 	}
 
-	return t < now
+	return t > now
 }
