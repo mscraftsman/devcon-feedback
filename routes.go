@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/mscraftsman/devcon-feedback/config"
-	"github.com/mscraftsman/devcon-feedback/controllers"
+	"github.com/mscraftsman/devcon-feedback/controller"
 	"github.com/mscraftsman/devcon-feedback/meetup"
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 )
@@ -24,17 +24,17 @@ var routes = []route{
 	{"/login", http.MethodGet, meetup.Login, nil},
 	{"/logout", http.MethodGet, meetup.Logout, nil},
 	{"/meetup", http.MethodGet, meetup.LoginCallback, nil},
-	{"/api/me", http.MethodGet, controllers.Me, nil},
-	{"/api/bookmarks/{id}", http.MethodPut, controllers.AddBookmark, nil},
-	{"/api/bookmarks", http.MethodGet, controllers.ListBookmarks, nil},
-	{"/api/bookmarks/{id}", http.MethodDelete, controllers.RemoveBookmark, nil},
-	{"/api/feedbacks", http.MethodPost, controllers.AddFeedback, nil},
-	{"/api/feedbacks", http.MethodGet, controllers.ListAllFeedback, nil},
-	{"/api/feedbacks/me", http.MethodGet, controllers.ListOwnFeedback, nil},
-	{"/api/ratings", http.MethodGet, controllers.ListRatings, nil},
-	// {"/api/sessions", http.MethodGet, controllers.ListSessions, nil},
+	{"/api/me", http.MethodGet, controller.Me, nil},
+	{"/api/bookmarks/{id}", http.MethodPut, controller.AddBookmark, nil},
+	{"/api/bookmarks", http.MethodGet, controller.ListBookmarks, nil},
+	{"/api/bookmarks/{id}", http.MethodDelete, controller.RemoveBookmark, nil},
+	{"/api/feedbacks", http.MethodPost, controller.AddFeedback, nil},
+	{"/api/feedbacks", http.MethodGet, controller.ListAllFeedback, nil},
+	{"/api/feedbacks/me", http.MethodGet, controller.ListOwnFeedback, nil},
+	{"/api/ratings", http.MethodGet, controller.ListRatings, nil},
+	// {"/api/sessions", http.MethodGet, controller.ListSessions, nil},
 	{"/api/sessions", http.MethodGet, sessionize.SessionsCache, nil},
-	{"/api/leaderboards", http.MethodGet, controllers.Leaderboards, nil},
+	{"/api/leaderboards", http.MethodGet, controller.Leaderboards, nil},
 }
 
 func initRouter() http.Handler {
