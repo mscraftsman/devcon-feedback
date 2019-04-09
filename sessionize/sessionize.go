@@ -19,9 +19,10 @@ var (
 
 //Session represents a session from sessionize
 type Session struct {
-	ID       string   `json:"id"`
-	StartsAt string   `json:"startsAt"`
-	Speakers []string `json:"speakers"`
+	ID               string   `json:"id"`
+	StartsAt         string   `json:"startsAt"`
+	Speakers         []string `json:"speakers"`
+	IsServiceSession bool     `json:"isServiceSession"`
 }
 
 type sessionize struct {
@@ -69,7 +70,9 @@ func LoadSessions() {
 	sequence.Then(func() {
 		m := make(map[string]Session)
 		for i := range sess.Sessions {
-			m[sess.Sessions[i].ID] = sess.Sessions[i]
+			if !sess.Sessions[i].IsServiceSession {
+				m[sess.Sessions[i].ID] = sess.Sessions[i]
+			}
 		}
 		Sessions = m
 		rawSessions = resp
