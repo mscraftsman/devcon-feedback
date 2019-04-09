@@ -49,19 +49,20 @@ func ratingsToScores(ratings []Rating, calc func(Rating) (id string, score int))
 	scores := make(Scores, 0)
 	set := make(map[string]interface{}) //for unique values
 
-	for i, rating := range ratings {
+	for _, rating := range ratings {
 		id, score = calc(rating)
 		if id == "" {
 			continue
 		}
 
 		if _, ok := set[id]; !ok {
-			scores = append(scores, Score{
+			s := Score{
 				ID:    id,
 				Score: score,
-			})
+			}
+			scores = append(scores, s)
 			set[id] = nil
-			log.WithField("rating", rating).WithField("score", scores[i]).Debug("ratingtoscore")
+			log.WithField("rating", rating).WithField("score", s).Debug("ratingtoscore")
 		}
 	}
 
