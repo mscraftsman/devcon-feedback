@@ -21,11 +21,6 @@ type Feedback struct {
 
 //AddFeedback to store
 func (s Store) AddFeedback(f Feedback) error {
-	j, err := json.Marshal(f)
-	if err != nil {
-		return err
-	}
-
 	attendee, err := s.GetAttendee(f.AttendeeID)
 	if err != nil {
 		return err
@@ -52,7 +47,12 @@ func (s Store) AddFeedback(f Feedback) error {
 		return err
 	}
 
-	err = s.Update(func(tx *bolt.Tx) error {
+	j, err := json.Marshal(f)
+	if err != nil {
+		return err
+	}
+
+	_ = s.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
 
 		if err := b.Put([]byte(f.ID), j); err != nil {
