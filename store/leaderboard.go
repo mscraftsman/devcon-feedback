@@ -69,18 +69,25 @@ func ratingsToScores(ratings []Rating, calc func(Rating) (id string, score int))
 	return scores
 }
 
-func top(scores Scores, num int) Scores {
-	sort.Sort(scores)
+func top(scores Scores, limit int) Scores {
+	sort.Sort(sort.Reverse(scores))
 
-	if len(scores) <= num {
+	if len(scores) <= limit {
 		return scores
 	}
 
-	limited := scores[:num]
-	last := limited[num-1].Score
-	for i := num - 1; i < len(scores); i++ {
-		if scores[i].Score == last {
-			limited = append(limited, scores[i])
+	limited := scores[:limit]
+	last := limited[limit-1].Score
+
+	if last == 0 {
+		return limited
+	}
+
+	for _, s := range scores {
+		if s.Score == last {
+			limited = append(limited, s)
+		} else {
+			break
 		}
 	}
 

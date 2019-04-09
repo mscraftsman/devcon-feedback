@@ -52,7 +52,7 @@ func AddFeedback(w http.ResponseWriter, r *http.Request) {
 		return nil
 	})
 
-	sequence.Do("checking if session has effectively started", func() error {
+	sequence.Do("checking if voting is open for the session", func() error {
 		if !IsVoteOpen(session.StartsAt) {
 			return errors.New("invalid feedback attempt for unstarted session")
 		}
