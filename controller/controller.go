@@ -53,14 +53,21 @@ func IsVoteOpen(startsAt string) bool {
 	} else {
 		now = config.Now
 	}
+	log.WithField("now", now.Format(config.DatetimeLayout)).Debug("IsVoteOpen:now")
 
-	if now.Before(*config.VoteClosedAt) {
+	if now.After(*config.VoteClosedAt) {
+		log.WithField("VoteClosedAt", config.VoteClosedAt.Format(config.DatetimeLayout)).Debug("IsVoteOpen:voteclosed")
 		return false
 	}
 
-	if *t, err = time.Parse(startsAt, config.DatetimeLayout); err != nil || t == nil {
+	log.WithField("startsAt", startsAt).Debug("IsVoteOpen:startsAt")
+	if *t, err = time.Parse(config.DatetimeLayout, startsAt); err != nil || t == nil {
+		log.WithField("startsAt", startsAt).WithField("error", err).Debug("IsVoteOpen:startsAt:parse")
 		return false
 	}
 
-	return t.Add(time.Minute * 15).After(*now)
+	open := t.Add(time.Minute * 15)
+	log.WithField("time", t.Format(config.DatetimeLayout)).Debug("IsVoteOpen:votetime")
+
+	return now.After(open)
 }
