@@ -1,10 +1,12 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
 
+	"github.com/fluxynet/sequitur"
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 )
@@ -15,6 +17,9 @@ const (
 
 	//EnvironmentDev indicates Dev mode
 	EnvironmentDev = "dev"
+
+	//DatetimeLayout used by the system for session times
+	DatetimeLayout = "2006-01-02T15:04:05"
 )
 
 var (
@@ -47,9 +52,18 @@ var (
 
 	//FrontURL is the url of the front web app
 	FrontURL string
+)
 
+var (
 	//Now is the 'now' time to use when checking datetime for validation; used in dev environment
-	Now string
+	Now *time.Time
+
+	//VoteClosedAt is the timestring formatted as 2006-01-02T15:04:05
+	VoteClosedAt *time.Time
+)
+
+var (
+	errInvalidEnvVars = errors.New("invalid environment variables")
 )
 
 type loader struct {
@@ -69,57 +83,95 @@ func (l *loader) load(name string, def ...string) string {
 	return ""
 }
 
+func (l *loader) loadDatetime(name string, def ...*time.Time) *time.Time {
+	val := os.Getenv(name)
+
+	if val == "" {
+		if len(def) == 0 {
+			l.errors = append(l.errors, fmt.Errorf("[env] environment variable not set: %s", name))
+			return nil
+		}
+		return def[0]
+	}
+
+	if t, err := time.Parse(DatetimeLayout, val); err == nil {
+		return &t
+	}
+
+	l.errors = append(l.errors, fmt.Errorf("[env] invalid datetime format (expecting %s) for variable: %s", DatetimeLayout, name))
+	return nil
+}
+
+func (l *loader) loadLogLevel(def log.Level) log.Level {
+	logLevel := l.load("LOG_LEVEL", "ERROR")
+	switch logLevel {
+	case "PANIC":
+		return log.PanicLevel
+	case "FATAL":
+		return log.FatalLevel
+	case "ERROR":
+		return log.ErrorLevel
+	case "WARN":
+		return log.WarnLevel
+	case "INFO":
+		return log.InfoLevel
+	case "DEBUG":
+		return log.DebugLevel
+	}
+
+	if Env == EnvironmentProd {
+		return log.ErrorLevel
+	} else {
+		return log.DebugLevel
+	}
+}
+
 //Load sets up configuration for the application
 func Load(filename string) {
-	var l loader
+	var (
+		l        loader
+		sequence sequitur.Sequence
+	)
 
 	if filename == "" {
 		filename = ".env"
 	}
 
-	if err := godotenv.Load(filename); err != nil {
-		log.Fatalf("Error loading env: %v", err)
-	}
-
-	Env = l.load("ENV", EnvironmentProd)
-	BaseURL = l.load("BASE_URL")
-	BoltDBPath = l.load("BOLT_DB_PATH")
-	MeetupKey = l.load("MEETUP_KEY")
-	MeetupSecret = l.load("MEETUP_SECRET")
-	JWTSecret = l.load("JWT_SECRET")
-	HTTPPort = l.load("HTTP_PORT", "1337")
-	FrontURL = l.load("FRONT_URL")
-	SessionizeURL = l.load("SESSIONIZE_URL")
-	Now = l.load("NOW", "_")
-	logLevel := l.load("LOG_LEVEL", "ERROR")
-
-	if len(l.errors) != 0 {
-		for i := range l.errors {
-			log.Println(l.errors[i])
+	defer sequence.Catch(func(name string, err error) {
+		if err == errInvalidEnvVars {
+			for i := range l.errors {
+				log.WithField("error", l.errors[i]).Error(name)
+			}
+		} else {
+			log.WithField("error", err).Error(name)
 		}
 		os.Exit(1)
-	}
+	})
 
-	switch logLevel {
-	case "PANIC":
-		log.SetLevel(log.PanicLevel)
-	case "FATAL":
-		log.SetLevel(log.FatalLevel)
-	case "ERROR":
-		log.SetLevel(log.ErrorLevel)
-	case "WARN":
-		log.SetLevel(log.WarnLevel)
-	case "INFO":
-		log.SetLevel(log.InfoLevel)
-	case "DEBUG":
-		log.SetLevel(log.DebugLevel)
-	default:
-		if Env == EnvironmentProd {
-			log.SetLevel(log.ErrorLevel)
-		} else {
-			log.SetLevel(log.DebugLevel)
+	sequence.Do("loading env", func() error {
+		return godotenv.Load(filename)
+	})
+
+	sequence.Do("reading environment variables", func() error {
+		Env = l.load("ENV", EnvironmentProd)
+		BaseURL = l.load("BASE_URL")
+		BoltDBPath = l.load("BOLT_DB_PATH")
+		MeetupKey = l.load("MEETUP_KEY")
+		MeetupSecret = l.load("MEETUP_SECRET")
+		JWTSecret = l.load("JWT_SECRET")
+		HTTPPort = l.load("HTTP_PORT", "1337")
+		FrontURL = l.load("FRONT_URL")
+		SessionizeURL = l.load("SESSIONIZE_URL")
+		Now = l.loadDatetime("NOW", nil)
+		VoteClosedAt = l.loadDatetime("VOTE_CLOSED_AT")
+
+		if len(l.errors) == 0 {
+			return nil
 		}
-	}
+		return errInvalidEnvVars
+	})
+
+	log.SetLevel(l.loadLogLevel(log.ErrorLevel))
 
 	if t, err := time.LoadLocation("Indian/Mauritius"); err == nil {
 		Tzone = t

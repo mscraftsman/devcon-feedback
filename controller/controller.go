@@ -42,15 +42,25 @@ func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
 	}
 }
 
-//IsAfterNow checks if a t
-func IsAfterNow(t string) bool {
-	var now string
+//IsVoteOpen checks if vote opened
+func IsVoteOpen(startsAt string) bool {
+	var err error
+	now := new(time.Time)
+	t := new(time.Time)
 
-	if config.Now == "_" {
-		now = time.Now().In(config.Tzone).Format("2006-01-02T15:04:05")
+	if config.Now == nil {
+		*now = time.Now().In(config.Tzone)
 	} else {
 		now = config.Now
 	}
 
-	return t > now
+	if now.Before(*config.VoteClosedAt) {
+		return false
+	}
+
+	if *t, err = time.Parse(startsAt, config.DatetimeLayout); err != nil || t == nil {
+		return false
+	}
+
+	return t.Add(time.Minute * 15).After(*now)
 }
