@@ -3,7 +3,6 @@ package store
 import (
 	"encoding/json"
 	"strconv"
-	"strings"
 
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 	log "github.com/sirupsen/logrus"
@@ -39,12 +38,14 @@ func (s *Store) UpdateRatings() {
 	isBanned := s.IsAttendeeBanned()
 
 	for sid := range sessionize.Sessions {
-		mratings[sid] = Rating{
-			ID:        sid,
-			Speakers:  strings.Join(sessionize.Sessions[sid].Speakers, ";"),
-			Reaction1: make(map[string]ReactionSummary),
-			Reaction2: make(map[string]ReactionSummary),
-			Reaction3: make(map[string]ReactionSummary),
+		if len(sessionize.Sessions[sid].Speakers) != 0 {
+			mratings[sid] = Rating{
+				ID:        sid,
+				Speakers:  sessionize.Sessions[sid].Speakers[0],
+				Reaction1: make(map[string]ReactionSummary),
+				Reaction2: make(map[string]ReactionSummary),
+				Reaction3: make(map[string]ReactionSummary),
+			}
 		}
 	}
 

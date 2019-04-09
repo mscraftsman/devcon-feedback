@@ -3,11 +3,14 @@ package store
 import (
 	"sort"
 	"strconv"
-	"sync"
+
+	log "github.com/sirupsen/logrus"
 )
 
-//Leaderboard contains aggregated stats
-var Leaderboard leaderboard
+var (
+	//Leaderboard contains aggregated stats
+	Leaderboard leaderboard
+)
 
 //leaderboard represens top speakers and top sessions
 type leaderboard struct {
@@ -48,42 +51,49 @@ func ratingsToScores(ratings []Rating, calc func(Rating) (id string, score int))
 
 	for i := range ratings {
 		id, score = calc(ratings[i])
+		if id == "" {
+			continue
+		}
+
 		if _, ok := set[id]; !ok {
 			scores[i] = Score{
 				ID:    id,
 				Score: score,
 			}
 			set[id] = nil
+			log.WithField("rating", ratings[i]).WithField("score", scores[i]).Debug("ratingtoscore")
 		}
 	}
 
 	return scores
 }
 
+func top(scores Scores, num int) Scores {
+	sort.Sort(scores)
+
+	if len(scores) <= num {
+		return scores
+	}
+
+	limited := scores[:num]
+	last := limited[num-1].Score
+	for i := num - 1; i < len(scores); i++ {
+		if scores[i].Score == last {
+			limited = append(limited, scores[i])
+		}
+	}
+
+	return limited
+}
+
 func leaderboardFromRatings(ratings []Rating) leaderboard {
-	var (
-		speakers, sessions []Score
-		wg                 sync.WaitGroup
-	)
-	wg.Add(2)
+	speakers := top(ratingsToScores(ratings, func(r Rating) (string, int) {
+		return r.Speakers, reactionScore(r.Reaction1)
+	}), 3)
 
-	go func() {
-		speakers = ratingsToScores(ratings, func(r Rating) (string, int) {
-			return r.Speakers, reactionScore(r.Reaction1)
-		})
-		sort.Sort(Scores(speakers))
-		wg.Done()
-	}()
-
-	go func() {
-		speakers = ratingsToScores(ratings, func(r Rating) (string, int) {
-			return r.ID, reactionScore(r.Reaction2)
-		})
-		sort.Sort(Scores(speakers))
-		wg.Done()
-	}()
-
-	wg.Wait()
+	sessions := top(ratingsToScores(ratings, func(r Rating) (string, int) {
+		return r.ID, reactionScore(r.Reaction2)
+	}), 3)
 
 	return leaderboard{Speakers: speakers, Sessions: sessions}
 }
