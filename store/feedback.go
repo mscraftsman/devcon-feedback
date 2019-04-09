@@ -72,13 +72,13 @@ func (s Store) GetFeedback(id string) (Feedback, error) {
 	var f Feedback
 	err := s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
-		j := b.Get([]byte(id))
+		raw := b.Get([]byte(id))
 
-		if j == nil {
+		if raw == nil {
 			return ErrorFeedbackNotFound
 		}
 
-		return json.Unmarshal(j, &f)
+		return json.Unmarshal(raw, &f)
 	})
 
 	return f, err
@@ -99,10 +99,14 @@ func (s Store) ListAttendeeFeedbacks(attnID string) ([]Feedback, error) {
 		b := tx.Bucket(bucketFeedbacks)
 		for i := range fIDs {
 			var f Feedback
-			if j := b.Get([]byte(fIDs[i])); j != nil {
-				if err := json.Unmarshal(j, &f); err == nil {
-					feedbacks = append(feedbacks, f)
-				}
+			raw := b.Get([]byte(fIDs[i]))
+
+			if raw == nil {
+				continue
+			}
+
+			if err := json.Unmarshal(raw, &f); err == nil {
+				feedbacks = append(feedbacks, f)
 			}
 		}
 
@@ -118,9 +122,9 @@ func (s Store) ListFeedbacks() []Feedback {
 
 	_ = s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
-		_ = b.ForEach(func(k, v []byte) error {
+		_ = b.ForEach(func(key, raw []byte) error {
 			var f Feedback
-			if err := json.Unmarshal(v, &f); err == nil {
+			if err := json.Unmarshal(raw, &f); err == nil {
 				feedbacks = append(feedbacks, f)
 			}
 			return nil
