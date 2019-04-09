@@ -139,13 +139,6 @@ func ListAllFeedback(w http.ResponseWriter, r *http.Request) {
 }
 
 func areResponsesInvalid(f store.Feedback) bool {
-	switch "" {
-	case f.Reaction1,
-		f.Reaction2,
-		f.Reaction3:
-		return true
-	}
-
 	switch f.Reaction1 {
 	case "1", "2", "3", "4", "5":
 	default:
