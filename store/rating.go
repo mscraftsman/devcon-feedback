@@ -63,6 +63,7 @@ func (s *Store) UpdateRatings() {
 			if mratingJSON, err := json.Marshal(mrating); err == nil {
 				if err := b.Put([]byte(mrating.ID), mratingJSON); err != nil {
 					log.WithField("error", err).Error("ratings:update:save")
+					continue
 				}
 				ratings = append(ratings, mrating)
 			}
