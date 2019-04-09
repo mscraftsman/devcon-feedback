@@ -3,8 +3,10 @@ package controllers
 import (
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/fluxynet/sequitur"
+	"github.com/mscraftsman/devcon-feedback/config"
 	"github.com/mscraftsman/devcon-feedback/meetup"
 	log "github.com/sirupsen/logrus"
 )
@@ -38,4 +40,17 @@ func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
 
 		log.WithField("name", name).WithField("error", err).Debug("controller:catchError")
 	}
+}
+
+//IsBeforeNow checks if a t
+func IsBeforeNow(t string) bool {
+	var now string
+
+	if config.Now == "_" {
+		now = time.Now().In(config.Tzone).Format("2006-01-02T15:04:05")
+	} else {
+		now = config.Now
+	}
+
+	return t < now
 }

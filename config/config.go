@@ -18,7 +18,8 @@ const (
 )
 
 var (
-	tzone *time.Location
+	//Tzone is the current time location
+	Tzone *time.Location
 
 	//Env is either prod (default) or dev
 	Env string
@@ -121,21 +122,8 @@ func Load(filename string) {
 	}
 
 	if t, err := time.LoadLocation("Indian/Mauritius"); err == nil {
-		tzone = t
+		Tzone = t
 	} else {
 		log.Fatalln("Epic Failure when loading timezone")
 	}
-}
-
-//IsBeforeNow checks if a t
-func IsBeforeNow(t string) bool {
-	var now string
-
-	if Now == "_" {
-		now = time.Now().In(tzone).Format("2006-01-02T15:04:05")
-	} else {
-		now = Now
-	}
-
-	return t < now
 }
