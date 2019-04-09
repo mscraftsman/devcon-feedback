@@ -118,10 +118,10 @@ func (s Store) SetAttendee(a Attendee) error {
 func (s Store) ListAttendees() []Attendee {
 	var attendees []Attendee
 
-	s.View(func(tx *bolt.Tx) error {
+	_ = s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketAttendees)
 
-		b.ForEach(func(k, v []byte) error {
+		_ = b.ForEach(func(k, v []byte) error {
 			var a Attendee
 
 			if err := json.Unmarshal(v, &a); err == nil {

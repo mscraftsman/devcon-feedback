@@ -74,7 +74,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	sequence.Catch(func(act string, err error) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"error": "` + act + `"}`))
+		_, _ = w.Write([]byte(`{"error": "` + act + `"}`))
 	})
 }
 

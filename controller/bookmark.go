@@ -17,11 +17,11 @@ import (
 //AddBookmark allows a user to add a bookmark
 func AddBookmark(w http.ResponseWriter, r *http.Request) {
 	var (
-		attendee *store.Attendee
-		err      error
-		sequence sequitur.Sequence
+		attendee   *store.Attendee
+		err        error
+		sequence   sequitur.Sequence
 		bookmarkID string
-		vars     = mux.Vars(r)
+		vars       = mux.Vars(r)
 	)
 
 	defer sequence.Catch(catchError(w, r))
@@ -140,6 +140,6 @@ func ListBookmarks(w http.ResponseWriter, r *http.Request) {
 	sequence.Then(func() {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(rs)
+		_, _ = w.Write(rs)
 	})
 }

@@ -3,13 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/mscraftsman/devcon-feedback/store"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/mscraftsman/devcon-feedback/config"
 	"github.com/mscraftsman/devcon-feedback/sessionize"
-	"github.com/mscraftsman/devcon-feedback/store"
 )
 
 // Version info
@@ -31,10 +31,9 @@ func main() {
 
 	config.Load(*envfile)
 	sessionize.LoadSessions()
-	store.Init()
+	_ = store.Init()
 	router := initRouter()
 
 	log.Println("Listening on :" + config.HTTPPort)
-	http.ListenAndServe(":"+config.HTTPPort, router)
+	_ = http.ListenAndServe(":"+config.HTTPPort, router)
 }
-

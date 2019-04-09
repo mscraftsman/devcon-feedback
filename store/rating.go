@@ -57,7 +57,7 @@ func (s *Store) UpdateRatings() {
 	}
 
 	var ratings []Rating
-	s.Update(func(tx *bolt.Tx) error {
+	_ = s.Update(func(tx *bolt.Tx) error {
 		var (
 			err error
 			j   []byte
@@ -87,9 +87,9 @@ func (s *Store) ListRatings() []Rating {
 		err     error
 	)
 
-	s.View(func(tx *bolt.Tx) error {
+	_ = s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketRatings)
-		b.ForEach(func(k, v []byte) error {
+		_ = b.ForEach(func(k, v []byte) error {
 			var r Rating
 			if err = json.Unmarshal(v, &r); err == nil {
 				ratings = append(ratings, r)

@@ -36,6 +36,6 @@ func Me(w http.ResponseWriter, r *http.Request) {
 	sequence.Then(func() {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(response)
+		_, _ = w.Write(response)
 	})
 }

@@ -11,6 +11,6 @@ func SessionsCache(w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.Header().Set("Content-type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(rawSessions)
+		_, _ = w.Write(rawSessions)
 	}
 }

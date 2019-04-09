@@ -36,7 +36,7 @@ func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(status)
-		w.Write([]byte(`{"error":"` + msg + `"}`))
+		_, _ = w.Write([]byte(`{"error":"` + msg + `"}`))
 
 		log.WithField("name", name).WithField("error", err).Debug("controller:catchError")
 	}
