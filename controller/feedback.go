@@ -108,7 +108,7 @@ func ListOwnFeedback(w http.ResponseWriter, r *http.Request) {
 	sequence.Then(func() {
 		w.Header().Set("Content-type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(j)
+		_, _ = w.Write(j)
 	})
 }
 
@@ -134,7 +134,7 @@ func ListAllFeedback(w http.ResponseWriter, r *http.Request) {
 	sequence.Then(func() {
 		w.Header().Set("Content-type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		w.Write(j)
+		_, _ = w.Write(j)
 	})
 }
 

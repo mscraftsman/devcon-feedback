@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"time"
 
-	uuid "github.com/satori/go.uuid"
 	bolt "go.etcd.io/bbolt"
 )
 
@@ -27,32 +26,28 @@ func (s Store) AddFeedback(f Feedback) error {
 		return err
 	}
 
-	id := uuid.NewV4().String()
-
-	attn, err := s.GetAttendee(f.AttendeeID)
+	attendee, err := s.GetAttendee(f.AttendeeID)
 	if err != nil {
 		return err
 	}
 
-	id += ":" + f.AttendeeID
-	f.ID = id
+	f.ID = f.SessionID + ":" + f.AttendeeID
 	f.CreatedAt = time.Now()
 
 	err = s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
-		r := b.Get([]byte(id))
+		r := b.Get([]byte(f.ID))
 		if r == nil {
 			return nil
 		}
 		return ErrorFeedbackExists
 	})
-
 	if err != nil {
 		return err
 	}
 
-	attn = attn.AddFeedback(id)
-	a, err := json.Marshal(attn)
+	attendee = attendee.AddFeedback(f.ID)
+	a, err := json.Marshal(attendee)
 	if err != nil {
 		return err
 	}
@@ -60,16 +55,15 @@ func (s Store) AddFeedback(f Feedback) error {
 	err = s.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
 
-		if err := b.Put([]byte(id), j); err != nil {
+		if err := b.Put([]byte(f.ID), j); err != nil {
 			return err
 		}
 
 		b = tx.Bucket(bucketAttendees)
-		return b.Put([]byte(attn.ID), a)
+		return b.Put([]byte(attendee.ID), a)
 	})
 
 	go s.UpdateRatings()
-
 	return err
 }
 
@@ -101,7 +95,7 @@ func (s Store) ListAttendeeFeedbacks(attnID string) ([]Feedback, error) {
 
 	fIDs := attn.ListFeedbacks()
 
-	s.View(func(tx *bolt.Tx) error {
+	_ = s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
 		for i := range fIDs {
 			var f Feedback
@@ -122,9 +116,9 @@ func (s Store) ListAttendeeFeedbacks(attnID string) ([]Feedback, error) {
 func (s Store) ListFeedbacks() []Feedback {
 	var feedbacks []Feedback
 
-	s.View(func(tx *bolt.Tx) error {
+	_ = s.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
-		b.ForEach(func(k, v []byte) error {
+		_ = b.ForEach(func(k, v []byte) error {
 			var f Feedback
 			if err := json.Unmarshal(v, &f); err == nil {
 				feedbacks = append(feedbacks, f)

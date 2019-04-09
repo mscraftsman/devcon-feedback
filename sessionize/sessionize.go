@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	//Sessions contains sessionID -> endsAt from sessionize; must only be read
+	// Sessions contains sessionID -> Session from sessionize; must only be read
 	Sessions    map[string]Session
 	rawSessions []byte
 )
