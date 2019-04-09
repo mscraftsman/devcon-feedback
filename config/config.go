@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
@@ -17,6 +18,8 @@ const (
 )
 
 var (
+	tzone *time.Location
+
 	//Env is either prod (default) or dev
 	Env string
 
@@ -43,6 +46,9 @@ var (
 
 	//FrontURL is the url of the front web app
 	FrontURL string
+
+	//Now is the 'now' time to use when checking datetime for validation; used in dev environment
+	Now string
 )
 
 type loader struct {
@@ -83,6 +89,7 @@ func Load(filename string) {
 	HTTPPort = l.load("HTTP_PORT", "1337")
 	FrontURL = l.load("FRONT_URL")
 	SessionizeURL = l.load("SESSIONIZE_URL")
+	Now = l.load("NOW", "_")
 	logLevel := l.load("LOG_LEVEL", "ERROR")
 
 	if len(l.errors) != 0 {
@@ -112,4 +119,23 @@ func Load(filename string) {
 			log.SetLevel(log.DebugLevel)
 		}
 	}
+
+	if t, err := time.LoadLocation("Indian/Mauritius"); err == nil {
+		tzone = t
+	} else {
+		log.Fatalln("Epic Failure when loading timezone")
+	}
+}
+
+//IsBeforeNow checks if a t
+func IsBeforeNow(t string) bool {
+	var now string
+
+	if Now == "_" {
+		now = time.Now().In(tzone).Format("2006-01-02T15:04:05")
+	} else {
+		now = Now
+	}
+
+	return t < now
 }

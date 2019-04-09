@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/mscraftsman/devcon-feedback/config"
 	"encoding/json"
 	"errors"
 	"io/ioutil"
@@ -43,11 +44,23 @@ func AddFeedback(w http.ResponseWriter, r *http.Request) {
 		return err
 	})
 
-	sequence.Do("validating feedback information", func() error {
-		if _, ok := sessionize.Sessions[feedback.SessionID]; !ok {
+	var session sessionize.Session
+	sequence.Do("looking up session information", func() error {
+		var ok bool
+		if session, ok = sessionize.Sessions[feedback.SessionID]; !ok {
 			return errors.New("invalid session")
 		}
+		return nil
+	})
 
+	sequence.Do("checking if session has effectively started", func() error {
+		if config.IsBeforeNow(session.StartsAt) {
+			return errors.New("invalid feedback attempt for unstarted session")
+		}
+		return nil
+	})
+
+	sequence.Do("validating feedback information", func() error {
 		if areResponsesInvalid(feedback) {
 			log.WithField("feedback", feedback).Debug("feedback:add")
 			return errors.New("invalid feedback")

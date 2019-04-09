@@ -20,7 +20,7 @@ var (
 //Session represents a session from sessionize
 type Session struct {
 	ID       string   `json:"id"`
-	EndsAt   string   `json:"endsAt"`
+	StartsAt string   `json:"startsAt"`
 	Speakers []string `json:"speakers"`
 }
 
