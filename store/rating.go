@@ -12,7 +12,6 @@ import (
 //Rating for each session; id is same as sessionid
 type Rating struct {
 	ID        string                     `json:"id"`
-	Speakers  string                     `json:"speakers"`
 	Score     int                        `json:"score"`
 	Count     int                        `json:"count"`
 	Reaction1 map[string]ReactionSummary `json:"reaction1"`
@@ -40,7 +39,6 @@ func (s *Store) UpdateRatings() {
 		if len(session.Speakers) != 0 {
 			mratings[session.ID] = Rating{
 				ID:        session.ID,
-				Speakers:  session.Speakers[0],
 				Reaction1: make(map[string]ReactionSummary),
 				Reaction2: make(map[string]ReactionSummary),
 				Reaction3: make(map[string]ReactionSummary),
