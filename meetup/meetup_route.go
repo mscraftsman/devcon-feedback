@@ -47,7 +47,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	<body>
 			<h1>Login Error</h1>
 			<p>
-				<strong>Sorry you did not rsvp for this event.</strong>
+				<strong>Sorry you did not rsvp for this event using this meetup account.</strong>
 				<br/>
 				<a href="` + config.FrontURL + `">Click here to return to the conference website as visitor</a>
 			</p>

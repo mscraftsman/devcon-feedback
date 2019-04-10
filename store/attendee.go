@@ -176,10 +176,12 @@ func (s Store) IsAttendeeBanned() func(string) bool {
 //IsValidAttendee check if attendee is known
 func IsValidAttendee(id string) bool {
 	if attendeesList == nil {
+		log.WithField("id", id).Debug("IsValidAttendee:list:nil")
 		return true
 	}
 
 	_, ok := attendeesList[id]
+	log.WithField("id", id).WithField("ok", ok).Debug("IsValidAttendee")
 	return ok
 }
 
@@ -193,13 +195,20 @@ func loadAttendees() {
 		}
 	)
 
-	defer sequence.Catch(func(name string, err error) {
-		if err == errNoAttendeesFile {
-			attendeesList = nil
-		} else {
-			log.WithField("error", err).Fatalln(name)
+	defer func() {
+		if err := recover(); err != nil {
+			log.WithField("error", err).Debug("attendees:load:panic")
 		}
-	})
+
+		sequence.Catch(func(name string, err error) {
+			if err == errNoAttendeesFile {
+				attendeesList = nil
+				log.Debug("no attendees file found")
+			} else {
+				log.WithField("error", err).Fatalln(name)
+			}
+		})
+	}()
 
 	sequence.Do("checking if attendees file present", func() error {
 		if _, err := os.Stat("attendees.json"); os.IsNotExist(err) {
@@ -211,7 +220,7 @@ func loadAttendees() {
 
 	var raw []byte
 	sequence.Do("reading attendees file", func() error {
-		raw, err = ioutil.ReadFile("/tmp/dat")
+		raw, err = ioutil.ReadFile("attendees.json")
 		return err
 	})
 
