@@ -1,14 +1,21 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 	"time"
 
 	"github.com/fluxynet/sequitur"
 	"github.com/mscraftsman/devcon-feedback/config"
-	"github.com/mscraftsman/devcon-feedback/meetup"
+	"github.com/mscraftsman/devcon-feedback/store"
+	"github.com/mscraftsman/devcon-feedback/token"
 	log "github.com/sirupsen/logrus"
+)
+
+var (
+	// ErrorNoToken indicates token not present in request
+	ErrorNoToken = errors.New("token not found")
 )
 
 func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
@@ -26,10 +33,10 @@ func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
 			} else {
 				status = http.StatusInternalServerError
 			}
-		case meetup.ErrorInvalidToken:
+		case token.ErrorInvalidToken:
 			msg = "Invalid Token"
 			status = http.StatusForbidden
-		case meetup.ErrorNoToken:
+		case ErrorNoToken:
 			msg = "You must login to proceed"
 			status = http.StatusForbidden
 		}
@@ -70,4 +77,18 @@ func IsVoteOpen(startsAt string) bool {
 	log.WithField("time", t.Format(config.DatetimeLayout)).Debug("IsVoteOpen:votetime")
 
 	return now.After(open)
+}
+
+//attendeeFromRequest returns a Profile from a request containing jwt token
+func attendeeFromRequest(r *http.Request) (*store.Attendee, error) {
+	var (
+		cookie      *http.Cookie
+		err         error
+	)
+
+	if cookie, err = r.Cookie(config.CookieName); err != nil {
+		return nil, ErrorNoToken
+	}
+
+	return token.ToAttendee(cookie.Value)
 }

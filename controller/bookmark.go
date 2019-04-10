@@ -10,7 +10,6 @@ import (
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 
 	"github.com/fluxynet/sequitur"
-	"github.com/mscraftsman/devcon-feedback/meetup"
 	"github.com/mscraftsman/devcon-feedback/store"
 )
 
@@ -27,7 +26,7 @@ func AddBookmark(w http.ResponseWriter, r *http.Request) {
 	defer sequence.Catch(catchError(w, r))
 
 	sequence.Do("Loading attendee information", func() error {
-		attendee, err = meetup.DecodeToken(r)
+		attendee, err = attendeeFromRequest(r)
 		return err
 	})
 
@@ -77,7 +76,7 @@ func RemoveBookmark(w http.ResponseWriter, r *http.Request) {
 	defer sequence.Catch(catchError(w, r))
 
 	sequence.Do("Loading attendee information", func() error {
-		attendee, err = meetup.DecodeToken(r)
+		attendee, err = attendeeFromRequest(r)
 		return err
 	})
 
@@ -119,7 +118,7 @@ func ListBookmarks(w http.ResponseWriter, r *http.Request) {
 
 	defer sequence.Catch(catchError(w, r))
 	sequence.Do("Loading attendee information", func() error {
-		attendee, err = meetup.DecodeToken(r)
+		attendee, err = attendeeFromRequest(r)
 		return err
 	})
 

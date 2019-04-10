@@ -21,6 +21,9 @@ const (
 
 	//DatetimeLayout used by the system for session times
 	DatetimeLayout = "2006-01-02T15:04:05"
+
+	//CookieName to use when logging in
+	CookieName = "devcon"
 )
 
 var (
@@ -107,7 +110,7 @@ func (l *loader) loadDatetime(name string, def ...*time.Time) *time.Time {
 }
 
 func (l *loader) loadLogLevel(def log.Level) log.Level {
-	logLevel := l.load("LOG_LEVEL", "ERROR")
+	logLevel := l.load("LOG_LEVEL", "INFO")
 	switch logLevel {
 	case "PANIC":
 		return log.PanicLevel
