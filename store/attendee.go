@@ -2,10 +2,21 @@ package store
 
 import (
 	"encoding/json"
+	"errors"
+	"io/ioutil"
+	"os"
 	"strings"
 
+	"github.com/fluxynet/sequitur"
 	log "github.com/sirupsen/logrus"
 	bolt "go.etcd.io/bbolt"
+)
+
+var (
+	//attendeesList is a store of attendees that are allowed to login
+	attendeesList map[string]interface{}
+
+	errNoAttendeesFile = errors.New("no attendees file")
 )
 
 //Attendee represents a devcon attendee
@@ -160,4 +171,60 @@ func (s Store) IsAttendeeBanned() func(string) bool {
 		_, ok := b[id]
 		return ok
 	}
+}
+
+//IsValidAttendee check if attendee is known
+func IsValidAttendee(id string) bool {
+	if attendeesList == nil {
+		return true
+	}
+
+	_, ok := attendeesList[id]
+	return ok
+}
+
+func loadAttendees() {
+	var (
+		err      error
+		sequence sequitur.Sequence
+		ids      map[string]interface{}
+		file     struct {
+			AttendeeIDS []string `json:"attendee_ids"`
+		}
+	)
+
+	defer sequence.Catch(func(name string, err error) {
+		if err == errNoAttendeesFile {
+			attendeesList = nil
+		} else {
+			log.WithField("error", err).Fatalln(name)
+		}
+	})
+
+	sequence.Do("checking if attendees file present", func() error {
+		if _, err := os.Stat("attendees.json"); os.IsNotExist(err) {
+			return errNoAttendeesFile
+		}
+
+		return nil
+	})
+
+	var raw []byte
+	sequence.Do("reading attendees file", func() error {
+		raw, err = ioutil.ReadFile("/tmp/dat")
+		return err
+	})
+
+	sequence.Do("decoding attendees file", func() error {
+		return json.Unmarshal(raw, &file)
+	})
+
+	sequence.Then(func() {
+		ids = make(map[string]interface{})
+		for _, id := range file.AttendeeIDS {
+			ids[id] = nil
+		}
+
+		attendeesList = ids
+	})
 }

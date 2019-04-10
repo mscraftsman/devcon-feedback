@@ -7,3 +7,4 @@ bla.http
 rice-box.go
 build/
 *.db
+attendees.json
