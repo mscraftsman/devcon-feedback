@@ -29,12 +29,12 @@ var routes = []route{
 	{"/api/bookmarks", http.MethodGet, controller.ListBookmarks, nil},
 	{"/api/bookmarks/{id}", http.MethodDelete, controller.RemoveBookmark, nil},
 	{"/api/feedbacks", http.MethodPost, controller.AddFeedback, nil},
-	{"/api/feedbacks", http.MethodGet, controller.ListAllFeedback, nil},
 	{"/api/feedbacks/me", http.MethodGet, controller.ListOwnFeedback, nil},
-	{"/api/ratings", http.MethodGet, controller.ListRatings, nil},
-	// {"/api/sessions", http.MethodGet, controller.ListSessions, nil},
 	{"/api/sessions", http.MethodGet, sessionize.SessionsCache, nil},
 	{"/api/leaderboards", http.MethodGet, controller.Leaderboards, nil},
+	// {"/api/feedbacks", http.MethodGet, controller.ListAllFeedback, nil},
+	// {"/api/ratings", http.MethodGet, controller.ListRatings, nil},
+	// {"/api/sessions", http.MethodGet, controller.ListSessions, nil},
 }
 
 func initRouter() http.Handler {
