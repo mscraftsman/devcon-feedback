@@ -110,7 +110,7 @@ func (l *loader) loadDatetime(name string, def ...*time.Time) *time.Time {
 }
 
 func (l *loader) loadLogLevel(def log.Level) log.Level {
-	logLevel := l.load("LOG_LEVEL", "ERROR")
+	logLevel := l.load("LOG_LEVEL", "INFO")
 	switch logLevel {
 	case "PANIC":
 		return log.PanicLevel
