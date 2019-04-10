@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/fluxynet/sequitur"
@@ -52,6 +53,9 @@ var (
 
 	//FrontURL is the url of the front web app
 	FrontURL string
+
+	//AdditionalCORS contains a list of csv of cors urls that are allowed
+	AdditionalCORS []string
 )
 
 var (
@@ -164,6 +168,11 @@ func Load(filename string) {
 		SessionizeURL = l.load("SESSIONIZE_URL")
 		Now = l.loadDatetime("NOW", nil)
 		VoteClosedAt = l.loadDatetime("VOTE_CLOSED_AT")
+		additionalCORS := l.load("ADDITIONAL_CORS", "_")
+
+		if additionalCORS != "_" {
+			AdditionalCORS = strings.Split(additionalCORS, ";")
+		}
 
 		if len(l.errors) == 0 {
 			return nil

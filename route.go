@@ -52,7 +52,17 @@ func initRouter() http.Handler {
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"})
 	allowCredentials := handlers.AllowCredentials()
 	allowedOrigins := handlers.AllowedOriginValidator(func(orig string) bool {
-		return strings.HasPrefix(orig, config.FrontURL)
+		if strings.HasPrefix(orig, config.FrontURL) {
+			return true
+		}
+
+		for _, url := range config.AdditionalCORS {
+			if strings.HasPrefix(orig, url) {
+				return true
+			}
+		}
+
+		return false
 	})
 
 	return handlers.CORS(allowedHeaders, allowedOrigins, allowedMethods, allowCredentials)(r)
