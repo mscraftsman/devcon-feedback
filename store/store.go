@@ -70,6 +70,7 @@ func Init() error {
 	})
 
 	DB.UpdateRatings()
+  loadAttendees()
 
 	return err
 }
