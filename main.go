@@ -1,65 +1,39 @@
 package main
 
 import (
+	"flag"
+	"fmt"
+	"github.com/mscraftsman/devcon-feedback/store"
 	"log"
 	"net/http"
-	"time"
+	"os"
 
-	rice "github.com/GeertJohan/go.rice"
-	"github.com/gorilla/mux"
-	"github.com/mscraftsman/devcon-feedback/app"
-	"github.com/mscraftsman/devcon-feedback/controllers/meetup"
-	"github.com/mscraftsman/devcon-feedback/models/feedback"
-	"github.com/mscraftsman/devcon-feedback/models/rating"
-	"github.com/mscraftsman/devcon-feedback/models/visitor"
+	"github.com/mscraftsman/devcon-feedback/config"
 	"github.com/mscraftsman/devcon-feedback/sessionize"
-	"github.com/mscraftsman/devcon-feedback/stats"
 )
 
-//go:generate rice embed-go
+// Version info
+var (
+	appVersion = "n/a"
+	appCommit  = "n/a"
+	appBuilt   = "n/a"
+)
 
 func main() {
-	config := app.Bootstrap()
+	version := flag.Bool("v", false, "prints current app version")
+	envfile := flag.String("c", ".env", "-c /path/to/my/env.file [defaults to .env]")
 
-	inject(config)
-
-	assetsHandler := http.FileServer(rice.MustFindBox("web/webapp-client/dist").HTTPBox())
-
-	if err := sessionize.Sync(); err != nil {
-		log.Fatalf("Failed to load sessions information: %s", err)
-	} else {
-		log.Println("Sessionize data loaded")
+	flag.Parse()
+	if *version {
+		fmt.Printf("Version: %s \nCommit: %s \nBuilt: %s", appVersion, appCommit, appBuilt)
+		os.Exit(0)
 	}
 
-	go func() {
-		for {
-			time.Sleep(time.Minute * 5)
-			sessionize.Sync()
-		}
-	}()
+	config.Load(*envfile)
+	sessionize.LoadSessions()
+	_ = store.Init()
+	router := initRouter()
 
-	app.ServeHTTP(":"+config.HTTPPort, func(router *mux.Router) error {
-		router.HandleFunc("/b/login", meetup.Login).Methods(http.MethodGet)
-		router.HandleFunc("/b/meetup", meetup.LoginCallback).Methods(http.MethodGet)
-		router.HandleFunc("/b/me", meetup.Me).Methods(http.MethodGet)
-		router.HandleFunc("/b/api/feedbacks/me", feedback.MyFeedback).Methods(http.MethodGet)
-		router.HandleFunc("/b/api/feedbacks", feedback.RestCreate).Methods(http.MethodPost)
-		router.HandleFunc("/b/api/speakers/{id}", sessionize.GetSpeaker).Methods(http.MethodGet)
-		router.HandleFunc("/b/api/speakers", sessionize.GetSpeakers).Methods(http.MethodGet)
-		router.HandleFunc("/b/api/sessions/{id}", sessionize.GetSession).Methods(http.MethodGet)
-		router.HandleFunc("/b/api/sessions", sessionize.GetSessions).Methods(http.MethodGet)
-		router.HandleFunc("/b/api/rooms/{id}", sessionize.GetRoom).Methods(http.MethodGet)
-		router.HandleFunc("/b/api/rooms", sessionize.GetRooms).Methods(http.MethodGet)
-		router.HandleFunc("/b/api/stats", stats.Summary).Methods(http.MethodGet)
-		router.PathPrefix("/").Handler(assetsHandler)
-		return nil
-	})
-}
-
-func inject(config *app.Config) {
-	meetup.Init(config.MeetupKey, config.MeetupSecret, config.JWTSecret)
-	feedback.Inject(config.DB)
-	rating.Inject(config.DB)
-	visitor.Inject(config.DB)
-	stats.Inject(config.DB)
+	log.Println("Listening on :" + config.HTTPPort)
+	_ = http.ListenAndServe(":"+config.HTTPPort, router)
 }

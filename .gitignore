@@ -5,3 +5,5 @@ bla.http
 .idea
 .vscode
 rice-box.go
+build/
+*.db
