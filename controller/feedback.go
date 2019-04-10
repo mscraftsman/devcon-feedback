@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/fluxynet/sequitur"
-	"github.com/mscraftsman/devcon-feedback/meetup"
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 	"github.com/mscraftsman/devcon-feedback/store"
 	log "github.com/sirupsen/logrus"
@@ -25,7 +24,7 @@ func AddFeedback(w http.ResponseWriter, r *http.Request) {
 	defer sequence.Catch(catchError(w, r))
 
 	sequence.Do("Loading attendee information", func() error {
-		attendee, err = meetup.DecodeToken(r)
+		attendee, err = attendeeFromRequest(r)
 		return err
 	})
 
@@ -90,7 +89,7 @@ func ListOwnFeedback(w http.ResponseWriter, r *http.Request) {
 	defer sequence.Catch(catchError(w, r))
 
 	sequence.Do("Loading attendee information", func() error {
-		attendee, err = meetup.DecodeToken(r)
+		attendee, err = attendeeFromRequest(r)
 		return err
 	})
 

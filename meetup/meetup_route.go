@@ -9,8 +9,7 @@ import (
 	"github.com/fluxynet/sequitur"
 	"github.com/mscraftsman/devcon-feedback/config"
 	"github.com/mscraftsman/devcon-feedback/store"
-
-	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/mscraftsman/devcon-feedback/token"
 )
 
 // Login redirects to meetup url for user authentication
@@ -45,28 +44,17 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 	})
 
 	sequence.Do("Saving attendee details", func() error {
-		//if already exists, we preserve existing and update only name and photo
-		if e, err := store.DB.GetAttendee(attendee.ID); err == nil {
-			e.Name = attendee.Name
-			e.PhotoLink = attendee.PhotoLink
-			attendee = e
-		}
 		return store.DB.SetAttendee(attendee)
 	})
 
 	sequence.Do("Creating JWT", func() error {
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-			"id":         attendee.ID,
-			"name":       attendee.Name,
-			"photo_link": attendee.PhotoLink,
-		})
 		var err error
-		tokenString, err = token.SignedString([]byte(config.JWTSecret))
+		tokenString, err = token.New(attendee)
 		return err
 	})
 
 	sequence.Then(func() {
-		cookie := http.Cookie{Name: cookieName, Value: tokenString, Expires: time.Now().Add(168 * time.Hour), HttpOnly: true, Path: "/"}
+		cookie := http.Cookie{Name: config.CookieName, Value: tokenString, Expires: time.Now().Add(168 * time.Hour), HttpOnly: true, Path: "/"}
 		http.SetCookie(w, &cookie)
 		http.Redirect(w, r, config.FrontURL+"/", http.StatusFound)
 	})
@@ -80,7 +68,7 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 
 //Logout sends a stale cookie to clear the log in cookie
 func Logout(w http.ResponseWriter, r *http.Request) {
-	cookie := http.Cookie{Name: cookieName, Value: "", Expires: time.Unix(0, 0), HttpOnly: true, Path: "/"}
+	cookie := http.Cookie{Name: config.CookieName, Value: "", Expires: time.Unix(0, 0), HttpOnly: true, Path: "/"}
 	http.SetCookie(w, &cookie)
 	http.Redirect(w, r, config.FrontURL+"/", http.StatusFound)
 }

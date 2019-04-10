@@ -10,17 +10,6 @@ import (
 
 	"github.com/fluxynet/sequitur"
 	"github.com/mscraftsman/devcon-feedback/config"
-	"github.com/mscraftsman/devcon-feedback/store"
-
-	jwt "github.com/dgrijalva/jwt-go"
-)
-
-var (
-	cookieName = "devcon"
-	// ErrorNoToken indicates token not present in request
-	ErrorNoToken = errors.New("token not found")
-	// ErrorInvalidToken indicates an invalid token provided in request
-	ErrorInvalidToken = errors.New("token is invalid")
 )
 
 // Profile represents meetup.com user profile
@@ -115,56 +104,4 @@ func retrieveProfile(code string) (*Profile, error) {
 	})
 
 	return &meetupProfile, err
-}
-
-// DecodeToken returns a Profile from a request containing jwt token
-func DecodeToken(r *http.Request) (*store.Attendee, error) {
-	var (
-		tokenString string
-		cookie      *http.Cookie
-		err         error
-	)
-
-	if cookie, err = r.Cookie(cookieName); err != nil {
-		return nil, ErrorNoToken
-	}
-
-	tokenString = cookie.Value
-
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte(config.JWTSecret), nil
-	})
-
-	if token == nil || err != nil {
-		return nil, ErrorInvalidToken
-	}
-
-	attendee, ok := func() (*store.Attendee, bool) {
-		var (
-			id          string
-			idOk        bool
-			name        string
-			nameOk      bool
-			photoLink   string
-			photoLinkOk bool
-		)
-		claims, claimok := token.Claims.(jwt.MapClaims)
-
-		if claimok && token.Valid {
-			id, idOk = claims["id"].(string)
-			name, nameOk = claims["name"].(string)
-			photoLink, photoLinkOk = claims["photo_link"].(string)
-		}
-
-		return &store.Attendee{
-			ID: id, Name: name, PhotoLink: photoLink,
-		}, idOk && nameOk && photoLinkOk
-	}()
-
-	if !ok {
-		return nil, ErrorInvalidToken
-	}
-
-	attn, err := store.DB.GetAttendee(attendee.ID)
-	return &attn, err
 }

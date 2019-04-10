@@ -21,6 +21,9 @@ const (
 
 	//DatetimeLayout used by the system for session times
 	DatetimeLayout = "2006-01-02T15:04:05"
+
+	//CookieName to use when logging in
+	CookieName = "devcon"
 )
 
 var (
