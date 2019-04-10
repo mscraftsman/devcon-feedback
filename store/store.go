@@ -132,7 +132,7 @@ func ClearDB() error {
 				var a Attendee
 
 				if err := json.Unmarshal(v, &a); err == nil {
-					a.Bookmarks = ""
+					a.Feedbacks = ""
 					if j, e := json.Marshal(a); e == nil {
 						b.Put([]byte(a.ID), j)
 					}
