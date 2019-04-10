@@ -1,6 +1,7 @@
 package store
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -70,7 +71,7 @@ func Init() error {
 	})
 
 	DB.UpdateRatings()
-  loadAttendees()
+	loadAttendees()
 
 	return err
 }
@@ -121,6 +122,29 @@ func ClearDB() error {
 
 			return nil
 		})
+	})
+
+	sequence.Do("updating attendees (removing feedback info)", func() error {
+		_ = DB.Update(func(tx *bolt.Tx) error {
+			b := tx.Bucket(bucketAttendees)
+
+			_ = b.ForEach(func(k, v []byte) error {
+				var a Attendee
+
+				if err := json.Unmarshal(v, &a); err == nil {
+					a.Bookmarks = ""
+					if j, e := json.Marshal(a); e == nil {
+						b.Put([]byte(a.ID), j)
+					}
+				}
+
+				return nil
+			})
+
+			return nil
+		})
+
+		return nil
 	})
 
 	sequence.Catch(func(name string, e error) {
