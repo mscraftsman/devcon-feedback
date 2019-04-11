@@ -16,6 +16,7 @@ import (
 func AddFeedback(w http.ResponseWriter, r *http.Request) {
 	var (
 		attendee *store.Attendee
+		attn     store.Attendee
 		err      error
 		sequence sequitur.Sequence
 		feedback store.Feedback
@@ -25,6 +26,11 @@ func AddFeedback(w http.ResponseWriter, r *http.Request) {
 
 	sequence.Do("Loading attendee information", func() error {
 		attendee, err = attendeeFromRequest(r)
+		return err
+	})
+
+	sequence.Do("checking attendee details", func() error {
+		attn, err = store.DB.GetAttendee(attendee.ID)
 		return err
 	})
 
@@ -67,7 +73,14 @@ func AddFeedback(w http.ResponseWriter, r *http.Request) {
 	})
 
 	sequence.Do("saving feedback information", func() error {
-		return store.DB.AddFeedback(feedback)
+		var err error
+		feedback, err = store.DB.AddFeedback(feedback)
+		return err
+	})
+
+	sequence.Do("saving attendee details", func() error {
+		attn = attn.AddFeedback(feedback.ID)
+		return store.DB.SetAttendee(attn, true)
 	})
 
 	sequence.Then(func() {

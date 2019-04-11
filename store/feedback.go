@@ -20,10 +20,10 @@ type Feedback struct {
 }
 
 //AddFeedback to store
-func (s Store) AddFeedback(f Feedback) error {
+func (s Store) AddFeedback(f Feedback) (Feedback, error) {
 	attendee, err := s.GetAttendee(f.AttendeeID)
 	if err != nil {
-		return err
+		return f, err
 	}
 
 	f.ID = f.SessionID + ":" + f.AttendeeID
@@ -38,18 +38,18 @@ func (s Store) AddFeedback(f Feedback) error {
 		return ErrorFeedbackExists
 	})
 	if err != nil {
-		return err
+		return f, err
 	}
 
 	attendee = attendee.AddFeedback(f.ID)
 	a, err := json.Marshal(attendee)
 	if err != nil {
-		return err
+		return f, err
 	}
 
 	j, err := json.Marshal(f)
 	if err != nil {
-		return err
+		return f, err
 	}
 
 	_ = s.Update(func(tx *bolt.Tx) error {
@@ -64,7 +64,7 @@ func (s Store) AddFeedback(f Feedback) error {
 	})
 
 	go s.UpdateRatings()
-	return err
+	return f, err
 }
 
 //GetFeedback retrieves a feedback from the store
