@@ -11,12 +11,14 @@ import (
 
 	"github.com/fluxynet/sequitur"
 	"github.com/mscraftsman/devcon-feedback/store"
+	log "github.com/sirupsen/logrus"
 )
 
 //AddBookmark allows a user to add a bookmark
 func AddBookmark(w http.ResponseWriter, r *http.Request) {
 	var (
 		attendee   *store.Attendee
+		attn       store.Attendee
 		err        error
 		sequence   sequitur.Sequence
 		bookmarkID string
@@ -42,20 +44,17 @@ func AddBookmark(w http.ResponseWriter, r *http.Request) {
 		return nil
 	})
 
-	sequence.Do("adding bookmark", func() error {
-		attn, err := store.DB.GetAttendee(attendee.ID)
-		if err == nil {
-			return store.DB.SetAttendee(attn.AddBookmark(bookmarkID))
-		}
+	sequence.Do("loading attendee details", func() error {
+		var err error
+		attn, err = store.DB.GetAttendee(attendee.ID)
+		log.WithField("attendee", attendee).WithField("bookmarkID", bookmarkID).Debug("bookmark:add:readattn")
 		return err
 	})
 
-	sequence.Do("saving bookmark", func() error {
-		attn, err := store.DB.GetAttendee(attendee.ID)
-		if err == nil {
-			return store.DB.SetAttendee(attn.AddBookmark(bookmarkID))
-		}
-		return err
+	sequence.Do("saving attendee details", func() error {
+		attn = attn.AddBookmark(bookmarkID)
+		log.WithField("attendee", attn).WithField("bookmarkID", bookmarkID).Debug("bookmark:add:saveattn")
+		return store.DB.SetAttendee(attn, true)
 	})
 
 	sequence.Then(func() {
@@ -95,7 +94,7 @@ func RemoveBookmark(w http.ResponseWriter, r *http.Request) {
 	sequence.Do("removing bookmark", func() error {
 		attn, err := store.DB.GetAttendee(attendee.ID)
 		if err == nil {
-			return store.DB.SetAttendee(attn.RemoveBookmark(bookmarkID))
+			return store.DB.SetAttendee(attn.RemoveBookmark(bookmarkID), true)
 		}
 		return err
 	})
