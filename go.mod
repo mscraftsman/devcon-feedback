@@ -3,6 +3,7 @@ module github.com/mscraftsman/devcon-feedback
 go 1.12
 
 require (
+	github.com/bouk/monkey v1.0.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fluxynet/sequitur v0.0.0-20190407084551-5e3d6fd3c695
 	github.com/gorilla/handlers v1.4.0
