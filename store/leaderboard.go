@@ -109,9 +109,9 @@ func leaderboardFromRatings(ratings []Rating) leaderboard {
 func reactionScore(reactions map[string]ReactionSummary) int {
 	var v, t int
 
-	for i := range reactions {
-		v, _ = strconv.Atoi(reactions[i].Reaction)
-		t = v * reactions[i].Count
+	for _, reaction := range reactions {
+		v, _ = strconv.Atoi(reaction.Reaction)
+		t += v * reaction.Count
 	}
 
 	return t
