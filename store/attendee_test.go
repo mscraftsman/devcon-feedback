@@ -150,7 +150,7 @@ func TestAttendee_ListBookmarks(t *testing.T) {
 		{
 			"Empty attendee.Bookmarks",
 			store.Attendee{
-				ID: "000", Name: "John Doe", PhotoLink: "http://foo.bar", Status: true, Bookmarks: "1234567", Feedbacks: "",
+				ID: "000", Name: "John Doe", PhotoLink: "http://foo.bar", Status: true, Bookmarks: "", Feedbacks: "",
 			},
 			[]string{},
 		},
