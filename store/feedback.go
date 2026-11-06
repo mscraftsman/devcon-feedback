@@ -66,7 +66,7 @@ func (s Store) AddFeedback(f Feedback) (Feedback, error) {
 		return f, err
 	}
 
-	go s.UpdateRatings()
+	s.UpdateRatings()
 	return f, nil
 }
 

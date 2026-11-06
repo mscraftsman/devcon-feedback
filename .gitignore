@@ -6,5 +6,7 @@ bla.http
 .vscode
 rice-box.go
 build/
+dist/
 *.db
+*.bak
 attendees.json

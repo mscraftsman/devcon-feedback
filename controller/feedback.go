@@ -3,7 +3,7 @@ package controller
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/fluxynet/sequitur"
@@ -36,7 +36,7 @@ func AddFeedback(w http.ResponseWriter, r *http.Request) {
 
 	var resp []byte
 	sequence.Do("reading request body", func() error {
-		resp, err = ioutil.ReadAll(r.Body)
+		resp, err = io.ReadAll(r.Body)
 		return err
 	})
 

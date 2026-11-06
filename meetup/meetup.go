@@ -3,7 +3,7 @@ package meetup
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"time"
@@ -60,7 +60,8 @@ func retrieveProfile(code string) (*Profile, error) {
 
 	var resp []byte
 	sequence.Do("Reading response from meetup.com during authorization", func() error {
-		resp, err = ioutil.ReadAll(rs.Body)
+		defer rs.Body.Close()
+		resp, err = io.ReadAll(rs.Body)
 		return err
 	})
 
@@ -87,7 +88,8 @@ func retrieveProfile(code string) (*Profile, error) {
 	})
 
 	sequence.Do("Reading response from meetup.com during profile loading", func() error {
-		resp, err = ioutil.ReadAll(rs.Body)
+		defer rs.Body.Close()
+		resp, err = io.ReadAll(rs.Body)
 		return err
 	})
 

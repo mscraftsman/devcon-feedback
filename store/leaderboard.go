@@ -76,14 +76,15 @@ func top(scores Scores, limit int) Scores {
 		return scores
 	}
 
-	limited := scores[:limit]
+	limited := make(Scores, limit)
+	copy(limited, scores[:limit])
 	last := limited[limit-1].Score
 
 	if last == 0 {
 		return limited
 	}
 
-	for _, s := range scores {
+	for _, s := range scores[limit:] {
 		if s.Score == last {
 			limited = append(limited, s)
 		} else {

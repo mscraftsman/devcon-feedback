@@ -54,6 +54,16 @@ func TestAttendee_AddBookmark(t *testing.T) {
 				ID: "000", Name: "John Doe", PhotoLink: "http://foo.bar", Status: true, Bookmarks: "1234567", Feedbacks: "",
 			},
 		},
+		{
+			"Substring Bookmark ID",
+			store.Attendee{
+				ID: "000", Name: "John Doe", PhotoLink: "http://foo.bar", Status: true, Bookmarks: "1234567", Feedbacks: "",
+			},
+			"123",
+			store.Attendee{
+				ID: "000", Name: "John Doe", PhotoLink: "http://foo.bar", Status: true, Bookmarks: "1234567;123", Feedbacks: "",
+			},
+		},
 		// {
 		// 	"Invalid Bookmark ID (Session doesn't exist)",
 		// 	store.Attendee{
@@ -223,6 +233,16 @@ func TestAttendee_AddFeedback(t *testing.T) {
 			"",
 			store.Attendee{
 				ID: "000", Name: "John Doe", PhotoLink: "http://foo.bar", Status: true, Bookmarks: "", Feedbacks: "1234567",
+			},
+		},
+		{
+			"Substring Feedback ID",
+			store.Attendee{
+				ID: "000", Name: "John Doe", PhotoLink: "http://foo.bar", Status: true, Bookmarks: "", Feedbacks: "1234567",
+			},
+			"123",
+			store.Attendee{
+				ID: "000", Name: "John Doe", PhotoLink: "http://foo.bar", Status: true, Bookmarks: "", Feedbacks: "1234567;123",
 			},
 		},
 		// {

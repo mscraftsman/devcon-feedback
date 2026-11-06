@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/fluxynet/sequitur"
@@ -89,7 +89,7 @@ func ClearDB() error {
 	})
 
 	sequence.Do("reading database file for backup", func() error {
-		file, err = ioutil.ReadFile(config.BoltDBPath)
+		file, err = os.ReadFile(config.BoltDBPath)
 		return err
 	})
 
@@ -99,7 +99,7 @@ func ClearDB() error {
 			config.BoltDBPath,
 			time.Now().Format("2006-01-02T15_04_05"),
 		)
-		return ioutil.WriteFile(fname, file, 0600)
+		return os.WriteFile(fname, file, 0600)
 	})
 
 	sequence.Do("clearing database", func() error {

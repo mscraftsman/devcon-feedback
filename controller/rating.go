@@ -18,7 +18,7 @@ func ListRatings(w http.ResponseWriter, r *http.Request) {
 		ratings  []store.Rating
 	)
 
-	sequence.Catch(catchError(w, r))
+	defer sequence.Catch(catchError(w, r))
 
 	sequence.Do("loading ratings data", func() error {
 		ratings = store.DB.ListRatings()

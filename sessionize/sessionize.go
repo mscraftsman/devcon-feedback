@@ -2,7 +2,7 @@ package sessionize
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -59,7 +59,8 @@ func LoadSessions() {
 	})
 
 	sequence.Do("Reading response from sessionize.com during sessions loading", func() error {
-		resp, err = ioutil.ReadAll(rs.Body)
+		defer rs.Body.Close()
+		resp, err = io.ReadAll(rs.Body)
 		return err
 	})
 
