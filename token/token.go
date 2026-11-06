@@ -3,7 +3,7 @@ package token
 import (
 	"errors"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/mscraftsman/devcon-feedback/config"
 	"github.com/mscraftsman/devcon-feedback/store"
 )
@@ -30,7 +30,7 @@ func ToAttendee(t string) (*store.Attendee, error) {
 
 	token, err := jwt.Parse(t, func(token *jwt.Token) (interface{}, error) {
 		return []byte(config.JWTSecret), nil
-	})
+	}, jwt.WithValidMethods([]string{jwt.SigningMethodHS256.Alg()}))
 
 	if token == nil || err != nil {
 		return nil, ErrorInvalidToken
