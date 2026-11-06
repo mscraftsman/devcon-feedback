@@ -3,7 +3,6 @@ package store
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -232,7 +231,7 @@ func loadAttendees() {
 
 	var raw []byte
 	sequence.Do("reading attendees file", func() error {
-		raw, err = ioutil.ReadFile("attendees.json")
+		raw, err = os.ReadFile("attendees.json")
 		return err
 	})
 

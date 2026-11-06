@@ -39,8 +39,8 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 
 	defer sequence.Catch(func(act string, err error) {
 		if err == errInvalidAttendee {
-			w.WriteHeader(http.StatusForbidden)
 			w.Header().Set("Content-Type", "text/html")
+			w.WriteHeader(http.StatusForbidden)
 			_, _ = w.Write([]byte(`
 <html>
 	<head><title>Login Error</title></head>
@@ -56,8 +56,8 @@ func LoginCallback(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.WriteHeader(http.StatusInternalServerError)
 		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
 		_, _ = w.Write([]byte(`{"error": "` + act + `"}`))
 	})
 

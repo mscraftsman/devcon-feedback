@@ -3,11 +3,14 @@ package store
 import (
 	"encoding/json"
 	"strconv"
+	"sync"
 
 	"github.com/mscraftsman/devcon-feedback/sessionize"
 	log "github.com/sirupsen/logrus"
 	bolt "go.etcd.io/bbolt"
 )
+
+var ratingsMu sync.Mutex
 
 //Rating for each session; id is same as sessionid
 type Rating struct {
@@ -27,6 +30,9 @@ type ReactionSummary struct {
 
 //UpdateRatings recalculate all ratings
 func (s *Store) UpdateRatings() {
+	ratingsMu.Lock()
+	defer ratingsMu.Unlock()
+
 	defer func() {
 		if r := recover(); r != nil {
 			log.WithField("recovered", r).Error("update:ratings:panic")
