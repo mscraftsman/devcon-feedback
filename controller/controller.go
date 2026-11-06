@@ -16,6 +16,9 @@ import (
 var (
 	// ErrorNoToken indicates token not present in request
 	ErrorNoToken = errors.New("token not found")
+
+	// NowFunc returns the current time; can be overridden in tests
+	NowFunc = time.Now
 )
 
 func catchError(w http.ResponseWriter, r *http.Request) sequitur.Consequence {
@@ -56,13 +59,17 @@ func IsVoteOpen(startsAt string) bool {
 	t := new(time.Time)
 
 	if config.Now == nil {
-		*now = time.Now().In(config.Tzone)
+		loc := config.Tzone
+		if loc == nil {
+			loc = time.UTC
+		}
+		*now = NowFunc().In(loc)
 	} else {
 		now = config.Now
 	}
 	log.WithField("now", now.Format(config.DatetimeLayout)).Debug("IsVoteOpen:now")
 
-	if now.After(*config.VoteClosedAt) {
+	if config.VoteClosedAt != nil && now.After(*config.VoteClosedAt) {
 		log.WithField("VoteClosedAt", config.VoteClosedAt.Format(config.DatetimeLayout)).Debug("IsVoteOpen:voteclosed")
 		return false
 	}
