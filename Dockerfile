@@ -1,4 +1,4 @@
-FROM golang:1.12-alpine
+FROM golang:1.27-alpine
 
 ARG environment="prod"
 ARG base_url="https://sessions.conference.mscc.mu"
@@ -8,6 +8,8 @@ ARG jwt_secret="ThisIsNotRandomPleaseChangeIt"
 ARG http_port="1337"
 ARG bolt_db_path="/var/devcon.db"
 ARG front_url="https://conference.mscc.mu"
+ARG sessionize_url=""
+ARG vote_closed_at="2019-04-13T17:30:00"
 
 ENV ENV=$environment
 ENV BASE_URL=$base_url
@@ -17,6 +19,8 @@ ENV JWT_SECRET=$jwt_secret
 ENV HTTP_PORT=$http_port
 ENV BOLT_DB_PATH=$bolt_db_path
 ENV FRONT_URL=$front_url
+ENV SESSIONIZE_URL=$sessionize_url
+ENV VOTE_CLOSED_AT=$vote_closed_at
 
 RUN apk update && apk add --virtual git && rm -rf /var/cache/apk/*
 
