@@ -52,7 +52,7 @@ func (s Store) AddFeedback(f Feedback) (Feedback, error) {
 		return f, err
 	}
 
-	_ = s.Update(func(tx *bolt.Tx) error {
+	err = s.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket(bucketFeedbacks)
 
 		if err := b.Put([]byte(f.ID), j); err != nil {
@@ -62,9 +62,12 @@ func (s Store) AddFeedback(f Feedback) (Feedback, error) {
 		b = tx.Bucket(bucketAttendees)
 		return b.Put([]byte(attendee.ID), a)
 	})
+	if err != nil {
+		return f, err
+	}
 
 	go s.UpdateRatings()
-	return f, err
+	return f, nil
 }
 
 //GetFeedback retrieves a feedback from the store

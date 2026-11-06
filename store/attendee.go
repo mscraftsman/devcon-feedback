@@ -31,6 +31,10 @@ type Attendee struct {
 
 //AddBookmark creates a new bookmark to an attendee
 func (a Attendee) AddBookmark(id string) Attendee {
+	if id == "" {
+		return a
+	}
+
 	b := strings.Split(a.Bookmarks, ";")
 	for i := range b {
 		if b[i] == id {
@@ -40,7 +44,7 @@ func (a Attendee) AddBookmark(id string) Attendee {
 
 	if a.Bookmarks == "" {
 		a.Bookmarks = id
-	} else if !strings.Contains(a.Bookmarks, id) {
+	} else {
 		a.Bookmarks = a.Bookmarks + ";" + id
 	}
 
@@ -71,6 +75,10 @@ func (a Attendee) ListBookmarks() []string {
 
 //AddFeedback adds a feedback id to the attendee (immutable)
 func (a Attendee) AddFeedback(id string) Attendee {
+	if id == "" {
+		return a
+	}
+
 	f := strings.Split(a.Feedbacks, ";")
 	for i := range f {
 		if f[i] == id {
@@ -80,7 +88,7 @@ func (a Attendee) AddFeedback(id string) Attendee {
 
 	if a.Feedbacks == "" {
 		a.Feedbacks = id
-	} else if !strings.Contains(a.Feedbacks, id) {
+	} else {
 		a.Feedbacks = a.Feedbacks + ";" + id
 	}
 
